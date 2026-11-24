@@ -2,31 +2,40 @@
 
 A Flutter recruitment assessment for Android and iOS. The intended app browses fictional rental properties from a REST API and supports English and Arabic.
 
-Phase 0 consists of the existing `material_ui` counter scaffold in [lib/main.dart](lib/main.dart), its [widget smoke test](test/widget_test.dart), the platform project files, and this documentation. Property screens, routing, the design system, localization, API calls, sign-in, and favorites are planned. Screenshots and a feature demo are pending implementation.
+The app currently opens a temporary design system preview. It uses a shared `material_ui` light theme with Blue as the default, plus Purple and Orange. The preview runs without backend or Firebase setup. Property screens, routing, production localization, API integration, sign-in, and favorites are planned.
 
 ## Setup and verification
 
 Use Flutter **3.50.1 stable**, which includes Dart **3.14.0**. The manifest specifies Dart `^3.14.0`. Use [pubspec.lock](pubspec.lock) to reproduce the baseline package versions.
 
-On Android, install Android SDK Platform 36 and NDK 28.2.13676358 and configure a compatible JDK for the project's Gradle toolchain. The project uses Gradle 9.5.0, Android Gradle Plugin 9.3.1, and Java/Kotlin target 17. On iOS, use macOS with Xcode and an iOS simulator or a signed device. Runner is wired to Flutter's generated Swift package and this checkout has no Podfile. Use `flutter doctor -v` to check the local toolchain and `flutter devices` to find a run target. The counter scaffold requires no backend or Firebase setup.
+On Android, install Android SDK Platform 36 and NDK 28.2.13676358 and configure a compatible JDK for the project's Gradle toolchain. The project uses Gradle 9.5.0, Android Gradle Plugin 9.3.1, and Java/Kotlin target 17. On iOS, use macOS with Xcode and an iOS simulator or a signed device. Runner is wired to Flutter's generated Swift package and this checkout has no Podfile. Use `flutter doctor -v` to check the local toolchain and `flutter devices` to find a run target.
 
 ```sh
 flutter --version
 flutter pub get
-flutter pub outdated
+dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test
+flutter test --coverage
+flutter build apk --debug
+flutter build ios --simulator
 git diff --check
 flutter run
 ```
 
-`flutter pub outdated` is informational. [analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes generated build output and platform directories. The smoke test pumps the app, taps the increment button, and verifies the counter changes from 0 to 1. Android and iOS builds and device testing are pending.
+[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes generated build output and platform directories. The tests exercise theme roles, contrast, control interactions, RTL, and compact layouts with enlarged text.
+
+## Design system preview
+
+Run `flutter run` to open the preview. Use the chips to choose a theme and **العربية** or **English** to switch the sample language and direction. Try the search field, filter chips, and favorite icon. The preview also shows disabled and loading buttons and labeled feedback colors. These selections exist only while the preview is running.
+
+Flutter's Widget Previewer exposes standard and narrow, enlarged-text views through `flutter widget-preview start`. The preview lives in [lib/preview](lib/preview). The shared theme and components live in [lib/core/design_system](lib/core/design_system). [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records the measurements, accessible color roles, and pinned, locally bundled Rubik fonts.
 
 ## Dependencies and planned architecture
 
 | Packages | Role |
 | --- | --- |
-| `material_ui`, `cupertino_icons` | Material widgets used by the scaffold and Cupertino icons available for the approved screens |
+| `material_ui`, `cupertino_icons` | Material theme and controls used by the preview, with Cupertino icons available for later screens |
 | `hooks_riverpod`, `riverpod_annotation`, `riverpod_generator`, `flutter_hooks` | Generated providers for dependency injection and state, with hooks for local widget state where useful |
 | `dio`, `go_router` | REST transport and declarative navigation |
 | `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner` | Immutable models, JSON DTOs, and their generation workflow |

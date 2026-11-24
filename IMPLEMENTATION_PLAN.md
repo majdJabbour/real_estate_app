@@ -6,7 +6,14 @@ Status: proposed sequence for developer approval. Existing dependency setup and 
 Inspect project, Flutter/Dart, pubspec, git status, actual platform IDs and existing scaffold. Verify installed package API conventions. Copy current sibling backend contract as a reference (not the older draft), record revision. Establish AI_USAGE.md and README baseline. Verify analyze/test and document build prerequisites. No cloud changes. Commit: `docs: establish flutter engineering guidelines` (or separate genuine tooling changes).
 
 ## 1 — Design inspection and system
-Inspect approved Figma variant, actual frames, components, typography, colors, spacing, dimensions, radii, shadows, assets and icons. Document exact values with node references in DESIGN_SYSTEM.md; identify missing fonts/assets rather than guessing. Implement tokens, theme, responsive policies, common buttons, section headers and image fallback as needed. Verify 430 reference plus compact widths, RTL and text scaling. Commit: `feat: establish adaptive design system`.
+
+### 1.1 — Figma analysis
+
+Approved for continuation. [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records all three variants, frame IDs, measured values, and asset provenance questions.
+
+### 1.2 — Shared multi-theme design system
+
+Blue is the default. The shared light theme factory supports Blue, Purple, and Orange with bundled Rubik and four primitives for primary actions, icon actions, search, and choice/filter chips. A temporary preview exercises all variants, English and Arabic direction, and control states. Feature-specific widgets, app navigation, production localization, and runtime theme persistence are later work. Review this phase before proceeding. Suggested commit `feat: implement shared multi-theme design system`.
 
 ## 2 — Core infrastructure and localization
 Typed API configuration, Dio, response envelopes, errors, request cancellation, ARB en/ar and persisted locale. Bootstrap app and verify locale switch/restore, localized errors, public request headers and URL joining. Keep Firebase optional until configured. Commit cohesive networking/localization changes separately if helpful.

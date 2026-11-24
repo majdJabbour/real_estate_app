@@ -25,3 +25,22 @@ The developer approved Phase 0 and requested a read-only comparison of Original 
 Codex read the engineering guidelines, implementation plan, API contract, README, and existing Flutter scaffold. With the Figma inspection skill and Figma MCP, Codex inventoried 24 frames, compared layer geometry, styled text, fills, effects, vector paths and image references, and captured 27 renders. Read-only SVG export checks and image-size queries established asset availability for the sampled nodes. The design file received no edits. Upstream font metadata and license documentation informed the Arabic font review. The Community copy and embedded third-party artwork still require provenance verification.
 
 Codex created [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) with node references, variant differences, component and asset inventories, contract mapping, and proposed theme, width and RTL behavior. `git diff --check`, a whitespace check for the new Markdown file, and the source and dependency diff checks passed. This was documentation work, so no Flutter build, rendering, or test run was performed. Arabic shaping, responsive layouts, and exact runtime assets remain unverified. Phase 1.1 is pending developer review.
+
+## Phase 1.2 — Shared multi-theme design system
+
+The developer approved continuation from Phase 1.1 and specified the source palette, the Blue layout and tint decisions, Rubik weights, accessibility thresholds, and four shared primitives. The requested app entry point is a temporary preview for Blue, Purple and Orange with English and Arabic.
+
+Codex inspected the installed Flutter and `material_ui` APIs and used the widget preview, responsive layout, widget test, unit test and static analysis skills. Codex implemented the shared theme, four controls and preview, and replaced the counter test. Four static Rubik files and their original SIL OFL 1.1 license came from a pinned upstream revision, with no package changes. Fontconfig and HarfBuzz verified sample coverage and shaping. The accessible foregrounds, focus and disabled styles, selected indicators and temporary preview controls are documented in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed. Dependency versions and lockfile match the baseline. |
+| `dart format --output=none --set-exit-if-changed lib test` | Passed across 8 files. |
+| `flutter analyze` | Passed with no issues. |
+| `flutter test` and `flutter test --coverage` | Both passed with 23 tests. LCOV recorded 303 of 326 instrumented lines. |
+| `flutter build apk --debug` | Passed. |
+| `flutter build ios --simulator` | Passed without signing. |
+| Native preview | Ran and hot reloaded on an iPhone 18 Pro simulator on iOS 27.2. Used Flutter's debug service to activate the preview controls and captured all three variants with CoreSimulator. Visually checked the Orange RTL layout. |
+| `git diff --check` | Passed. |
+
+Android device execution, Figma pixel parity, and artwork provenance remain unverified. Phase 1.2 is pending developer review.

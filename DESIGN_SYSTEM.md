@@ -1,6 +1,6 @@
 # Real Estate design system
 
-Phase 1.1 · Read-only Figma analysis and Flutter theme proposal · 2026-11-24
+Phase 1.1 Figma analysis and Phase 1.2 shared Flutter design system · 2026-11-24
 
 ## 1. Source and frame inventory
 
@@ -61,7 +61,7 @@ Hex values are sRGB. Percentages are source paint opacity before compositing. Un
 | Map illustration ground, media mask fills | `#EEF4FF`; `#BDBDBD` and `#C4C4C4` | same | same | `1:4389`, `1:4371`, `1:4238`. Mask fills are evidence for the photo geometry. A broken-image treatment needs approval. |
 | Secondary brand, disabled, selected property favorite, general error and success | Unspecified | Unspecified | Unspecified | The sampled frames show active buttons, outline property hearts, and a red logout treatment. The accented review heart is a separate action. |
 
-The Blue Primary-3 swatch `1:4596` actually uses `#0061FF` at **5%**. Its label `1:4598` says 4%. Multiple actual Blue UI layers use 4%, including `1:4458` and `1:4481`. The reference divider `1:4612` uses `#704F38` at 10% and does not match the in-app dividers. Inactive chips are selectable. A disabled treatment, error/success semantics, and a filled favorite state require design approval.
+The Blue Primary-3 swatch `1:4596` actually uses `#0061FF` at **5%**. Its label `1:4598` says 4%. Multiple actual Blue UI layers use 4%, including `1:4458` and `1:4481`. The reference divider `1:4612` uses `#704F38` at 10%. In-app dividers use the brand tint. Unselected chips remain selectable. Section 12 records the implemented disabled, feedback and favorite roles.
 
 The featured overlay `I1:4470;85001:13408` is shared across variants. Its linear stops are 0% position `#4B4B4B` at 0% opacity, 17.2% `#444444` at 11.4%, 27.1% `#404040` at 18%, 41.7% `#3A3A3A` at 27.7%, 52.6% `#363636` at 35%, 66.1% `#2F2F2F` at 46.3%, 80.2% `#282828` at 56.1% and 100% `#202020` at 70%. Positions and opacities here are displayed to one decimal percent.
 
@@ -158,7 +158,7 @@ Dimensions are Figma references. Clear selected, active and unselected examples 
 
 Figma export access confirms technical availability. It does not establish redistribution rights. The supplied file is a copy. Establish the original Community listing, creator, file license, and applicable third-party logo, icon and photo terms before bundling source artwork. Figma's free-file policy generally requires attribution under CC BY 4.0. The exact source listing and the individual Figma artwork licenses remain unresolved. The backend documents separately licensed Pexels URLs for the demo property dataset. [Figma Community licensing](https://help.figma.com/hc/en-us/articles/360042296374-Figma-Community-copyright-and-licensing) · [Pexels license](https://www.pexels.com/license/)
 
-## 8. Proposed Flutter theme and responsive layout
+## 8. Phase 1.1 theme proposal and responsive layout references
 
 ### One theme factory
 
@@ -213,8 +213,51 @@ The following mapping follows [API_CONTRACT.md](API_CONTRACT.md), [AGENTS.md](AG
 
 ## 11. Open decisions and extraction limits
 
-1. Confirm Blue as the delivery default and specify mandatory frames and Explore layout behavior. Confirm whether Splash, Auth, Profile and each detail action are in assessment scope.
-2. Approve accessible CTA foregrounds, small brand text, selected favorite, disabled, error and success roles. Resolve the Blue 5% swatch vs. 4% screen usage and the Details tint differences. Choose whether the 2 px Filter offset should be normalized to the Blue baseline in the shared layout.
-3. Confirm original artwork provenance, rights, and attribution before export for delivery. Choose the localized tagline treatment, authorized auth imagery and icon sources, Google button styling, and map action.
-4. Pin the font binary and check glyph coverage, metrics and Arabic shaping on-device. Approve exact Rubik usage where the source includes secondary typefaces. Test the width and touch-target proposals with localized content and dynamic data.
-5. The review covered the provided canvas and matching screen nodes, including resolved instance content. It did not establish a complete external component library or a documented style for every possible state. Figma layer hashes and renders establish matches for the sampled source, rather than licenses, Flutter render parity or backend functionality. Screenshot evidence was captured through MCP. This Git change contains node links and analytical documentation.
+1. Confirm mandatory frames and Explore layout behavior, including whether Splash, Auth, Profile and each detail action are in assessment scope.
+2. Confirm original artwork provenance, rights, and attribution for delivery. Resolve the localized tagline, authorized auth imagery and icon sources, Google button styling, and map action.
+3. Verify final feature layouts with realistic localized data, dynamic media, and enlarged text on both platforms.
+4. The Figma review covered the supplied canvas, including resolved instance content. External component library states, redistribution rights, and Flutter pixel parity need separate verification.
+
+## 12. Phase 1.2 implementation
+
+### Approved decisions
+
+- Blue is the default. Preserve `#0061FF`, `#8B5DFF`, and `#FF8000` in `ColorScheme.primary`. Use the actual 4% subtle tint and 10% stronger tint, with Details using 4% in Blue and 10% in Purple and Orange.
+- Use the Blue Filters layout reference when the sheet is implemented. Its content starts at y=223 in the source frame, 26 px below the sheet top. Apply that placement across variants, accounting for responsive constraints and safe areas.
+- Keep the shared rating gradient, `#246BFD` number ink, and 90% white source badge. Keep the official Google mark multicolor when Auth is introduced. Blue, Purple and Orange logo references are `1:4553`, `1:3755`, and `1:2956`. Source artwork remains pending verified rights.
+- Use Rubik in weights 400, 500, 600 and 700, including counters. Urbanist and Inter are omitted. Outfit remains optional for fixed Splash branding.
+
+### Theme and controls
+
+`AppTheme.light()` maps an immutable palette into one light `ThemeData` factory. Native component themes define filled and text buttons, icon buttons, chips, input, text selection, and dividers. Widgets obtain semantic roles from `Theme.of(context)` and `AppThemeColors.of(context)`. The typed extension carries Details tint, success, favorite and placeholder roles with `copyWith` and color interpolation. The preview swaps themes immediately so animations between different foreground and background pairs do not introduce transient contrast issues.
+
+The four primitives are `AppPrimaryButton`, `AppIconButton`, `AppSearchField`, and `AppChoiceChip`. They use the source 54 dp action minimum, 44 dp icon surface with a padded 48 dp target, 52 dp search minimum, and normal/compact chip padding from section 5. Content can grow with text scaling. A checked mark supplements selected chip color. The preview uses Material glyphs pending decisions on source icon licensing. The favorite example switches between filled and outline hearts. The loading example disables activation and announces its label in a live region.
+
+### Accessible colors
+
+| Role | Blue | Purple | Orange |
+| --- | --- | --- | --- |
+| Original brand fill | `#0061FF` | `#8B5DFF` | `#FF8000` |
+| Button and selected chip foreground | `#FFFFFF` · 5.06:1 | `#101018` · 4.60:1 | `#191D31` · 6.61:1 |
+| Brand text and focus on light surfaces | `#0061FF` · 5.06:1 on white | `#6338C6` · 7.21:1 on white | `#9A4500` · 6.51:1 on white |
+
+| Shared semantic role | Foreground and surface | Contrast |
+| --- | --- | --- |
+| Error | `#B32636` on `#FCEBED` | 5.62:1 |
+| Success | `#17643A` on `#E7F4EA` | 6.34:1 |
+| Disabled | `#666876` on `#E8E9ED` | 4.55:1 |
+| Image placeholder | `#666876` on `#F1F2F5` | 4.93:1 |
+| Search placeholder and boundary | `#666876` placeholder and `#8C8E98` stroke on `#FBFBFD` | 5.34:1 text, 3.16:1 stroke |
+| Favorite | `#A52650` filled, `#666876` outline | Tested at ≥3:1 on each preview icon tint |
+
+Button and selected chip text use the accessible foregrounds above. Search uses a stronger neutral stroke in its enabled state and a 2 dp focus stroke. The source 4% tint is retained for the disabled search stroke and the unselected chip fill. Small secondary text and active search hints use `#666876`. A contrasting 2 dp ring indicates keyboard focus inside filled actions. Hover, focus and press overlays are calculated against the resting foreground. Tests use WCAG relative luminance for the rendered role pairings, including composited state layers. Review the future rating pill with real imagery because the original 90% background makes contrast depend on the photo. [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+
+### Bundled type and preview
+
+The four upright static Rubik TTFs are version **2.300**, downloaded unchanged from upstream commit `9167c98fa8699d75ee51769eba20d81beb16bcb5`. Weight registration in `pubspec.yaml` matches each font's TrueType OS/2 weight class. The fonts and the upstream SIL Open Font License 1.1 with the 2015 Rubik Project Authors copyright are bundled locally. For each weight, Fontconfig verified 154 required Latin and Arabic code points, covering printable ASCII, standard Arabic letters, Arabic-Indic digits, punctuation and diacritics. HarfBuzz shaped both sample strings without missing glyphs. Flutter uses the measured text metrics for the implemented controls and zero tracking for these roles in both directions. Nonzero Latin tracking is recorded in section 4 for future use where appropriate. [Pinned upstream font files](https://github.com/googlefonts/rubik/tree/9167c98fa8699d75ee51769eba20d81beb16bcb5/fonts/ttf) · [Pinned OFL](https://github.com/googlefonts/rubik/blob/9167c98fa8699d75ee51769eba20d81beb16bcb5/OFL.txt)
+
+`flutter run` opens the temporary preview directly. Theme chips and the English/Arabic toggle affect only the preview and use normal directionality and system text scaling. Flutter Widget Previewer annotations provide 430 dp and 320 dp views, including a 2× text sample. The property grid, Details components, and filter sheet layout remain implementation references. The phase establishes shared controls and tokens for future screens. It does not establish pixel parity.
+
+### Phase 1.2 verification
+
+The 23-test suite and coverage run passed. The widget tests checked Arabic RTL at widths of 320, 375, 390 and 430 dp and a 640 × 320 dp landscape viewport, all with 2× text scaling. The Android debug APK and unsigned iOS simulator app both built successfully. The iPhone 18 Pro simulator on iOS 27.2 rendered Blue and Purple in English and Orange in Arabic. The Arabic capture showed joined text, mirrored search controls and the filled favorite icon. The Android APK was built without a device run in this phase.
