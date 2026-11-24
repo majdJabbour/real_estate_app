@@ -13,7 +13,11 @@ Approved for continuation. [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records all thre
 
 ### 1.2 — Shared multi-theme design system
 
-Blue is the default. The shared light theme factory supports Blue, Purple, and Orange with bundled Rubik and four primitives for primary actions, icon actions, search, and choice/filter chips. A temporary preview exercises all variants, English and Arabic direction, and control states. Feature-specific widgets, app navigation, production localization, and runtime theme persistence are later work. Review this phase before proceeding. Suggested commit `feat: implement shared multi-theme design system`.
+Approved for continuation. Blue is the default. The shared light theme factory supports Blue, Purple, and Orange with bundled Rubik and four primitives for primary actions, icon actions, search, and choice/filter chips. A temporary preview exercises all variants, English and Arabic direction, and control states.
+
+### 1.3 — Responsive and adaptive layout foundation
+
+Use the local safe-area constraints to center capped content and size adaptive grids, including larger text and narrow parent regions. The temporary preview demonstrates the calculations and lazy variable-height rows. Review this phase before moving to infrastructure and localization. Suggested commit `feat: add responsive layout foundation`.
 
 ## 2 — Core infrastructure and localization
 Typed API configuration, Dio, response envelopes, errors, request cancellation, ARB en/ar and persisted locale. Bootstrap app and verify locale switch/restore, localized errors, public request headers and URL joining. Keep Firebase optional until configured. Commit cohesive networking/localization changes separately if helpful.

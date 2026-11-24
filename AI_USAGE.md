@@ -44,3 +44,18 @@ Codex inspected the installed Flutter and `material_ui` APIs and used the widget
 | `git diff --check` | Passed. |
 
 Android device execution, Figma pixel parity, and artwork provenance remain unverified. Phase 1.2 is pending developer review.
+
+## Phase 1.3 — Responsive and adaptive layout foundation
+
+The developer approved Phase 1.2 and requested a local-constraint width and grid policy, a temporary adaptive preview, and responsive verification. Codex used the Flutter responsive layout, widget preview, widget testing, Dart unit testing, and static analysis skills. Codex added the geometry calculator, centered content helper, and lazy placeholder rows. The existing controls passed the narrow RTL and enlarged-text tests as implemented.
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed. The dependency manifests match the baseline. |
+| `dart format --output=none --set-exit-if-changed lib test` | Passed across 12 files. |
+| `flutter analyze` | Passed with no issues. |
+| `flutter test` and `flutter test --coverage` | Both passed with 50 tests. LCOV recorded 405 of 428 instrumented lines. |
+| Simulator preview | Ran and hot reloaded on an iPhone 18 Pro Max with iOS 27.2. Flutter's debug service constrained the preview to 320 and 430 dp and rotated the full-screen app for the 832 dp landscape case. Codex inspected all three simulator screenshots. |
+| `git diff --check` | Passed. |
+
+The simulator run compiled the app for verification. Standalone platform builds were skipped for this Flutter-only phase. Real property cards and their localized data are future verification work. Phase 1.3 is pending developer review.

@@ -38,12 +38,6 @@ abstract final class DesignSpacing {
   static const page = 20.0;
   static const large = 24.0;
   static const chipWrapGap = 10.0;
-
-  static double pageInset(double width) => switch (width) {
-    < 390 => medium,
-    < 600 => page,
-    _ => large,
-  };
 }
 
 abstract final class DesignShape {

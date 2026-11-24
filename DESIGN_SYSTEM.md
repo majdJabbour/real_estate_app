@@ -1,6 +1,6 @@
 # Real Estate design system
 
-Phase 1.1 Figma analysis and Phase 1.2 shared Flutter design system · 2026-11-24
+Figma analysis, shared Flutter design system, and responsive layout foundation · 2026-11-24
 
 ## 1. Source and frame inventory
 
@@ -170,22 +170,33 @@ Figma export access confirms technical availability. It does not establish redis
 
 **Accessible role mapping is a proposal.** Using sRGB luminance on white, the primary contrasts are 5.06:1 Blue, 4.11:1 Purple and 2.52:1 Orange. Tertiary text is 3.26:1, and logout red is 3.29:1. Purple and Orange need an approved normal-text foreground/brand text pairing for CTAs and small links. Keep source values in the design table, then verify contrast on actual backgrounds and overlays. Use a stronger approved text role for critical small secondary content, and communicate selected/error states through shape, iconography or labels as appropriate. [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
 
-### Width strategy
+### Implemented width strategy
 
-These are engineering starting points. Use local constraints after safe insets and side padding, with actual content and text scaling determining layout. Keep the guideline breakpoints at 360, 600, and 840 dp, using a padding transition at 390 dp. At reference scale the Figma grid cards are 187 dp wide. Start with a **proposed 160 dp minimum** for regular text and a 16 dp gap. Compute columns from available content width and usable card minimum, with a cap of 3 on tablet widths below 840 pending device review. Raise the effective minimum or switch to one column when text or actions cannot fit.
+`ResponsiveLayout.fromConstraints` derives width from the local Flutter parent. The preview applies `SafeArea` before measuring with `LayoutBuilder`, so the calculation already excludes system insets. `AdaptiveContent` uses the same geometry for ordinary box children, and the preview uses directional `SliverPadding` for the scrollable tile section. For unbounded widths, use the nearest `MediaQuery` width when available. Without one, the box helper uses the requested content cap plus two 32 dp gutters as its finite allocation.
 
-| Available logical viewport | Side padding | Content width before safe insets | Proposed default grid |
+| Rule | Width and result |
+| --- | --- |
+| Layout classes | Compact below 360 dp, phone from 360 to below 600, tablet from 600 to below 840, expanded from 840 |
+| Side padding | 16 dp below 390, 20 dp from 390 to below 600, 24 dp from 600 to below 840, 32 dp from 840 |
+| Centered content caps | Property collections 1120 dp, Details 680 dp, Filters 560 dp, Authentication 480 dp |
+
+Content width is the smaller of the cap and the local width minus both gutters. Any extra width is split evenly around the content. A region too narrow for both gutters produces zero content width and an empty grid. Positive content width below one minimum still produces one flexible column.
+
+The grid starts with a 160 dp target minimum for 1× text and uses 16 dp horizontal spacing and 20 dp vertical spacing. The number of columns that fit is the floor of `(contentWidth + 16) / (effectiveMinimum + 16)`. Below 840 dp the result is capped at three columns. Larger regions use as many columns as fit. Card width divides the content left after horizontal gaps evenly across columns. The minimum increases by 5 dp for every dp that the active `TextScaler` adds to 16 dp text, giving targets of 200 dp at 1.5× and 240 dp at 2× for linear scale factors. A caller can raise the unscaled minimum for longer localized content.
+
+| Available local width after safe insets | Side padding | Content width | 1× grid |
 | --- | --- | --- | --- |
-| 320 dp | 16 dp | 288 dp | 1 column. Allow list thumbnail and price layout to reflow. |
-| 375 dp | 16 dp | 343 dp | 2 × 163.5 dp if content fits. |
-| 390 dp | 20 dp | 350 dp | 2 × 167 dp if content fits. |
+| 320 dp | 16 dp | 288 dp | 1 × 288 dp |
+| 375 dp | 16 dp | 343 dp | 2 × 163.5 dp |
+| 390 dp | 20 dp | 350 dp | 2 × 167 dp |
 | 430 dp | 20 dp | 390 dp | 2 × 187 dp, matching the Figma reference. |
-| 600 dp | 24 dp | 552 dp | Up to 3 × 173.3 dp. |
-| 768 dp | 24 dp | 720 dp | Up to 3 × 229.3 dp with the proposed cap. |
+| 600 dp | 24 dp | 552 dp | 3 × 173.3 dp |
+| 768 dp | 24 dp | 720 dp | 3 × 229.3 dp |
+| 1024 dp | 32 dp | 960 dp | 5 × 179.2 dp |
 
-Use `LayoutBuilder`, `Flexible`/`Expanded`, `Wrap`, slivers, adaptive grid delegates, `AspectRatio`, `SafeArea` and `MediaQuery` for insets and the system text scaler. A grid delegate can derive its column count from constraints and reserve predictable image space while allowing for necessary text height. Use the measured image ratios as starting points and tune `BoxFit.cover` cropping with backend photos. On wider screens, propose a centered 1120 dp content cap for property collections, 680 dp for Details, 560 dp for Filters, and 480 dp for Auth. These caps are provisional.
+The temporary preview uses one `CustomScrollView` with a lazy `SliverList` of rows. Each row grows with its tallest wrapping label. `AspectRatio` applies only to the image placeholder, using the measured 159:154 ratio. A later collection can reuse the row strategy for variable-height cards, or use a native `SliverGrid` with the computed column count when its card content has a verified uniform height. Keep the owning scroll view responsible for pagination and scrolling.
 
-Keep featured cards and category chips in horizontally scrollable sections, with a partial following tile where space permits. Keep the filter sheet scrollable from the body to the viewport edge, with Apply reachable above the safe area. At short heights or with the keyboard open, allow the sheet to occupy more space and keep focus visible. Preserve page navigation, search state and scroll position. Use roughly 48 dp target areas where feasible even for 20–28 px visual glyphs, and allow labels to wrap or reflow. Validate 320/375/390/430 dp, tablet proposals, landscape, English, Arabic and enlarged text with Flutter before accepting these measurements for implementation.
+For future screens, keep featured cards and category chips in horizontally scrollable sections, with a partial following tile where space permits. Keep Apply reachable when the filter sheet scrolls or the keyboard is open. Preserve roughly 48 dp touch targets and validate the card minimum, text heights, and image cropping with localized backend data.
 
 ## 9. Arabic and RTL
 
@@ -261,3 +272,9 @@ The four upright static Rubik TTFs are version **2.300**, downloaded unchanged f
 ### Phase 1.2 verification
 
 The 23-test suite and coverage run passed. The widget tests checked Arabic RTL at widths of 320, 375, 390 and 430 dp and a 640 × 320 dp landscape viewport, all with 2× text scaling. The Android debug APK and unsigned iOS simulator app both built successfully. The iPhone 18 Pro simulator on iOS 27.2 rendered Blue and Purple in English and Orange in Arabic. The Arabic capture showed joined text, mirrored search controls and the filled favorite icon. The Android APK was built without a device run in this phase.
+
+## 13. Phase 1.3 verification
+
+The 50-test suite includes all 23 prior tests and 27 responsive cases. Tests cover the seven reference viewports at 1×, reflow at 1.5× and 2×, long RTL labels and all four controls in a 136 dp parent, safe-area offsets, width changes, and bounded and unbounded content caps. No shared-control changes were needed for these cases.
+
+On the iPhone 18 Pro Max simulator running iOS 27.2, the preview rendered one 288 dp tile at 320 dp, two 187 dp tiles at 430 dp, and three approximately 250.7 dp tiles at the full-screen landscape width of 832 dp after safe insets. The 320 dp and 430 dp cases used local width constraints on that simulator. The column minimum and card height strategy still need validation with real localized listing content.

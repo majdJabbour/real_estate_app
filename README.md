@@ -29,7 +29,9 @@ flutter run
 
 Run `flutter run` to open the preview. Use the chips to choose a theme and **العربية** or **English** to switch the sample language and direction. Try the search field, filter chips, and favorite icon. The preview also shows disabled and loading buttons and labeled feedback colors. These selections exist only while the preview is running.
 
-Flutter's Widget Previewer exposes standard and narrow, enlarged-text views through `flutter widget-preview start`. The preview lives in [lib/preview](lib/preview). The shared theme and components live in [lib/core/design_system](lib/core/design_system). [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records the measurements, accessible color roles, and pinned, locally bundled Rubik fonts.
+Flutter's Widget Previewer exposes standard, narrow with enlarged text, and landscape views through `flutter widget-preview start`. The preview lives in [lib/preview](lib/preview). The shared theme and components live in [lib/core/design_system](lib/core/design_system). [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records the measurements, accessible color roles, and pinned, locally bundled Rubik fonts.
+
+Scroll to **Adaptive layout** to see the local viewport size, side padding, capped content width, grid columns, and tile width. The placeholder tiles wrap with the available width and system text size. [Responsive layout policy](lib/core/layout/responsive_layout.dart) · [Design system width strategy](DESIGN_SYSTEM.md#implemented-width-strategy)
 
 ## Dependencies and planned architecture
 
