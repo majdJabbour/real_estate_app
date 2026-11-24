@@ -3,8 +3,11 @@ import 'package:material_ui/material_ui.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/design_system/design_controls.dart';
 import 'package:real_estate_app/core/layout/responsive_layout.dart';
-import 'package:real_estate_app/preview/design_system_preview.dart';
+import 'package:real_estate_app/app/app.dart';
+import 'package:real_estate_app/l10n/app_localizations.dart';
 import 'package:real_estate_app/preview/responsive_preview.dart';
+
+import 'support/memory_locale_preferences.dart';
 
 const _sizes = [
   (Size(320, 568), 1),
@@ -30,6 +33,12 @@ Widget _gridPreview({
   EdgeInsets safePadding = EdgeInsets.zero,
 }) => MaterialApp(
   theme: AppTheme.light(),
+  locale: Locale(direction == TextDirection.rtl ? 'ar' : 'en'),
+  supportedLocales: AppLocalizations.supportedLocales,
+  localizationsDelegates: const [
+    AppLocalizations.delegate,
+    ...GlobalMaterialLocalizations.delegates,
+  ],
   home: Scaffold(
     body: Builder(
       builder: (context) {
@@ -54,7 +63,6 @@ Widget _gridPreview({
                               constraints,
                             ),
                             viewportHeight: constraints.maxHeight,
-                            arabic: direction == TextDirection.rtl,
                           ),
                         ],
                       );
@@ -191,7 +199,7 @@ void main() {
     tester,
   ) async {
     _setSurface(tester, const Size(430, 932));
-    await tester.pumpWidget(const DesignSystemPreview());
+    await tester.pumpWidget(createApp(MemoryLocalePreferences()));
     await tester.scrollUntilVisible(
       find.text('Adaptive layout'),
       280,

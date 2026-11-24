@@ -59,3 +59,19 @@ The developer approved Phase 1.2 and requested a local-constraint width and grid
 | `git diff --check` | Passed. |
 
 The simulator run compiled the app for verification. Standalone platform builds were skipped for this Flutter-only phase. Real property cards and their localized data are future verification work. Phase 1.3 is pending developer review.
+
+## Phase 2 — Core infrastructure
+
+The developer approved Phase 1.3 and requested the bootstrap, configurable API client, token-source boundary, typed contract handling, and persisted English/Arabic localization. Codex used the localization, pattern matching, unit testing, widget testing, and static analysis skills, verified the installed APIs, and implemented the infrastructure and tests. The app-level theme moved to the root, and the preview uses generated translations and the app locale controller.
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed with the existing dependency versions and lockfile. |
+| `flutter gen-l10n` and `dart run build_runner build` | Passed. Three localization files and three provider files matched byte-for-byte across consecutive runs. |
+| Formatting and `flutter analyze` | Passed. The analyzer reported no issues. |
+| `flutter test` and `flutter test --coverage` | Both passed with 93 tests, including all 50 existing cases. LCOV recorded 711 of 827 instrumented lines. |
+| Public production smoke check | Health and the English and Arabic one-item property listings returned HTTP 200. Both listings returned `rental-022` with different localized titles, language headers and valid pagination. |
+| iPhone 18 Pro Max simulator | Ran and hot reloaded on iOS 27.2. Flutter's debug service activated the preview language button and confirmed Arabic/RTL. CoreSimulator showed the saved `ar` preference and the restored Arabic preview after process termination and launch. |
+| `git diff --check` | Passed. |
+
+Property repositories, authenticated traffic, and Android runtime verification remain future checks. Phase 2 is pending developer review.

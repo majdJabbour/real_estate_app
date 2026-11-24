@@ -17,10 +17,11 @@ Approved for continuation. Blue is the default. The shared light theme factory s
 
 ### 1.3 — Responsive and adaptive layout foundation
 
-Use the local safe-area constraints to center capped content and size adaptive grids, including larger text and narrow parent regions. The temporary preview demonstrates the calculations and lazy variable-height rows. Review this phase before moving to infrastructure and localization. Suggested commit `feat: add responsive layout foundation`.
+Approved for continuation. The layout foundation uses local safe-area constraints to center capped content and size adaptive grids. The temporary preview demonstrates the calculations and lazy variable-height rows.
 
 ## 2 — Core infrastructure and localization
-Typed API configuration, Dio, response envelopes, errors, request cancellation, ARB en/ar and persisted locale. Bootstrap app and verify locale switch/restore, localized errors, public request headers and URL joining. Keep Firebase optional until configured. Commit cohesive networking/localization changes separately if helpful.
+
+Bootstrap loads persisted English or Arabic before mounting the app in `ProviderScope`. Generated providers expose configuration, the locale controller, and the Dio client. Shared request handling covers cancellation, language headers, stale responses, explicit authentication policy, typed errors, and envelopes. Firebase token acquisition and property repositories are later phases. Review this phase before moving to property data and state. Suggested commit `feat: add core networking and localization`.
 
 ## 3 — Property data and state
 DTOs, mapping, repository contract and implementation. Listing, details, filter options, typed query serialization and pagination. Provider state for featured, listing, details, filters, search debounce and stale result guards. Tests against contract and mocked responses. Public API smoke checks. Commit: `feat: implement property data and query state`.

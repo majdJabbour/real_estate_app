@@ -1,0 +1,79 @@
+{
+  "@@locale": "en",
+  "searchProperties": "Search properties",
+  "applyFilters": "Apply filters",
+  "retry": "Retry",
+  "cancel": "Cancel",
+  "loading": "Loading…",
+  "emptyResults": "No results",
+  "unexpectedError": "Something went wrong",
+  "networkError": "Could not connect. Check your connection and try again.",
+  "timeoutError": "The request timed out. Try again.",
+  "validationError": "Check the information and try again.",
+  "unauthorizedError": "Sign in to continue.",
+  "forbiddenError": "You don't have access to this action.",
+  "notFoundError": "This item could not be found.",
+  "rateLimitedError": "Too many requests. Try again later.",
+  "serverError": "The server could not complete the request.",
+  "serviceUnavailableError": "The service is temporarily unavailable.",
+  "malformedResponseError": "The server returned an unreadable response.",
+  "languageSaveError": "Could not save the app language.",
+  "switchLanguage": "Change language",
+  "englishName": "English",
+  "arabicName": "العربية",
+  "designSystemPreview": "Design system preview",
+  "designSystem": "Design system",
+  "previewIntro": "Explore the shared controls in English and Arabic.",
+  "blue": "Blue",
+  "purple": "Purple",
+  "orange": "Orange",
+  "previewHeading": "Find your next home",
+  "previewDescription": "Modern apartments with room to grow.",
+  "filters": "Filters",
+  "previewFilterAction": "Filter action",
+  "all": "All",
+  "apartments": "Apartments",
+  "favorite": "Favorite",
+  "notificationsUnavailable": "Notifications unavailable",
+  "previewFiltersApplied": "Filters applied in preview",
+  "unavailable": "Unavailable",
+  "applyingFilters": "Applying filters…",
+  "saved": "Saved",
+  "imageUnavailable": "Image unavailable",
+  "adaptiveLayout": "Adaptive layout",
+  "previewViewport": "Viewport {width} × {height}",
+  "@previewViewport": {
+    "placeholders": {
+      "width": {
+        "type": "String"
+      },
+      "height": {
+        "type": "String"
+      }
+    }
+  },
+  "previewPadding": "Side padding {padding}  ·  Content {content}",
+  "@previewPadding": {
+    "placeholders": {
+      "padding": {
+        "type": "String"
+      },
+      "content": {
+        "type": "String"
+      }
+    }
+  },
+  "previewGrid": "Columns {columns}  ·  Tile width {tileWidth}",
+  "@previewGrid": {
+    "placeholders": {
+      "columns": {
+        "type": "int"
+      },
+      "tileWidth": {
+        "type": "String"
+      }
+    }
+  },
+  "sampleTile": "Sample tile",
+  "sampleLongTile": "Sample with a longer label"
+}

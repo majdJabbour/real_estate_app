@@ -2,23 +2,21 @@ import 'package:material_ui/material_ui.dart';
 
 import '../core/design_system/design_tokens.dart';
 import '../core/layout/responsive_layout.dart';
+import '../l10n/app_localizations.dart';
 
 class ResponsivePreview extends StatelessWidget {
   const ResponsivePreview({
     required this.layout,
     required this.viewportHeight,
-    required this.arabic,
     super.key,
   });
 
   final ResponsiveLayout layout;
   final double viewportHeight;
-  final bool arabic;
-
-  String _text(String en, String ar) => arabic ? ar : en;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final grid = layout.grid(textScaler: MediaQuery.textScalerOf(context));
     if (grid.columns == 0) {
       return const SliverToBoxAdapter(child: SizedBox.shrink());
@@ -38,25 +36,23 @@ class ResponsivePreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: DesignSpacing.small,
               children: [
+                Text(l10n.adaptiveLayout, style: textTheme.titleLarge),
                 Text(
-                  _text('Adaptive layout', 'التخطيط المتكيف'),
-                  style: textTheme.titleLarge,
-                ),
-                Text(
-                  '${_text('Viewport', 'مساحة العرض')}'
-                  ' ${_dp(layout.viewportWidth)} × ${_dp(viewportHeight)}',
+                  l10n.previewViewport(
+                    _dp(layout.viewportWidth),
+                    _dp(viewportHeight),
+                  ),
                   style: textTheme.bodyMedium,
                 ),
                 Text(
-                  '${_text('Side padding', 'الهوامش الجانبية')}'
-                  ' ${_dp(layout.horizontalPadding)}'
-                  '  ·  ${_text('Content', 'المحتوى')} ${_dp(layout.contentWidth)}',
+                  l10n.previewPadding(
+                    _dp(layout.horizontalPadding),
+                    _dp(layout.contentWidth),
+                  ),
                   style: textTheme.bodyMedium,
                 ),
                 Text(
-                  '${_text('Columns', 'الأعمدة')}'
-                  ' ${grid.columns}'
-                  '  ·  ${_text('Tile width', 'عرض العنصر')} ${_dp(grid.cardWidth)}',
+                  l10n.previewGrid(grid.columns, _dp(grid.cardWidth)),
                   style: textTheme.bodyMedium,
                 ),
                 const SizedBox(height: DesignSpacing.small),
@@ -94,6 +90,7 @@ class ResponsivePreview extends StatelessWidget {
     if (index >= count) return const SizedBox.shrink();
 
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: DesignSpacing.small,
@@ -109,9 +106,7 @@ class ResponsivePreview extends StatelessWidget {
           ),
         ),
         Text(
-          index.isEven
-              ? _text('Sample tile', 'عنصر تجريبي')
-              : _text('Sample with a longer label', 'عنصر تجريبي بعنوان أطول'),
+          index.isEven ? l10n.sampleTile : l10n.sampleLongTile,
           style: theme.textTheme.bodyMedium,
         ),
       ],

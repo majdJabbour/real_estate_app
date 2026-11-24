@@ -278,3 +278,7 @@ The 23-test suite and coverage run passed. The widget tests checked Arabic RTL a
 The 50-test suite includes all 23 prior tests and 27 responsive cases. Tests cover the seven reference viewports at 1×, reflow at 1.5× and 2×, long RTL labels and all four controls in a 136 dp parent, safe-area offsets, width changes, and bounded and unbounded content caps. No shared-control changes were needed for these cases.
 
 On the iPhone 18 Pro Max simulator running iOS 27.2, the preview rendered one 288 dp tile at 320 dp, two 187 dp tiles at 430 dp, and three approximately 250.7 dp tiles at the full-screen landscape width of 832 dp after safe insets. The 320 dp and 430 dp cases used local width constraints on that simulator. The column minimum and card height strategy still need validation with real localized listing content.
+
+## 14. Phase 2 preview localization
+
+The root app now owns the theme and locale. The three preview themes use the original factory and reset on restart. The language toggle writes the app preference and Flutter's localization delegates set the inherited direction. Preview controls and layout diagnostics use the generated English and Arabic ARB strings.

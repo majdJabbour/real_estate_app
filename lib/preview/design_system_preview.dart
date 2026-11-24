@@ -1,47 +1,38 @@
-import 'package:flutter/widget_previews.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../core/design_system/app_theme.dart';
 import '../core/design_system/design_controls.dart';
 import '../core/design_system/design_tokens.dart';
 import '../core/layout/responsive_layout.dart';
+import '../core/localization/app_locale.dart';
+import '../l10n/app_localizations.dart';
 import 'responsive_preview.dart';
 
-@Preview(name: 'Design system', size: Size(430, 932))
-@Preview(name: 'Compact and enlarged', size: Size(320, 568), textScaleFactor: 2)
-@Preview(name: 'Landscape', size: Size(932, 430))
-Widget designSystemPreview() => const DesignSystemPreview();
-
 class DesignSystemPreview extends StatefulWidget {
-  const DesignSystemPreview({super.key});
+  const DesignSystemPreview({
+    required this.variant,
+    required this.onVariantChanged,
+    required this.language,
+    required this.onLanguageChanged,
+    super.key,
+  });
+
+  final AppThemeVariant variant;
+  final ValueChanged<AppThemeVariant> onVariantChanged;
+  final AppLanguage language;
+  final Future<void> Function(AppLanguage) onLanguageChanged;
 
   @override
   State<DesignSystemPreview> createState() => _DesignSystemPreviewState();
 }
 
 class _DesignSystemPreviewState extends State<DesignSystemPreview> {
-  AppThemeVariant _variant = AppTheme.defaultVariant;
-  bool _arabic = false;
   bool _apartments = false;
   bool _favorite = false;
 
-  String _text(String en, String ar) => _arabic ? ar : en;
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Design system preview',
-      theme: AppTheme.light(_variant),
-      themeAnimationDuration: Duration.zero,
-      locale: Locale(_arabic ? 'ar' : 'en'),
-      supportedLocales: const [Locale('en'), Locale('ar')],
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      home: Builder(builder: _buildPage),
-    );
-  }
-
-  Widget _buildPage(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final colors = AppThemeColors.of(context);
     final scheme = theme.colorScheme;
@@ -50,6 +41,18 @@ class _DesignSystemPreviewState extends State<DesignSystemPreview> {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(content: Text(message)));
+    }
+
+    Future<void> switchLanguage() async {
+      try {
+        await widget.onLanguageChanged(
+          widget.language == AppLanguage.english
+              ? AppLanguage.arabic
+              : AppLanguage.english,
+        );
+      } catch (_) {
+        if (context.mounted) showMessage(l10n.languageSaveError);
+      }
     }
 
     return Scaffold(
@@ -68,17 +71,8 @@ class _DesignSystemPreviewState extends State<DesignSystemPreview> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         spacing: DesignSpacing.medium,
                         children: [
-                          Text(
-                            _text('Design system', 'نظام التصميم'),
-                            style: text.headlineLarge,
-                          ),
-                          Text(
-                            _text(
-                              'Explore the shared controls in English and Arabic.',
-                              'جرّب عناصر التحكم المشتركة بالعربية والإنجليزية.',
-                            ),
-                            style: text.bodyMedium,
-                          ),
+                          Text(l10n.designSystem, style: text.headlineLarge),
+                          Text(l10n.previewIntro, style: text.bodyMedium),
                           Wrap(
                             spacing: DesignSpacing.small,
                             runSpacing: DesignSpacing.xSmall,
@@ -86,58 +80,39 @@ class _DesignSystemPreviewState extends State<DesignSystemPreview> {
                               for (final variant in AppThemeVariant.values)
                                 AppChoiceChip(
                                   label: switch (variant) {
-                                    AppThemeVariant.blue => _text(
-                                      'Blue',
-                                      'أزرق',
-                                    ),
-                                    AppThemeVariant.purple => _text(
-                                      'Purple',
-                                      'بنفسجي',
-                                    ),
-                                    AppThemeVariant.orange => _text(
-                                      'Orange',
-                                      'برتقالي',
-                                    ),
+                                    AppThemeVariant.blue => l10n.blue,
+                                    AppThemeVariant.purple => l10n.purple,
+                                    AppThemeVariant.orange => l10n.orange,
                                   },
-                                  selected: _variant == variant,
+                                  selected: widget.variant == variant,
                                   onSelected: (selected) {
                                     if (selected) {
-                                      setState(() => _variant = variant);
+                                      widget.onVariantChanged(variant);
                                     }
                                   },
                                 ),
-                              TextButton(
-                                onPressed: () =>
-                                    setState(() => _arabic = !_arabic),
-                                child: Text(_text('العربية', 'English')),
+                              Tooltip(
+                                message: l10n.switchLanguage,
+                                child: TextButton(
+                                  onPressed: switchLanguage,
+                                  child: Text(
+                                    widget.language == AppLanguage.english
+                                        ? l10n.arabicName
+                                        : l10n.englishName,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          Text(
-                            _text(
-                              'Find your next home',
-                              'اعثر على منزلك القادم',
-                            ),
-                            style: text.titleLarge,
-                          ),
-                          Text(
-                            _text(
-                              'Modern apartments with room to grow.',
-                              'شقق حديثة بمساحات تناسب احتياجاتك.',
-                            ),
-                            style: text.bodyLarge,
-                          ),
+                          Text(l10n.previewHeading, style: text.titleLarge),
+                          Text(l10n.previewDescription, style: text.bodyLarge),
                           AppSearchField(
-                            hintText: _text(
-                              'Search properties',
-                              'ابحث عن عقار',
-                            ),
+                            hintText: l10n.searchProperties,
                             onSubmitted: (query) => showMessage(query),
                             filter: (
-                              label: _text('Filters', 'الفلاتر'),
-                              onPressed: () => showMessage(
-                                _text('Filter action', 'إجراء التصفية'),
-                              ),
+                              label: l10n.filters,
+                              onPressed: () =>
+                                  showMessage(l10n.previewFilterAction),
                             ),
                           ),
                           Wrap(
@@ -146,21 +121,21 @@ class _DesignSystemPreviewState extends State<DesignSystemPreview> {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               AppChoiceChip(
-                                label: _text('All', 'الكل'),
+                                label: l10n.all,
                                 compact: true,
                                 selected: !_apartments,
                                 onSelected: (selected) =>
                                     setState(() => _apartments = !selected),
                               ),
                               AppChoiceChip(
-                                label: _text('Apartments', 'شقق'),
+                                label: l10n.apartments,
                                 compact: true,
                                 selected: _apartments,
                                 onSelected: (selected) =>
                                     setState(() => _apartments = selected),
                               ),
                               AppIconButton(
-                                label: _text('Favorite', 'المفضلة'),
+                                label: l10n.favorite,
                                 isSelected: _favorite,
                                 onPressed: () =>
                                     setState(() => _favorite = !_favorite),
@@ -174,34 +149,24 @@ class _DesignSystemPreviewState extends State<DesignSystemPreview> {
                                 ),
                               ),
                               AppIconButton(
-                                label: _text(
-                                  'Notifications unavailable',
-                                  'الإشعارات غير متاحة',
-                                ),
+                                label: l10n.notificationsUnavailable,
                                 icon: const Icon(Icons.notifications_none),
                                 onPressed: null,
                               ),
                             ],
                           ),
                           AppPrimaryButton(
-                            label: _text('Apply filters', 'طبّق الفلاتر'),
-                            onPressed: () => showMessage(
-                              _text(
-                                'Filters applied in preview',
-                                'تم تطبيق الفلاتر في المعاينة',
-                              ),
-                            ),
+                            label: l10n.applyFilters,
+                            onPressed: () =>
+                                showMessage(l10n.previewFiltersApplied),
                           ),
                           AppPrimaryButton(
-                            label: _text('Unavailable', 'غير متاح'),
+                            label: l10n.unavailable,
                             onPressed: null,
                           ),
                           AppPrimaryButton(
-                            label: _text('Apply filters', 'طبّق الفلاتر'),
-                            loadingLabel: _text(
-                              'Applying filters…',
-                              'جارٍ تطبيق الفلاتر…',
-                            ),
+                            label: l10n.applyFilters,
+                            loadingLabel: l10n.applyingFilters,
                             onPressed: null,
                           ),
                           Wrap(
@@ -209,22 +174,19 @@ class _DesignSystemPreviewState extends State<DesignSystemPreview> {
                             runSpacing: DesignSpacing.small,
                             children: [
                               _SemanticSample(
-                                label: _text('Something went wrong', 'حدث خطأ'),
+                                label: l10n.unexpectedError,
                                 icon: Icons.error_outline,
                                 ink: scheme.onErrorContainer,
                                 surface: scheme.errorContainer,
                               ),
                               _SemanticSample(
-                                label: _text('Saved', 'تم الحفظ'),
+                                label: l10n.saved,
                                 icon: Icons.check_circle_outline,
                                 ink: colors.success,
                                 surface: colors.successSurface,
                               ),
                               _SemanticSample(
-                                label: _text(
-                                  'Image unavailable',
-                                  'الصورة غير متاحة',
-                                ),
+                                label: l10n.imageUnavailable,
                                 icon: Icons.image_not_supported_outlined,
                                 ink: colors.placeholderInk,
                                 surface: colors.placeholderSurface,
@@ -239,7 +201,6 @@ class _DesignSystemPreviewState extends State<DesignSystemPreview> {
                 ResponsivePreview(
                   layout: layout,
                   viewportHeight: constraints.maxHeight,
-                  arabic: _arabic,
                 ),
               ],
             );
