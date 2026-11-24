@@ -1,5 +1,5 @@
 name: real_estate_app
-description: "A new Flutter project."
+description: "A bilingual real estate mobile application built with Flutter."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -35,6 +35,29 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  #State Management
+  hooks_riverpod: ^3.5.0
+  riverpod_annotation: ^4.0.8
+  flutter_hooks: ^0.21.4
+  #Networking & Navigation
+  dio: ^5.11.1
+  go_router: ^18.1.4
+  #Models & Serialization
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.12.0
+  #Localization
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.3
+  #Firebase Authentication
+  firebase_core: ^5.2.0
+  firebase_auth: ^7.1.0
+  google_sign_in: ^7.2.0
+  #UI & Storage
+  cached_network_image: ^4.0.7
+  flutter_svg: ^2.5.0
+  skeletonizer: ^3.0.0
+  shared_preferences: ^2.5.6
 
 dev_dependencies:
   flutter_test:
@@ -46,6 +69,12 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  #Code Generation & Testing
+  build_runner: ^2.17.1
+  riverpod_generator: ^4.0.10
+  freezed: ^4.0.3
+  json_serializable: ^6.15.2
+  mocktail: ^1.0.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
