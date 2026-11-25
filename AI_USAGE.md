@@ -239,3 +239,21 @@ Suggested commits are `feat: add session-scoped property favorites`, `feat: comp
 The developer required the original Figma paints and geometry, white primary foregrounds, and an audit of remaining icon fallbacks. Codex used Figma design context and screenshot tools to inspect the three Filters frames, Explore states, and relevant fallback nodes. The three selected Explore SVG exports had identical path data and differed only in fill. Flutter now uses the unmodified Blue export in its original slot with the active brand tint. The shared theme sets white filled-button and selected-chip text, removes chip checkmarks absent from the reference, and applies original selected-tab paint. Orange uses a dark keyboard-focus border to keep focus visible. The design system documents the intentional contrast limits, and the icon inventory records unavailable originals and retained alternatives.
 
 Flutter rendered Explore and Filters at 430 × 932 with test fixtures in all three palettes. The comparisons are linked in the design system. The Android emulator ran the app and hot reload succeeded. These captures do not establish full-app visual parity or iOS runtime verification. [Visual verification](DESIGN_SYSTEM.md#three-palette-fidelity-verification)
+
+## Phase 9.1 — Final Figma fidelity and visual refinement
+
+The developer approved the earlier palette and Explore icon correction and requested the final visual refinement pass. Codex retrieved the three sets of Figma screen frames and inspected Details location, footer, heart, stats and facilities, the Explore filter and filter counter, and the Profile language nodes. The phase uses the existing SVG registry for licensed icons and records the remaining asset gaps. It preserves the established Auth collage and Google control. The original brand mark was authored as a simple angular house shape, rasterized into native launcher and launch resources, and reused as a themed SVG for Flutter Splash.
+
+Codex unified Details favorite actions, added an applied-filter indicator and an external map link, isolated the Arabic currency amount, and added focused tests using fake account, property, and map-launch data. The accepted map fallback uses an address and a user-triggered universal Maps URL. Icon provenance, SDK glyph rationale, and the native-versus-Flutter splash distinction are recorded in the asset and design documents.
+
+| Verification | Observed result |
+| --- | --- |
+| Toolchain | Flutter 3.50.1 and Dart 3.14.0. Package resolution added url_launcher 6.3.3 and its platform packages. No existing locked dependency version changed. |
+| Generation and quality | Localization and build_runner generation passed. A second generation run reproduced the generated Dart source checksums. Formatting, Flutter analysis and diff validation passed. |
+| Automated | 284 tests passed in both the regular and coverage runs. Reported line coverage was 90.61% (4,045 of 4,464 instrumented lines). |
+| Android and iOS | The debug APK and iOS simulator build compiled successfully. The app launched on the Pixel 10 Pro XL emulator and iPhone 17e simulator. Native evidence includes the Android launcher crop and the iOS Auth capture. |
+| Visual comparison | Captures for Blue and Purple in English and Orange in Arabic use production widgets driven by synthetic fixtures at 430 × 932. The native platform screenshots are separate. The fixtures exercise the populated and empty Favorites cases without a real account or production writes. |
+
+The prior developer-confirmed Google sign-in and verified profile are recorded under Phase 8. Codex did not repeat live sign-in, write production favorites or measure private Google avatar source dimensions for Phase 9.1. Automated tests mock the map handoff. [Comparison and deviations](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
+
+Android hot reload succeeded. From the live Arabic Details screen, Open in Maps launched Google Maps, which presented its own permission prompt. The prompt was left untouched. The automated test separately validates the exact coordinate URL and the app's localized launch-failure feedback.

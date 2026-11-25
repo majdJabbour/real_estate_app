@@ -164,6 +164,15 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
     final current = value.language == language;
     final options = ref.watch(propertyFilterOptionsProvider);
     final query = value.query;
+    final filtersApplied =
+        query.types.isNotEmpty ||
+        query.minPrice != null ||
+        query.maxPrice != null ||
+        (query.minBedrooms ?? 0) > 0 ||
+        (query.minBathrooms ?? 0) > 0 ||
+        query.minArea != null ||
+        query.maxArea != null ||
+        query.featured == true;
 
     ref.listen(exploreControllerProvider, (previous, next) {
       if (previous?.query != next.query ||
@@ -221,8 +230,11 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                                   unawaited(_controller.submitSearch());
                                 },
                               ),
+                        filtersApplied: filtersApplied,
                         filter: (
-                          label: l10n.openPropertyFilters,
+                          label: filtersApplied
+                              ? l10n.openAppliedPropertyFilters
+                              : l10n.openPropertyFilters,
                           onPressed: _openFilters,
                         ),
                       ),

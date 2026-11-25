@@ -665,4 +665,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmSignOut => 'Sign out of your account?';
+
+  @override
+  String get detailsOpenMap => 'Open in Maps';
+
+  @override
+  String get detailsMapOpenFailed => 'Could not open Maps.';
+
+  @override
+  String get detailsDemoLocation => 'Demo location for a fictional listing.';
+
+  @override
+  String get openAppliedPropertyFilters =>
+      'Open property filters, filters applied';
 }

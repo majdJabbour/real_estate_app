@@ -59,3 +59,7 @@ Three unmodified Blue-frame group SVG exports use the existing Iconly CC BY 4.0 
 | `actions/profile-logout.svg` | `1:3855` | Curved Logout |
 
 The existing Outline Heart is reused. The selected heart, appearance and avatar fallback use Material SDK glyphs. Piqo’s release describes the free Bold family. Access to the original Community Heart export could not be confirmed, so no filled Iconly asset was added. [Piqo Studio’s Iconly 2.3 release](https://dribbble.com/shots/15543844-Iconly-Roadmap) · [Existing Iconly attribution](#home-and-navigation-svgs)
+
+## Phase 9.1 — Splash and native brand mark
+
+[real-scout.svg](brand/real-scout.svg) is original project artwork made for this phase. The angular house silhouette and its native PNG derivatives were generated from the same polygon. The mark uses an Original Blue gradient in the Android and iOS launcher and native launch screen. The Flutter splash reuses the SVG and adapts its gradient to the runtime palette. The original Real Scout logo remains reference-only because its creator and redistribution permission could not be established. The Android adaptive icon uses a transparent foreground and an opaque white background. Legacy Android and iOS icons use platform-sized opaque PNGs. Native launch resources remain static until Flutter restores the saved palette.

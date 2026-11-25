@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat, NumberFormat;
 import 'package:material_ui/material_ui.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/app_theme.dart';
@@ -467,7 +468,14 @@ class _Location extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final format = NumberFormat('0.####', l10n.localeName);
+    final location = details.location;
+    final latitude = location.latitude;
+    final longitude = location.longitude;
+    final valid =
+        latitude.isFinite &&
+        latitude.abs() <= 90 &&
+        longitude.isFinite &&
+        longitude.abs() <= 180;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: DesignSpacing.medium,
@@ -491,37 +499,34 @@ class _Location extends StatelessWidget {
             ),
           ],
         ),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(DesignShape.sheetRadius),
-            color: AppThemeColors.of(context).detailsTint,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(DesignSpacing.page),
-            child: Wrap(
-              spacing: DesignSpacing.large,
-              runSpacing: DesignSpacing.medium,
-              children: [
-                for (final (label, coordinate) in [
-                  (l10n.detailsLatitude, details.location.latitude),
-                  (l10n.detailsLongitude, details.location.longitude),
-                ])
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(label, style: theme.textTheme.labelSmall),
-                      Text(
-                        '${format.format(coordinate)}°',
-                        textDirection: TextDirection.ltr,
-                        style: theme.textTheme.labelLarge,
-                      ),
-                    ],
-                  ),
-              ],
+        Text(l10n.detailsDemoLocation, style: theme.textTheme.bodySmall),
+        if (valid)
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: TextButton(
+              onPressed: () async {
+                final uri = Uri.https('www.google.com', '/maps/search/', {
+                  'api': '1',
+                  'query': '$latitude,$longitude',
+                });
+                var opened = false;
+                try {
+                  opened = await launchUrl(
+                    uri,
+                    mode: LaunchMode.externalApplication,
+                  );
+                } on PlatformException {
+                  opened = false;
+                }
+                if (!opened && context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.detailsMapOpenFailed)),
+                  );
+                }
+              },
+              child: Text(l10n.detailsOpenMap),
             ),
           ),
-        ),
       ],
     );
   }
@@ -588,7 +593,7 @@ class _PriceFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final price = propertyPriceLabel(context, property);
+    final price = propertyPriceLabel(context, property, includePeriod: false);
     return DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -603,37 +608,43 @@ class _PriceFooter extends StatelessWidget {
           maxContentWidth: ResponsiveLayout.detailsMaxWidth,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: DesignSpacing.medium),
-            child: Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: DesignSpacing.medium,
-              runSpacing: DesignSpacing.small,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      l10n.detailsMonthlyRent,
-                      style: theme.textTheme.labelSmall,
-                    ),
-                    Text(
-                      price,
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: theme.colorScheme.secondary,
-                        fontWeight: FontWeight.w600,
+            child: LayoutBuilder(
+              builder: (context, constraints) => Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: DesignSpacing.medium,
+                runSpacing: DesignSpacing.small,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l10n.detailsMonthlyRent,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          letterSpacing: 2,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                FilledButton(
-                  onPressed: null,
-                  child: Text(
-                    l10n.detailsBookingUnavailable,
-                    textAlign: TextAlign.center,
+                      Text(
+                        price,
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          color: theme.colorScheme.secondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: constraints.maxWidth * 0.58,
+                    ),
+                    child: PropertyFavoriteButton.filled(
+                      propertyId: property.id,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

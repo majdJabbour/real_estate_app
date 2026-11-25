@@ -65,5 +65,9 @@ Implemented session-scoped favorites membership, optimistic PUT/DELETE with per-
 ## 9 — Quality and delivery
 Run generation as applicable, formatting, analyze, unit/provider/widget tests and approved integration tests. Build Android and iOS where supported. Compare screenshots with Figma at 430 and test 320/375/390, landscape, Arabic/English, enlarged text; optional tablet if time permits. Verify offline/timeout/error/retry, rapid search, pagination, language changes, login/logout and favorites. Finish README and actual AI usage, screenshots in both languages or short demo, access links and reproducible instructions. Disclose unverified live behavior, external image dependency and mock backend limitations. Review Git history and secrets. Commit: `docs: finalize assessment delivery` plus real fixes as separate commits.
 
+### 9.1 — Final Figma fidelity and visual refinement
+
+Updated the Details footer to share favorites state with the hero heart, and replaced numeric coordinates with a fictional-listing address and an external map action. Explore signals applied filters without extra requests. Preserved approved white foregrounds and selected chip geometry, audited icon substitutions, and applied one original mark to Flutter Splash and the native launcher and launch resources. Phase 9.1 stops for developer review. [Comparison and verification](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
+
 ## Priority and scope guard
 The assessment is primarily Flutter and suggests 12–14 working hours. Complete approved public screens and required bilingual/API behavior before expanding optional auth/profile features if time is constrained. Firebase configuration can be performed earlier as a separate setup task with developer approval, but must not block public UI work. Do not claim completion for untested features or silently change the contract. No artificial commits or arbitrary test-count goals.

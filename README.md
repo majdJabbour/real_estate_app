@@ -126,9 +126,9 @@ Home and Explore open `/properties/:propertyId` on the root navigator. Back rest
 
 The hero and thumbnails use the cached property image widget. The hero supports swiping and preserves a valid page index on language reloads. The first three photos appear in Gallery, with an optional count for the remaining photos. Tapping a photo opens the full-screen, swipeable viewer at that image. Pinch to zoom and drag to pan a zoomed photo. Missing images and agent avatars have shared fallbacks. The responsive layout caps Details content at 680 dp and wraps long English and Arabic text.
 
-Stats and USD monthly rent use localized formatting. Facilities map the 21 keys in the current API fixture to localized labels and Flutter SDK icons. Unknown keys retain a readable label and a neutral icon. Location displays the returned address and coordinates. Reviews display each returned entry's author, rating, comment, and localized date. The current review schema supplies no avatar, so reviewers use the shared person placeholder. [Facility label and icon mapping](lib/features/properties/presentation/details/property_facilities.dart)
+Stats and USD monthly rent use localized formatting. Facilities map the 21 keys in the current API fixture to localized labels and Flutter SDK icons. Unknown keys retain a readable label and a neutral icon. Location displays the localized API address and identifies it as a fictional listing location. Reviews display each returned entry's author, rating, comment, and localized date. The current review schema supplies no avatar, so reviewers use the shared person placeholder. [Facility label and icon mapping](lib/features/properties/presentation/details/property_facilities.dart)
 
-The rounded price footer marks booking as unavailable. Details uses the same session-scoped favorite control as Home and Explore. Agent contact and sharing are omitted. The location section uses a coordinate panel, and all returned reviews are displayed inline. [Design comparison](DESIGN_SYSTEM.md#18-phase-6-property-details) · [Icon inventory](assets/FIGMA_ICON_INVENTORY.md)
+The rounded price footer saves or removes the property via the same session-scoped favorite action as the hero heart. Guests can start contextual sign-in and return to the property. The address includes an Open in Maps action for valid API coordinates, using `url_launcher` and Google Maps URLs. The app loads no map tiles. Agent contact and sharing are omitted, and all returned reviews are displayed inline. [Design comparison](DESIGN_SYSTEM.md#18-phase-6-property-details) · [Icon inventory](assets/FIGMA_ICON_INVENTORY.md)
 
 Profile, authentication, and favorite persistence remain future work.
 
@@ -197,3 +197,11 @@ Captured on an Android emulator with a synthetic signed-in account and test favo
 - My Favorites · [Populated](docs/screenshots/phase-8/favorites.png) · [Empty](docs/screenshots/phase-8/favorites-empty.png)
 - Preferences · [Language](docs/screenshots/phase-8/language.png) · [Appearance](docs/screenshots/phase-8/appearance.png)
 - Home · [Original Blue](docs/screenshots/phase-8/home-blue.png) · [New Purple](docs/screenshots/phase-8/home-purple.png) · [New Orange](docs/screenshots/phase-8/home-orange.png)
+
+### Phase 9.1 visual verification
+
+The native Android and iOS launcher and launch screen use an original Blue house mark. Flutter Splash uses the same artwork with the persisted palette once Flutter starts. Native launch resources are static and cannot read the Dart preference. [Brand provenance](assets/ASSET_LICENSES.md#phase-91--splash-and-native-brand-mark)
+
+The [Phase 9.1 captures](docs/screenshots/phase-9.1/) use synthetic account and property fixtures for public comparison, with Blue and Purple in English and Orange in Arabic. The iOS Auth image is from the simulator. [Comparison and known gaps](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
+
+The address action opens a coordinate search only after a tap. No API key, map tile service, or billing is required in the app. Out-of-range coordinates leave the address visible, and a failed handoff shows a localized message. [Google Maps URLs](https://developers.google.com/maps/documentation/urls/get-started) · [url_launcher](https://pub.dev/packages/url_launcher)

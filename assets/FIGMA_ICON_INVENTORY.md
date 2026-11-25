@@ -206,3 +206,7 @@ My Favorites reuses the licensed Light-Outline Heart. Appearance and the avatar 
 | Development previews | Material heart, bell, error, success and image glyphs | Preview-only sample glyphs exercise states without a corresponding product frame. |
 
 [Material Icons license](https://github.com/google/material-design-icons/blob/master/LICENSE) · [Iconsax license](https://docs.iconsax.io/license-and-terms/license) · [Bundled artwork and provenance](ASSET_LICENSES.md)
+
+## Phase 9.1 review
+
+Checked the Original Blue Details heart (`1:4270`), stat wrappers (`1:4284`, `1:4293`, `1:4298`), facilities block (`1:4316`), location artwork (`1:4385`), Explore filter (`1:4078`), filter counter (`1:4033`) and Profile language (`1:3843`). The heart is Iconly Light-Outline. The references do not show a filled property-favorite state, and a matching licensed filled source could not be verified. The shared Material heart and semantic favorite ink therefore remain. The featured selected state adds a solid white backing to keep the ink legible over arbitrary photos. Hero and other backed heart surfaces already have a solid background. The language, logout, back and location continue using the licensed originals through AppIcon. The counter and stat artwork still has unresolved provenance. The fallback table above records facility glyphs and additional controls for which there is no source frame. Phase 9.1 adds only the original project brand SVG described in the asset notices. [Asset notices](ASSET_LICENSES.md#phase-91--splash-and-native-brand-mark)

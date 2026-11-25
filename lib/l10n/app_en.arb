@@ -332,5 +332,9 @@
   "newOrange": "New Orange",
   "themeSaveError": "Could not save the app appearance.",
   "accountNameUnavailable": "Name unavailable",
-  "confirmSignOut": "Sign out of your account?"
+  "confirmSignOut": "Sign out of your account?",
+  "detailsOpenMap": "Open in Maps",
+  "detailsMapOpenFailed": "Could not open Maps.",
+  "detailsDemoLocation": "Demo location for a fictional listing.",
+  "openAppliedPropertyFilters": "Open property filters, filters applied"
 }

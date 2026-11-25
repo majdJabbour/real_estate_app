@@ -71,7 +71,13 @@ Future<ProviderContainer> pumpApp(
 
 Future<void> openFilters(WidgetTester tester, {bool arabic = false}) async {
   await tester.tap(
-    find.byTooltip(arabic ? 'فتح فلاتر العقارات' : 'Open property filters'),
+    find.byWidgetPredicate(
+      (widget) =>
+          widget is IconButton &&
+          (widget.tooltip ?? '').startsWith(
+            arabic ? 'فتح فلاتر العقارات' : 'Open property filters',
+          ),
+    ),
   );
   await tester.pumpAndSettle();
 }
@@ -169,6 +175,10 @@ void main() {
         size: const Size(430, 1000),
       );
       final initial = repo.queries.length;
+      final activeFilters = find.byTooltip(
+        'Open property filters, filters applied',
+      );
+      expect(activeFilters, findsNothing);
       await openFilters(tester);
       await tester.tap(find.text('Townhome').hitTestable().last);
       await tester.tap(find.text('Condo').hitTestable().last);
@@ -186,6 +196,7 @@ void main() {
       });
       expect(repo.queries.last.minBedrooms, 1);
       expect(repo.queries.last.minPrice, isNull);
+      expect(activeFilters, findsOneWidget);
 
       await openFilters(tester);
       final selected = find.byWidgetPredicate(

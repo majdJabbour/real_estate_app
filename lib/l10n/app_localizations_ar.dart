@@ -645,4 +645,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get confirmSignOut => 'هل تريد تسجيل الخروج من حسابك؟';
+
+  @override
+  String get detailsOpenMap => 'فتح في الخرائط';
+
+  @override
+  String get detailsMapOpenFailed => 'تعذّر فتح الخرائط.';
+
+  @override
+  String get detailsDemoLocation => 'موقع توضيحي لعقار خيالي.';
+
+  @override
+  String get openAppliedPropertyFilters =>
+      'فتح فلاتر العقارات، توجد فلاتر مطبّقة';
 }

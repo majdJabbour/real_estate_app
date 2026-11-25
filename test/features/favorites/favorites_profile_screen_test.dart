@@ -180,8 +180,15 @@ void main() {
       await _tap(tester, find.text('Sunlit Townhome one'));
       expect(find.byType(PropertyDetailsScreen), findsOneWidget);
       final exploreReads = fixture.properties.queries.length;
-      await _tap(tester, find.byTooltip('Remove from favorites'));
+      await _tap(
+        tester,
+        find.widgetWithText(FilledButton, 'Remove from favorites'),
+      );
       expect(find.byTooltip('Add to favorites'), findsOneWidget);
+      expect(
+        find.widgetWithText(FilledButton, 'Add to favorites'),
+        findsOneWidget,
+      );
       router.pop();
       await tester.pumpAndSettle();
       expect(find.byTooltip('Add to favorites'), findsOneWidget);
@@ -189,6 +196,29 @@ void main() {
       expect(fixture.favorites.idReads, hasLength(1));
     },
   );
+
+  testWidgets('guest Details footer opens contextual sign-in without writing', (
+    tester,
+  ) async {
+    final fixture = _AppFixture(user: null);
+    final container = await fixture.pump(tester);
+    container.read(appRouterProvider).go('/properties/one');
+    await tester.pumpAndSettle();
+    final signIn = find.byType(PropertyDetailsScreen);
+    expect(signIn, findsOneWidget);
+    await _tap(
+      tester,
+      find.widgetWithText(FilledButton, 'Sign in to save properties'),
+    );
+    await _tap(
+      tester,
+      find.widgetWithText(FilledButton, 'Sign in with Google'),
+    );
+    expect(find.byType(AuthScreen), findsOneWidget);
+    await _tap(tester, find.text('Cancel'));
+    expect(signIn, findsOneWidget);
+    expect(fixture.favorites.writes, isEmpty);
+  });
 
   testWidgets(
     'guest Favorites preserves its origin and makes no protected calls until sign-in',

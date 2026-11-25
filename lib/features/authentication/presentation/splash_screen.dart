@@ -1,3 +1,4 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -24,13 +25,21 @@ class SplashScreen extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 spacing: DesignSpacing.small,
                 children: [
+                  SvgPicture.asset(
+                    'assets/brand/real-scout.svg',
+                    width: 122,
+                    height: 122,
+                    colorMapper: _BrandGradient(scheme.primary),
+                    excludeFromSemantics: true,
+                  ),
                   Text(
                     l10n.splashBrand,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
+                      letterSpacing: 2,
                       fontWeight: FontWeight.w700,
-                      color: scheme.secondary,
+                      color: scheme.primary,
                     ),
                   ),
                   Text(l10n.splashTagline, textAlign: TextAlign.center),
@@ -67,4 +76,29 @@ class SplashScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+final class _BrandGradient extends ColorMapper {
+  const _BrandGradient(this.primary);
+
+  final Color primary;
+
+  @override
+  Color substitute(
+    String? id,
+    String elementName,
+    String attributeName,
+    Color color,
+  ) => switch (color) {
+    const Color(0xFF0061FF) => primary,
+    const Color(0xFF0041C4) => Color.lerp(primary, Colors.black, 0.25)!,
+    _ => color,
+  };
+
+  @override
+  bool operator ==(Object other) =>
+      other is _BrandGradient && other.primary == primary;
+
+  @override
+  int get hashCode => primary.hashCode;
 }

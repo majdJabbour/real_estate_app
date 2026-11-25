@@ -1198,6 +1198,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out of your account?'**
   String get confirmSignOut;
+
+  /// No description provided for @detailsOpenMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Maps'**
+  String get detailsOpenMap;
+
+  /// No description provided for @detailsMapOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open Maps.'**
+  String get detailsMapOpenFailed;
+
+  /// No description provided for @detailsDemoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo location for a fictional listing.'**
+  String get detailsDemoLocation;
+
+  /// No description provided for @openAppliedPropertyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Open property filters, filters applied'**
+  String get openAppliedPropertyFilters;
 }
 
 class _AppLocalizationsDelegate

@@ -116,6 +116,7 @@ class AppSearchField extends StatelessWidget {
     this.onSubmitted,
     this.onTap,
     this.filter,
+    this.filtersApplied = false,
     this.enabled = true,
     super.key,
   });
@@ -128,6 +129,7 @@ class AppSearchField extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final VoidCallback? onTap;
   final ({String label, VoidCallback onPressed})? filter;
+  final bool filtersApplied;
   final bool enabled;
 
   @override
@@ -183,9 +185,13 @@ class AppSearchField extends StatelessWidget {
                       IconButton(
                         tooltip: trailingAction.label,
                         onPressed: enabled ? trailingAction.onPressed : null,
-                        icon: const AppIcon(
-                          AppIcons.filter,
-                          size: DesignSize.searchIcon,
+                        icon: Badge(
+                          isLabelVisible: filtersApplied,
+                          backgroundColor: theme.colorScheme.primary,
+                          child: const AppIcon(
+                            AppIcons.filter,
+                            size: DesignSize.searchIcon,
+                          ),
                         ),
                       ),
                   ],

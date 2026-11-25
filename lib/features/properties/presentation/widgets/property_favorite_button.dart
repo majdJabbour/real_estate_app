@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/app_theme.dart';
 import '../../../../core/design_system/design_tokens.dart';
+import '../../../../core/design_system/design_controls.dart';
 import '../../../../core/errors/app_failure.dart';
 import '../../../../core/localization/failure_message.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -17,7 +18,14 @@ class PropertyFavoriteButton extends ConsumerWidget {
     this.onPhoto = false,
     this.iconSize,
     super.key,
-  });
+  }) : _filled = false;
+
+  const PropertyFavoriteButton.filled({required this.propertyId, super.key})
+    : onPhoto = false,
+      iconSize = null,
+      _filled = true;
+
+  final bool _filled;
 
   final String propertyId;
   final bool onPhoto;
@@ -64,6 +72,19 @@ class PropertyFavoriteButton extends ConsumerWidget {
       (_, _, _, true) => l10n.removeFavorite,
       _ => l10n.addFavorite,
     };
+    final VoidCallback? onPressed = pending || (account == null && !canSignIn)
+        ? null
+        : () => account == null
+              ? _requestSignIn(context, ref)
+              : _toggle(context, ref);
+    if (_filled) {
+      return AppPrimaryButton(
+        label: label,
+        onPressed: onPressed,
+        loadingLabel: pending ? label : null,
+      );
+    }
+
     final progress = SizedBox.square(
       dimension: selected == null ? DesignSize.loadingIcon : 8,
       child: CircularProgressIndicator(color: foreground, strokeWidth: 2),
@@ -72,27 +93,35 @@ class PropertyFavoriteButton extends ConsumerWidget {
         ? Icon(Icons.favorite_rounded, size: size)
         : AppIcon(AppIcons.heartOutline, size: size);
 
+    final indicator = !pending
+        ? heart
+        : selected == null
+        ? progress
+        : Stack(
+            clipBehavior: Clip.none,
+            children: [
+              heart,
+              PositionedDirectional(end: -3, bottom: -3, child: progress),
+            ],
+          );
     return Listener(
       behavior: HitTestBehavior.opaque,
       child: IconButton(
         tooltip: label,
-        onPressed: pending || (account == null && !canSignIn)
-            ? null
-            : () => account == null
-                  ? _requestSignIn(context, ref)
-                  : _toggle(context, ref),
+        onPressed: onPressed,
         isSelected: selected,
-        icon: !pending
-            ? heart
-            : selected == null
-            ? progress
-            : Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  heart,
-                  PositionedDirectional(end: -3, bottom: -3, child: progress),
-                ],
-              ),
+        icon: onPhoto && selected == true
+            ? DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  shape: BoxShape.circle,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: indicator,
+                ),
+              )
+            : indicator,
         style: IconButton.styleFrom(
           iconSize: size,
           foregroundColor: foreground,

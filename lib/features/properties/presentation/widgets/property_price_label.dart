@@ -4,7 +4,11 @@ import 'package:material_ui/material_ui.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/property.dart';
 
-String propertyPriceLabel(BuildContext context, PropertySummary property) {
+String propertyPriceLabel(
+  BuildContext context,
+  PropertySummary property, {
+  bool includePeriod = true,
+}) {
   final l10n = AppLocalizations.of(context);
   final price = NumberFormat.simpleCurrency(
     locale: l10n.localeName,
@@ -13,7 +17,11 @@ String propertyPriceLabel(BuildContext context, PropertySummary property) {
         ? 0
         : null,
   ).format(property.price);
-  return property.pricingPeriod == 'month'
-      ? l10n.propertyMonthlyPrice(price)
+  // Keep the currency amount together before adding the Arabic period label.
+  final amount = Localizations.localeOf(context).languageCode == 'ar'
+      ? '\u2068$price\u2069'
       : price;
+  return includePeriod && property.pricingPeriod == 'month'
+      ? l10n.propertyMonthlyPrice(amount)
+      : amount;
 }

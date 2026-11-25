@@ -182,5 +182,9 @@
   "newOrange": "البرتقالي الجديد",
   "themeSaveError": "تعذّر حفظ مظهر التطبيق.",
   "accountNameUnavailable": "الاسم غير متاح",
-  "confirmSignOut": "هل تريد تسجيل الخروج من حسابك؟"
+  "confirmSignOut": "هل تريد تسجيل الخروج من حسابك؟",
+  "detailsOpenMap": "فتح في الخرائط",
+  "detailsMapOpenFailed": "تعذّر فتح الخرائط.",
+  "detailsDemoLocation": "موقع توضيحي لعقار خيالي.",
+  "openAppliedPropertyFilters": "فتح فلاتر العقارات، توجد فلاتر مطبّقة"
 }

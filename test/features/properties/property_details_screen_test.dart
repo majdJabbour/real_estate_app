@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -88,11 +89,11 @@ void main() {
     expect(find.text('2 bedrooms'), findsOneWidget);
     expect(find.text('1 bathroom'), findsOneWidget);
     expect(find.text('85.5 m²'), findsOneWidget);
-    expect(find.text(r'$1,275.50/mo'), findsOneWidget);
+    expect(find.text(r'$1,275.50'), findsOneWidget);
     expect(
       tester
           .widget<FilledButton>(
-            find.widgetWithText(FilledButton, 'Booking unavailable'),
+            find.widgetWithText(FilledButton, 'Favorites require sign-in.'),
           )
           .onPressed,
       isNull,
@@ -120,7 +121,7 @@ void main() {
     expect(find.byIcon(Icons.category_outlined), findsOneWidget);
     expect(find.text('Gym'), findsOneWidget);
     await _reveal(tester, find.text('No photos available.'));
-    await _reveal(tester, find.text('-87.5678°'));
+    await _reveal(tester, find.text('Open in Maps'));
     expect(find.text('Garden District, Austin, TX'), findsOneWidget);
     await _reveal(tester, find.text('No reviews available.'));
     expect(tester.takeException(), isNull);
@@ -133,6 +134,58 @@ void main() {
       container.read(appRouterProvider).routeInformationProvider.value.uri.path,
       '/home',
     );
+  });
+
+  testWidgets(
+    'map handoff uses API coordinates and retains the address on failure',
+    (tester) async {
+      const channel = MethodChannel('plugins.flutter.io/url_launcher');
+      final messenger = tester.binding.defaultBinaryMessenger;
+      MethodCall? launch;
+      messenger.setMockMethodCallHandler(channel, (call) async {
+        launch = call;
+        return false;
+      });
+      addTearDown(() => messenger.setMockMethodCallHandler(channel, null));
+
+      await _open(tester, (id, _) => homeDetails(id));
+      await tester.pumpAndSettle();
+      final mapAction = find.text('Open in Maps');
+      await _reveal(tester, mapAction);
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -180));
+      await tester.pumpAndSettle();
+      await tester.tap(mapAction);
+      await tester.pumpAndSettle();
+
+      expect(launch?.method, 'launch');
+      final arguments = launch!.arguments as Map<Object?, Object?>;
+      final uri = Uri.parse(arguments['url']! as String);
+      expect(uri.host, 'www.google.com');
+      expect(uri.path, '/maps/search/');
+      expect(uri.queryParameters['api'], '1');
+      final location = homeDetails('rental-001').location;
+      expect(
+        uri.queryParameters['query'],
+        '${location.latitude},${location.longitude}',
+      );
+      expect(find.text('Could not open Maps.'), findsOneWidget);
+      expect(find.text('Garden District, Austin, TX'), findsOneWidget);
+    },
+  );
+
+  testWidgets('invalid map coordinates leave the fictional address visible', (
+    tester,
+  ) async {
+    await _open(
+      tester,
+      (id, _) => homeDetails(id).copyWith(
+        location: const PropertyLocation(latitude: 91, longitude: -181),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await _reveal(tester, find.text('Demo location for a fictional listing.'));
+    expect(find.text('Garden District, Austin, TX'), findsOneWidget);
+    expect(find.text('Open in Maps'), findsNothing);
   });
 
   for (final (kind, message) in [
