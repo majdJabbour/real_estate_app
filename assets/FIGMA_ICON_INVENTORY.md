@@ -162,3 +162,7 @@ The Figma path data, relative positions, layer sizes, and fill rules matched for
 | Google mark (four vector paths) | `1:4549` | `1:3751` | `1:2952` |
 
 The selected Explore glyph separates the themed lens and the pale #F9F9FA secondary path. The sampled Home cards contain outline hearts only. The existing filled Material heart remains the compatible selected-state glyph.
+
+## Phase 5 usage
+
+Explore uses the shared 22 dp back and notification glyphs and 20 dp Iconly search and filter glyphs. The list card uses the 8 dp rating star from Search-v1 and the existing heart at 22 dp. The filter sheet uses the shared 20 dp back glyph. The Material layout toggle is an engineering addition. The 24 dp counter circles use Material plus and minus because the original counter icons lack confirmed provenance. [Phase 5 visual comparison](../DESIGN_SYSTEM.md#17-phase-5-explore-and-advanced-filters)

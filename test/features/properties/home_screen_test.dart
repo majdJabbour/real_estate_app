@@ -17,6 +17,8 @@ import 'package:real_estate_app/features/properties/application/property_provide
 import 'package:real_estate_app/features/properties/domain/property.dart';
 import 'package:real_estate_app/features/properties/domain/property_repository.dart';
 import 'package:real_estate_app/features/properties/domain/property_type.dart';
+import 'package:real_estate_app/features/properties/presentation/explore/explore_screen.dart';
+import 'package:real_estate_app/features/properties/presentation/filters/property_filter_sheet.dart';
 import 'package:real_estate_app/features/properties/presentation/home/home_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/widgets/property_cards.dart';
 import 'package:real_estate_app/features/properties/presentation/widgets/property_image.dart';
@@ -111,7 +113,7 @@ void main() {
 
       await tester.tap(_tab('Explore'));
       await tester.pumpAndSettle();
-      expect(find.byType(ExploreDestination), findsOneWidget);
+      expect(find.byType(ExploreScreen), findsOneWidget);
       expect(
         tester
             .getSemantics(_tabSemantics('Explore'))
@@ -156,10 +158,13 @@ void main() {
       ]) {
         await tester.tap(target);
         await tester.pumpAndSettle();
-        final page = tester.widget<ExploreDestination>(
-          find.byType(ExploreDestination),
-        );
+        final page = tester.widget<ExploreScreen>(find.byType(ExploreScreen));
         expect(page.intent.entry, entry);
+        if (entry == ExploreEntry.filters) {
+          expect(find.byType(PropertyFilterSheet), findsOneWidget);
+          await tester.tap(find.bySemanticsLabel('Cancel'));
+          await tester.pumpAndSettle();
+        }
         await tester.tap(_tab('Home'));
         await tester.pumpAndSettle();
       }
@@ -186,9 +191,7 @@ void main() {
       final actions = find.text('See All').hitTestable();
       await tester.tap(actions.last);
       await tester.pumpAndSettle();
-      final page = tester.widget<ExploreDestination>(
-        find.byType(ExploreDestination),
-      );
+      final page = tester.widget<ExploreScreen>(find.byType(ExploreScreen));
       expect(page.intent.entry, ExploreEntry.recommendations);
       expect(page.intent.category, PropertyType.townhome);
     },
@@ -372,7 +375,7 @@ void main() {
     save.complete();
     await tester.pumpAndSettle();
 
-    expect(find.byType(ExploreDestination), findsOneWidget);
+    expect(find.byType(ExploreScreen), findsOneWidget);
     expect(_tab('استكشاف'), findsOneWidget);
     expect(tester.takeException(), isNull);
     await tester.tap(_tab('الرئيسية'));

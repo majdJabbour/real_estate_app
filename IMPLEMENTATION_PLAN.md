@@ -35,10 +35,11 @@ Implemented the stateful Home, Explore, and Profile tab shell and the root prope
 
 ### 4.1 — Original Figma icons and Home refinement
 
-Verified Iconly provenance, bundled the original Home and navigation SVG shapes, and refined Home spacing and controls using the Blue Figma reference and live simulator captures. The shared icon system keeps theme paints and RTL behavior explicit. The original icon inventory and outstanding artwork provenance are recorded for later phases. Review is pending. Suggested commit `feat: use original Figma icons on Home`.
+Verified Iconly provenance, bundled the original Home and navigation SVG shapes, and refined Home spacing and controls using the Blue Figma reference and live simulator captures. The shared icon system keeps theme paints and RTL behavior explicit. The original icon inventory and outstanding artwork provenance are recorded for later phases. Approved for continuation. Suggested commit `feat: use original Figma icons on Home`.
 
-## 5 — Explore and filters
-Implement approved list/grid layouts, server search, category selection, pagination, draft/apply/reset filters, histogram and sliders from global filter options. Ensure filters and query survive appropriate navigation, reset pages on changes, retry next page and cancel stale work. Verify combined filters and empty/equal bounds. Commit search and filters separately if cohesive.
+## 5 — Explore and Advanced Filters
+
+Implemented both Explore layouts with one request controller, server search and pagination, and the Figma-based filter sheet with draft/apply/reset behavior. Existing Home intents open the production branch and preserve its state on regular tab returns. Verified English and Arabic layouts, compact and landscape behavior, and the deployed API. Review is pending. Suggested commit `feat: implement Explore and advanced property filters`.
 
 ## 6 — Property details
 Implement approved details screen, gallery, location, facilities, agent, reviews and legitimate actions as supported by scope/data. No invented phone numbers or fake bookings. Handle missing optional fields and broken images. Verify scroll and RTL. Commit: `feat: implement property details`.

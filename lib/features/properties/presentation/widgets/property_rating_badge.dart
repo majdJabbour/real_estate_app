@@ -9,11 +9,13 @@ class PropertyRatingBadge extends StatelessWidget {
   const PropertyRatingBadge({
     required this.rating,
     this.featured = false,
+    this.compact = false,
     super.key,
   });
 
   final double rating;
   final bool featured;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +32,34 @@ class PropertyRatingBadge extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: featured ? 10 : 6,
-            vertical: 4,
+            horizontal: featured
+                ? 10
+                : compact
+                ? 5
+                : 6,
+            vertical: compact ? 2 : 4,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
-            spacing: 4,
+            spacing: compact ? 2 : 4,
             children: [
-              AppIcon(AppIcons.ratingStar, size: featured ? 14 : 10),
+              AppIcon(
+                AppIcons.ratingStar,
+                size: featured
+                    ? 14
+                    : compact
+                    ? 8
+                    : 10,
+              ),
               Text(
                 value,
                 style: TextStyle(
                   color: DesignColors.ratingInk,
-                  fontSize: featured ? 12 : 10,
+                  fontSize: featured
+                      ? 12
+                      : compact
+                      ? 8
+                      : 10,
                   fontWeight: FontWeight.w600,
                   height: 1.4,
                 ),

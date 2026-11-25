@@ -110,6 +110,8 @@ class AppSearchField extends StatelessWidget {
   const AppSearchField({
     required this.hintText,
     this.controller,
+    this.focusNode,
+    this.clear,
     this.onChanged,
     this.onSubmitted,
     this.onTap,
@@ -120,6 +122,8 @@ class AppSearchField extends StatelessWidget {
 
   final String hintText;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final ({String label, VoidCallback onPressed})? clear;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
   final VoidCallback? onTap;
@@ -134,6 +138,7 @@ class AppSearchField extends StatelessWidget {
       label: hintText,
       child: TextField(
         controller: controller,
+        focusNode: focusNode,
         onTap: onTap,
         readOnly: onTap != null,
         showCursor: onTap == null,
@@ -160,15 +165,30 @@ class AppSearchField extends StatelessWidget {
             minWidth: DesignSize.searchIconSlot,
             minHeight: DesignSize.tapTarget,
           ),
-          suffixIcon: trailingAction == null
+          suffixIcon: clear == null && trailingAction == null
               ? null
-              : IconButton(
-                  tooltip: trailingAction.label,
-                  onPressed: enabled ? trailingAction.onPressed : null,
-                  icon: const AppIcon(
-                    AppIcons.filter,
-                    size: DesignSize.searchIcon,
-                  ),
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (clear case final action?)
+                      IconButton(
+                        tooltip: action.label,
+                        onPressed: enabled ? action.onPressed : null,
+                        icon: const Icon(
+                          Icons.close_rounded,
+                          size: DesignSize.searchIcon,
+                        ),
+                      ),
+                    if (trailingAction != null)
+                      IconButton(
+                        tooltip: trailingAction.label,
+                        onPressed: enabled ? trailingAction.onPressed : null,
+                        icon: const AppIcon(
+                          AppIcons.filter,
+                          size: DesignSize.searchIcon,
+                        ),
+                      ),
+                  ],
                 ),
         ),
       ),
@@ -182,6 +202,7 @@ class AppChoiceChip extends StatelessWidget {
     required this.selected,
     required this.onSelected,
     this.compact = false,
+    this.multiSelect = false,
     this.focusNode,
     super.key,
   });
@@ -190,6 +211,7 @@ class AppChoiceChip extends StatelessWidget {
   final bool selected;
   final ValueChanged<bool>? onSelected;
   final bool compact;
+  final bool multiSelect;
   final FocusNode? focusNode;
 
   @override
@@ -201,7 +223,8 @@ class AppChoiceChip extends StatelessWidget {
       (true, true) => scheme.onPrimary,
       (true, false) => scheme.onSurface,
     };
-    return ChoiceChip(
+    final makeChip = multiSelect ? FilterChip.new : ChoiceChip.new;
+    return makeChip(
       label: Text(label),
       selected: selected,
       onSelected: onSelected,

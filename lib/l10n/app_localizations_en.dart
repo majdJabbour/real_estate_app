@@ -256,4 +256,105 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get propertyDetailsPending =>
       'Property details are coming in a later phase.';
+
+  @override
+  String get exploreTitle => 'Search for Your Ideal Home';
+
+  @override
+  String get clearSearch => 'Clear search';
+
+  @override
+  String get showGrid => 'Show grid';
+
+  @override
+  String get showList => 'Show list';
+
+  @override
+  String propertyResultCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Found $countString properties',
+      one: 'Found 1 property',
+      zero: 'No properties found',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get featuredOnly => 'Featured only';
+
+  @override
+  String get filterTitle => 'Filter';
+
+  @override
+  String get resetFilters => 'Reset';
+
+  @override
+  String get priceRange => 'Price Range';
+
+  @override
+  String get propertyTypeLabel => 'Property Type';
+
+  @override
+  String get homeDetailsLabel => 'Home Details';
+
+  @override
+  String get minBedroomsLabel => 'Minimum bedrooms';
+
+  @override
+  String get minBathroomsLabel => 'Minimum bathrooms';
+
+  @override
+  String get bedroomsLabel => 'Bedrooms';
+
+  @override
+  String get bathroomsLabel => 'Bathrooms';
+
+  @override
+  String get buildingSize => 'Building Size';
+
+  @override
+  String areaSquareMeters(String area) {
+    return '$area m²';
+  }
+
+  @override
+  String get noRangeAvailable => 'Range unavailable';
+
+  @override
+  String decreaseValue(String label) {
+    return 'Decrease $label';
+  }
+
+  @override
+  String increaseValue(String label) {
+    return 'Increase $label';
+  }
+
+  @override
+  String minimumValue(String value) {
+    return 'Minimum $value';
+  }
+
+  @override
+  String maximumValue(String value) {
+    return 'Maximum $value';
+  }
+
+  @override
+  String get filterSet => 'Set Filter';
+
+  @override
+  String get morePropertiesLoading => 'Loading more properties…';
+
+  @override
+  String get retryMoreProperties => 'Retry next page';
+
+  @override
+  String get clearFeaturedFilter => 'Clear featured filter';
 }

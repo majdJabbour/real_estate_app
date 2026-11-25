@@ -124,3 +124,22 @@ Codex added the shared Flutter SVG renderer, retained the independent control se
 | `git diff --check` | Passed. |
 
 The selected favorite, guest avatar, and image placeholders retain Material glyphs. The Google mark, Iconsax variants, Real Scout branding, and unnamed facility, stat and map artwork remain inventoried for later review. Phase 4.1 is pending developer review.
+
+## Phase 5 — Explore and Advanced Filters
+
+The developer approved Phase 4.1 and requested Explore, server search and pagination, and the advanced filter sheet. Codex read the repository and backend references, inspected all nine Explore and Filters references with the Figma design-to-code skill, and used the Dart and Flutter testing and static analysis skills. Codex implemented the shared Explore controller and both layouts, localized and accessible filter controls, Home route intents, and deterministic tests. An enlarged-text widget test exposed an Arabic Reset label overflow at 320 dp. Constraining its width resolved the overflow while keeping Reset and Set Filter reachable.
+
+The Blue Figma references guided card geometry, search and category controls, modal shape, and histogram and slider alignment. Explore adds a layout toggle. The modal uses backend units and localized labels. Phase 5 reuses licensed Iconly assets and uses documented fallbacks for the filter and counter glyphs. [Design review and screenshots](DESIGN_SYSTEM.md#17-phase-5-explore-and-advanced-filters) · [Icon inventory](assets/FIGMA_ICON_INVENTORY.md)
+
+Production read-only checks returned 30 listings across two pages with distinct IDs, two matches for the combined English search and filters, and six for the Arabic search. Both languages returned the same 20 global price buckets with localized option labels. On the iPhone 18 Pro Max simulator, a compact Arabic filter draft was applied and returned five apartments. The captures exercised the real app with live data. A temporary debug entry point sent pointer events outside frame build and constrained the compact viewport. The entry point is excluded from delivery. The tap-based widget regressions exercised repeated Home intents and localization without triggering the earlier build-phase router assertion.
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed with six informational package notices. The manifest and lockfile match Phase 4.1. |
+| `flutter gen-l10n` and `dart run build_runner build` | Passed. All 16 generated Dart files matched byte-for-byte across consecutive runs. |
+| Formatting and `flutter analyze` | Passed over 83 Dart files with no analyzer issues. |
+| `flutter test` and `flutter test --coverage` | Both passed all 207 tests, including the 185 existing cases. LCOV recorded 2,482 of 2,701 instrumented lines overall (91.9%) and 647 of 692 in the Explore controller, screen and filter controls (93.5%). |
+| iOS simulator | The standard `lib/main.dart` entry point built, launched, and hot reloaded on the iPhone 18 Pro Max. The visual captures are linked in the design review. |
+| `git diff --check` | Passed. |
+
+Android runtime and full Details, Profile, authentication, and favorite persistence remain outside this phase. Phase 5 is pending developer review.

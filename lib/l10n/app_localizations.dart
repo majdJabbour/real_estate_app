@@ -556,6 +556,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Property details are coming in a later phase.'**
   String get propertyDetailsPending;
+
+  /// No description provided for @exploreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search for Your Ideal Home'**
+  String get exploreTitle;
+
+  /// No description provided for @clearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get clearSearch;
+
+  /// No description provided for @showGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Show grid'**
+  String get showGrid;
+
+  /// No description provided for @showList.
+  ///
+  /// In en, this message translates to:
+  /// **'Show list'**
+  String get showList;
+
+  /// No description provided for @propertyResultCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No properties found} =1{Found 1 property} other{Found {count} properties}}'**
+  String propertyResultCount(int count);
+
+  /// No description provided for @featuredOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured only'**
+  String get featuredOnly;
+
+  /// No description provided for @filterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get filterTitle;
+
+  /// No description provided for @resetFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get resetFilters;
+
+  /// No description provided for @priceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Price Range'**
+  String get priceRange;
+
+  /// No description provided for @propertyTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Type'**
+  String get propertyTypeLabel;
+
+  /// No description provided for @homeDetailsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Home Details'**
+  String get homeDetailsLabel;
+
+  /// No description provided for @minBedroomsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum bedrooms'**
+  String get minBedroomsLabel;
+
+  /// No description provided for @minBathroomsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum bathrooms'**
+  String get minBathroomsLabel;
+
+  /// No description provided for @bedroomsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedrooms'**
+  String get bedroomsLabel;
+
+  /// No description provided for @bathroomsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bathrooms'**
+  String get bathroomsLabel;
+
+  /// No description provided for @buildingSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Building Size'**
+  String get buildingSize;
+
+  /// No description provided for @areaSquareMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'{area} m²'**
+  String areaSquareMeters(String area);
+
+  /// No description provided for @noRangeAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Range unavailable'**
+  String get noRangeAvailable;
+
+  /// No description provided for @decreaseValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease {label}'**
+  String decreaseValue(String label);
+
+  /// No description provided for @increaseValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase {label}'**
+  String increaseValue(String label);
+
+  /// No description provided for @minimumValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum {value}'**
+  String minimumValue(String value);
+
+  /// No description provided for @maximumValue.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum {value}'**
+  String maximumValue(String value);
+
+  /// No description provided for @filterSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Filter'**
+  String get filterSet;
+
+  /// No description provided for @morePropertiesLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading more properties…'**
+  String get morePropertiesLoading;
+
+  /// No description provided for @retryMoreProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry next page'**
+  String get retryMoreProperties;
+
+  /// No description provided for @clearFeaturedFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear featured filter'**
+  String get clearFeaturedFilter;
 }
 
 class _AppLocalizationsDelegate

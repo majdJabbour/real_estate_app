@@ -6,30 +6,6 @@ import '../../core/design_system/app_icon.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/layout/responsive_layout.dart';
 import '../../l10n/app_localizations.dart';
-import 'explore_intent.dart';
-
-class ExploreDestination extends StatelessWidget {
-  const ExploreDestination({required this.intent, super.key});
-
-  final ExploreIntent intent;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final entry = switch (intent.entry) {
-      ExploreEntry.browse => null,
-      ExploreEntry.search => l10n.exploreSearchIntent,
-      ExploreEntry.featured => l10n.exploreFeaturedIntent,
-      ExploreEntry.recommendations => l10n.exploreRecommendationsIntent,
-      ExploreEntry.filters => l10n.exploreFiltersIntent,
-    };
-    return _DestinationContent(
-      title: l10n.exploreTab,
-      message: l10n.explorePending,
-      children: [if (entry != null) Text(entry, textAlign: TextAlign.center)],
-    );
-  }
-}
 
 class ProfileDestination extends ConsumerWidget {
   const ProfileDestination({super.key});

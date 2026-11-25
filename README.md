@@ -25,7 +25,7 @@ git diff --check
 flutter run
 ```
 
-[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, and repository behavior. Network tests use fake Dio adapters and Riverpod overrides. Production smoke checks are separate.
+[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, repository behavior, and Explore search, pagination, filters, and navigation. Network tests use fake Dio adapters and Riverpod overrides. Phase 5 passed all 207 tests with 91.9% line coverage. Production smoke checks are separate. [Phase 5 verification](AI_USAGE.md#phase-5--explore-and-advanced-filters)
 
 ## Design system preview
 
@@ -48,7 +48,7 @@ Scroll to **Adaptive layout** to see the local viewport size, side padding, capp
 | `cached_network_image`, `flutter_svg`, `skeletonizer` | Property image caching, SVG assets, and loading placeholders |
 | `flutter_test`, `mocktail`, `flutter_lints` | Flutter tests, test doubles, and static analysis rules |
 
-The app uses a feature-first structure. Presentation reads application state, application logic depends on domain contracts, and data adapters handle REST requests and DTO mapping. The properties feature will group Home, Explore, Filters, and Details. Core holds shared configuration, transport, errors, localization, and design tokens. English is the default, with Arabic layout direction and language switching at runtime. [Implementation plan](IMPLEMENTATION_PLAN.md)
+The app uses a feature-first structure. Presentation reads application state, application logic depends on domain contracts, and data adapters handle REST requests and DTO mapping. The properties feature groups Home, Explore, and Filters, with Details planned alongside them. Core holds shared configuration, transport, errors, localization, and design tokens. English is the default, with Arabic layout direction and language switching at runtime. [Implementation plan](IMPLEMENTATION_PLAN.md)
 
 ## Bootstrap and infrastructure
 
@@ -92,7 +92,7 @@ The Phase 3 test and coverage runs both passed all 146 tests. [Verification log]
 
 ## Production navigation and Home
 
-`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore and Details show temporary destinations for the current intent or property ID. Profile provides a language switch while sign-in and profile data are pending.
+`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore handles Home intents and displays paginated property results. Details shows the routed property ID in its temporary destination. Profile provides a language switch while sign-in and profile data are pending.
 
 | Home action | Destination |
 | --- | --- |
@@ -110,7 +110,17 @@ Home uses a guest avatar, reusable featured and grid cards, image and rating wid
 
 Home and the tab shell use the original Iconly SVG paths, including distinct active and inactive navigation variants. The shared `AppIcon` chooses the asset, inherits semantic tint, and mirrors only the directional back glyph. The Explore accent and rating gradient retain their separate paints. [Icon provenance and license](assets/ASSET_LICENSES.md) · [Figma icon inventory](assets/FIGMA_ICON_INVENTORY.md)
 
-Explore results, Filters, full Details and Profile, authentication, and favorite persistence remain future work.
+## Explore and Advanced Filters
+
+Explore owns one generated Riverpod listing controller. Its immutable state keeps the applied `PropertyQuery`, loaded summaries, server pagination, and operation-specific loading and failure states. The search field, focus, scroll, and grid/list selection live in the navigation branch. Grid is the default. Switching layout reuses the current results and page state. Both layouts open the root property route by ID.
+
+Search waits 400 ms after typing and submits immediately from the keyboard action or clear button. Search and category changes preserve applicable filters and sort order, reset to page one, and cancel outdated requests. Results are server-owned. Explore requests 20 results per page and loads another page near the scroll end or when the first page leaves space. IDs are deduplicated in server order. Pagination stops at the last page or when a page adds no new IDs. A failed next page keeps the existing cards and has an explicit retry. Same-query pull-to-refresh retains visible results during the request. Locale changes preserve stable selected IDs, search and filters while reloading titles and labels.
+
+The filter sheet shares the locale-aware filter-options provider with Home and Explore. It keeps draft types, price and area bounds, and minimum room counts until Set Filter. Reset affects the draft. Dismissing the sheet discards it. An unchanged draft produces no listing request. Applying edits preserves search, sorting and the featured flag, and encodes selected types through the existing query serializer. All and unrestricted ends of ranges omit those filters. Prices are displayed in USD per month and area in square meters. The histogram paints global API bucket boundaries and counts. It shares the native slider's direction and track insets. Null or equal bounds produce a read-only state. Reset and Apply stay reachable on compact and enlarged-text layouts.
+
+Home Search focuses Explore's search field. Featured opens a featured-only query with a visible clear control. Recommendation See All applies its category. The Home filter action opens the sheet once per intent. Returning to Explore through its tab preserves ordinary state. [Explore visual comparison](DESIGN_SYSTEM.md#17-phase-5-explore-and-advanced-filters)
+
+Full Details and Profile, authentication, and favorite persistence remain future work.
 
 ## Mobile platform configuration
 

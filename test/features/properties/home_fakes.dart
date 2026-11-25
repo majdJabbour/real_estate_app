@@ -100,3 +100,19 @@ PropertyFilterOptions homeTestOptions({bool arabic = false}) =>
         PropertyTypeOption(id: 'condo', label: arabic ? 'شقة تمليك' : 'Condo'),
       ],
     );
+
+PaginatedResult<PropertySummary> resultPage(
+  int page,
+  List<String> ids, {
+  bool more = false,
+}) => PaginatedResult(
+  items: ids.map(homeProperty),
+  pagination: Pagination(
+    page: page,
+    limit: 20,
+    total: 30,
+    totalPages: 2,
+    hasNextPage: more,
+    hasPreviousPage: page > 1,
+  ),
+);

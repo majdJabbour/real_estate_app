@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../features/properties/presentation/explore/explore_screen.dart';
 import '../../features/properties/presentation/home/home_screen.dart';
 import '../../l10n/app_localizations.dart';
 import 'app_tab_shell.dart';
@@ -34,9 +35,8 @@ GoRouter appRouter(Ref ref) {
               GoRoute(
                 path: '/explore',
                 name: 'explore',
-                builder: (context, state) => ExploreDestination(
-                  intent: ExploreIntent.fromUri(state.uri),
-                ),
+                builder: (context, state) =>
+                    ExploreScreen(intent: ExploreIntent.fromUri(state.uri)),
               ),
             ],
           ),

@@ -27,3 +27,7 @@ The SVGs keep the exported view boxes and path coordinates. Opaque white Figma l
 - **Google mark** `1:4549` has four fixed colors. It is inventoried only. Authentication work will require the official Google asset and the published branding rules. [Google branding guidelines](https://developers.google.com/identity/branding-guidelines)
 - **Real Scout branding and unnamed facility, stat and map glyphs** are inventoried for reference. Their originating author or redistribution terms could not be confirmed from the supplied Community copy. No files from those groups are bundled.
 - **Rubik** remains bundled under SIL OFL 1.1 with its attribution and complete notice. The runtime property photos remain server-supplied and are sourced as described in the API repository. [Rubik license](fonts/rubik/OFL.txt) · [Design system asset notes](../DESIGN_SYSTEM.md#7-assets-and-provenance)
+
+## Phase 5 Explore and Filters
+
+Explore and the sheet reuse the already-attributed Iconly back, notification, search, filter, star, and heart files. The Vuesax filter in Search-v2 and Filters remains a design reference. The app uses the existing Iconly filter under the recorded license. The counter paths come from unnamed Figma components, so the counters use the SDK's Material plus and minus glyphs. The new layout toggle also uses Material glyphs. [Icon inventory](FIGMA_ICON_INVENTORY.md)

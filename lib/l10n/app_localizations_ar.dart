@@ -251,4 +251,107 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get propertyDetailsPending => 'ستتوفر تفاصيل العقار في مرحلة لاحقة.';
+
+  @override
+  String get exploreTitle => 'ابحث عن منزلك المثالي';
+
+  @override
+  String get clearSearch => 'مسح البحث';
+
+  @override
+  String get showGrid => 'عرض الشبكة';
+
+  @override
+  String get showList => 'عرض القائمة';
+
+  @override
+  String propertyResultCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'تم العثور على $countString عقارًا',
+      few: 'تم العثور على $countString عقارات',
+      two: 'تم العثور على عقارين',
+      one: 'تم العثور على عقار واحد',
+      zero: 'لم يُعثر على عقارات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get featuredOnly => 'العقارات المميزة فقط';
+
+  @override
+  String get filterTitle => 'تصفية';
+
+  @override
+  String get resetFilters => 'إعادة ضبط';
+
+  @override
+  String get priceRange => 'نطاق السعر';
+
+  @override
+  String get propertyTypeLabel => 'نوع العقار';
+
+  @override
+  String get homeDetailsLabel => 'تفاصيل المنزل';
+
+  @override
+  String get minBedroomsLabel => 'الحد الأدنى لغرف النوم';
+
+  @override
+  String get minBathroomsLabel => 'الحد الأدنى للحمّامات';
+
+  @override
+  String get bedroomsLabel => 'غرف النوم';
+
+  @override
+  String get bathroomsLabel => 'الحمّامات';
+
+  @override
+  String get buildingSize => 'مساحة العقار';
+
+  @override
+  String areaSquareMeters(String area) {
+    return '$area م²';
+  }
+
+  @override
+  String get noRangeAvailable => 'النطاق غير متاح';
+
+  @override
+  String decreaseValue(String label) {
+    return 'تقليل $label';
+  }
+
+  @override
+  String increaseValue(String label) {
+    return 'زيادة $label';
+  }
+
+  @override
+  String minimumValue(String value) {
+    return 'الحد الأدنى $value';
+  }
+
+  @override
+  String maximumValue(String value) {
+    return 'الحد الأقصى $value';
+  }
+
+  @override
+  String get filterSet => 'تطبيق الفلاتر';
+
+  @override
+  String get morePropertiesLoading => 'جارٍ تحميل المزيد من العقارات…';
+
+  @override
+  String get retryMoreProperties => 'إعادة محاولة تحميل الصفحة التالية';
+
+  @override
+  String get clearFeaturedFilter => 'إلغاء تصفية العقارات المميزة';
 }
