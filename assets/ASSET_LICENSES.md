@@ -31,3 +31,12 @@ The SVGs keep the exported view boxes and path coordinates. Opaque white Figma l
 ## Phase 5 Explore and Filters
 
 Explore and the sheet reuse the already-attributed Iconly back, notification, search, filter, star, and heart files. The Vuesax filter in Search-v2 and Filters remains a design reference. The app uses the existing Iconly filter under the recorded license. The counter paths come from unnamed Figma components, so the counters use the SDK's Material plus and minus glyphs. The new layout toggle also uses Material glyphs. [Icon inventory](FIGMA_ICON_INVENTORY.md)
+
+## Phase 6 Property Details
+
+| Bundled SVG | Original Blue Figma node | Treatment |
+| --- | --- | --- |
+| `actions/details-back.svg` | `1:4267` | Iconly Light Arrow - Left. Preserves the 28 × 28 viewBox and 1.5 px round strokes. Mirrors in RTL. |
+| `property/location.svg` | `1:4383` | Iconly Bold Location. Preserves the 20 × 20 viewBox and even-odd fill. Uses the active theme's accessible accent. |
+
+Both SVGs are credited to Piqo Studio under the recorded Iconly CC BY 4.0 grant. Details reuses the bundled heart and gradient star. Stat and facility icons, person placeholders, and viewer Close use the installed Flutter SDK's Material artwork. Property and avatar imagery comes from the API when available. No Figma sample images, map artwork, or unnamed glyph vectors were added to the app bundle. [Iconly and Material sources](#home-and-navigation-svgs) · [Measured icon inventory](FIGMA_ICON_INVENTORY.md)

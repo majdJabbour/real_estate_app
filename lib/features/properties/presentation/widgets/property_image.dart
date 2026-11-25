@@ -5,16 +5,25 @@ import '../../../../core/design_system/app_theme.dart';
 import '../../../../l10n/app_localizations.dart';
 
 class PropertyImage extends StatelessWidget {
-  const PropertyImage({required this.url, super.key});
+  const PropertyImage({
+    required this.url,
+    this.fit = BoxFit.cover,
+    this.useDisplayCacheSize = true,
+    this.placeholderIcon,
+    super.key,
+  });
 
   final String? url;
+  final BoxFit fit;
+  final bool useDisplayCacheSize;
+  final IconData? placeholderIcon;
 
   @override
   Widget build(BuildContext context) {
     final source = url;
     final uri = source == null ? null : Uri.tryParse(source);
     if (uri == null || uri.scheme != 'https' || uri.host.isEmpty) {
-      return const _ImagePlaceholder(failed: true);
+      return _ImagePlaceholder(failed: true, icon: placeholderIcon);
     }
 
     return LayoutBuilder(
@@ -22,24 +31,29 @@ class PropertyImage extends StatelessWidget {
         imageUrl: source!,
         width: constraints.maxWidth,
         height: constraints.maxHeight,
-        fit: BoxFit.cover,
-        memCacheWidth: constraints.hasBoundedWidth && constraints.maxWidth > 0
+        fit: fit,
+        memCacheWidth:
+            useDisplayCacheSize &&
+                constraints.hasBoundedWidth &&
+                constraints.maxWidth > 0
             ? (constraints.maxWidth * MediaQuery.devicePixelRatioOf(context))
                   .ceil()
                   .clamp(1, 1800)
             : null,
-        placeholder: (context, url) => const _ImagePlaceholder(failed: false),
+        placeholder: (context, url) =>
+            _ImagePlaceholder(failed: false, icon: placeholderIcon),
         errorWidget: (context, url, error) =>
-            const _ImagePlaceholder(failed: true),
+            _ImagePlaceholder(failed: true, icon: placeholderIcon),
       ),
     );
   }
 }
 
 class _ImagePlaceholder extends StatelessWidget {
-  const _ImagePlaceholder({required this.failed});
+  const _ImagePlaceholder({required this.failed, this.icon});
 
   final bool failed;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +66,12 @@ class _ImagePlaceholder extends StatelessWidget {
                 label: AppLocalizations.of(context).imageUnavailable,
                 child: ExcludeSemantics(
                   child: Icon(
-                    Icons.broken_image_outlined,
+                    icon ?? Icons.broken_image_outlined,
                     color: colors.placeholderInk,
                   ),
                 ),
               )
-            : Icon(Icons.image_outlined, color: colors.placeholderInk),
+            : Icon(icon ?? Icons.image_outlined, color: colors.placeholderInk),
       ),
     );
   }

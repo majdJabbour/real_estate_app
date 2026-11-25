@@ -1,14 +1,13 @@
 import 'dart:math' as math;
 
-import 'package:intl/intl.dart' show NumberFormat;
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/design_system/design_tokens.dart';
-import '../../../../l10n/app_localizations.dart';
 import '../../domain/property.dart';
 import 'property_favorite_button.dart';
 import 'property_image.dart';
 import 'property_rating_badge.dart';
+import 'property_price_label.dart';
 
 const _featuredRadius = 20.0;
 const _gridRadius = 12.0;
@@ -66,7 +65,7 @@ class FeaturedPropertyCard extends StatelessWidget {
           textHeight(item.title, _featuredTitle, infoWidth, 2) +
           textHeight(item.address, _featuredAddress, infoWidth, 2) +
           textHeight(
-            _priceLabel(context, item),
+            propertyPriceLabel(context, item),
             _featuredPrice,
             math.max(1.0, infoWidth - 36),
           );
@@ -242,7 +241,7 @@ class _PropertyText extends StatelessWidget {
         Padding(
           padding: const EdgeInsetsDirectional.only(end: 36),
           child: Text(
-            _priceLabel(context, property),
+            propertyPriceLabel(context, property),
             style: featured
                 ? _featuredPrice
                 : TextStyle(
@@ -256,20 +255,6 @@ class _PropertyText extends StatelessWidget {
       ],
     );
   }
-}
-
-String _priceLabel(BuildContext context, PropertySummary property) {
-  final l10n = AppLocalizations.of(context);
-  final price = NumberFormat.simpleCurrency(
-    locale: l10n.localeName,
-    name: property.currency,
-    decimalDigits: property.price.truncateToDouble() == property.price
-        ? 0
-        : null,
-  ).format(property.price);
-  return property.pricingPeriod == 'month'
-      ? l10n.propertyMonthlyPrice(price)
-      : price;
 }
 
 const _featuredTitle = TextStyle(
@@ -397,7 +382,7 @@ class PropertyListCard extends StatelessWidget {
                           ),
                           if (large)
                             Text(
-                              _priceLabel(context, property),
+                              propertyPriceLabel(context, property),
                               style: TextStyle(
                                 fontSize: 18,
                                 height: 1.2,
@@ -437,7 +422,7 @@ class PropertyListCard extends StatelessWidget {
                                   end: 0,
                                   bottom: 8,
                                   child: Text(
-                                    _priceLabel(context, property),
+                                    propertyPriceLabel(context, property),
                                     style: TextStyle(
                                       fontSize: 18,
                                       height: 1.2,

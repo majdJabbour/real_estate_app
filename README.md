@@ -25,7 +25,7 @@ git diff --check
 flutter run
 ```
 
-[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, repository behavior, and Explore search, pagination, filters, and navigation. Network tests use fake Dio adapters and Riverpod overrides. Phase 5 passed all 207 tests with 91.9% line coverage. Production smoke checks are separate. [Phase 5 verification](AI_USAGE.md#phase-5--explore-and-advanced-filters)
+[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, repository behavior, Explore search, pagination, filters and navigation, and Details request lifecycles, media and layout. Network tests use fake Dio adapters and Riverpod overrides. Phase 6 passed all 226 tests with 91.5% overall line coverage. Production smoke checks are separate. [Phase 6 verification](AI_USAGE.md#phase-6--property-details)
 
 ## Design system preview
 
@@ -48,7 +48,7 @@ Scroll to **Adaptive layout** to see the local viewport size, side padding, capp
 | `cached_network_image`, `flutter_svg`, `skeletonizer` | Property image caching, SVG assets, and loading placeholders |
 | `flutter_test`, `mocktail`, `flutter_lints` | Flutter tests, test doubles, and static analysis rules |
 
-The app uses a feature-first structure. Presentation reads application state, application logic depends on domain contracts, and data adapters handle REST requests and DTO mapping. The properties feature groups Home, Explore, and Filters, with Details planned alongside them. Core holds shared configuration, transport, errors, localization, and design tokens. English is the default, with Arabic layout direction and language switching at runtime. [Implementation plan](IMPLEMENTATION_PLAN.md)
+The app uses a feature-first structure. Presentation reads application state, application logic depends on domain contracts, and data adapters handle REST requests and DTO mapping. The properties feature groups Home, Explore, Filters, and Details. Core holds shared configuration, transport, errors, localization, and design tokens. English is the default, with Arabic layout direction and language switching at runtime. [Implementation plan](IMPLEMENTATION_PLAN.md)
 
 ## Bootstrap and infrastructure
 
@@ -92,7 +92,7 @@ The Phase 3 test and coverage runs both passed all 146 tests. [Verification log]
 
 ## Production navigation and Home
 
-`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore handles Home intents and displays paginated property results. Details shows the routed property ID in its temporary destination. Profile provides a language switch while sign-in and profile data are pending.
+`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore handles Home intents and displays paginated property results. Details loads the selected property from the API on that root route. Profile provides a language switch while sign-in and profile data are pending.
 
 | Home action | Destination |
 | --- | --- |
@@ -108,7 +108,7 @@ Loading placeholders reserve carousel and grid geometry. Each section can show i
 
 Home uses a guest avatar, reusable featured and grid cards, image and rating widgets, and separate favorite controls. Favorites require sign-in and notifications are disabled. Prices use locale-aware USD monthly formatting. The layout takes its gutters and grid columns from the shared responsive policy, uses a horizontal featured carousel and category strip, and lazily builds variable-height grid rows in one vertical scroll view. The tab bar uses native safe areas and mirrors in Arabic. [Design comparison](DESIGN_SYSTEM.md#16-phase-41-icons-and-home-refinement) · [English Home](docs/screenshots/phase-4.1/home-en.png) · [Arabic Home](docs/screenshots/phase-4.1/home-ar.png) · [Compact Home](docs/screenshots/phase-4.1/home-compact.png)
 
-Home and the tab shell use the original Iconly SVG paths, including distinct active and inactive navigation variants. The shared `AppIcon` chooses the asset, inherits semantic tint, and mirrors only the directional back glyph. The Explore accent and rating gradient retain their separate paints. [Icon provenance and license](assets/ASSET_LICENSES.md) · [Figma icon inventory](assets/FIGMA_ICON_INVENTORY.md)
+Home and the tab shell use the original Iconly SVG paths, including distinct active and inactive navigation variants. The shared `AppIcon` chooses the asset, inherits semantic tint, and mirrors the directional back glyphs. The Explore accent and rating gradient retain their separate paints. [Icon provenance and license](assets/ASSET_LICENSES.md) · [Figma icon inventory](assets/FIGMA_ICON_INVENTORY.md)
 
 ## Explore and Advanced Filters
 
@@ -120,7 +120,17 @@ The filter sheet shares the locale-aware filter-options provider with Home and E
 
 Home Search focuses Explore's search field. Featured opens a featured-only query with a visible clear control. Recommendation See All applies its category. The Home filter action opens the sheet once per intent. Returning to Explore through its tab preserves ordinary state. [Explore visual comparison](DESIGN_SYSTEM.md#17-phase-5-explore-and-advanced-filters)
 
-Full Details and Profile, authentication, and favorite persistence remain future work.
+## Property Details
+
+Home and Explore open `/properties/:propertyId` on the root navigator. Back restores the originating branch and its scroll position. A directly opened route can return to Home. The generated auto-dispose `propertyDetailsProvider` shares one request per observed ID, watches the current locale, cancels on invalidation or disposal, and rejects results from obsolete requests. A retry explicitly reloads the same ID. Details uses the existing repository, public API request policy, and localized failure messages.
+
+The hero and thumbnails use the cached property image widget. The hero supports swiping and preserves a valid page index on language reloads. The first three photos appear in Gallery, with an optional count for the remaining photos. Tapping a photo opens the full-screen, swipeable viewer at that image. Pinch to zoom and drag to pan a zoomed photo. Missing images and agent avatars have shared fallbacks. The responsive layout caps Details content at 680 dp and wraps long English and Arabic text.
+
+Stats and USD monthly rent use localized formatting. Facilities map the 21 keys in the current API fixture to localized labels and Flutter SDK icons. Unknown keys retain a readable label and a neutral icon. Location displays the returned address and coordinates. Reviews display each returned entry's author, rating, comment, and localized date. The current review schema supplies no avatar, so reviewers use the shared person placeholder. [Facility label and icon mapping](lib/features/properties/presentation/details/property_facilities.dart)
+
+The rounded price footer marks booking as unavailable. Details uses the same favorite control as Home and Explore and shows favorites as unavailable until sign-in and shared favorites are implemented. Agent contact and sharing are omitted. The location section uses a coordinate panel, and all returned reviews are displayed inline. [Design comparison](DESIGN_SYSTEM.md#18-phase-6-property-details) · [Icon inventory](assets/FIGMA_ICON_INVENTORY.md)
+
+Profile, authentication, and favorite persistence remain future work.
 
 ## Mobile platform configuration
 

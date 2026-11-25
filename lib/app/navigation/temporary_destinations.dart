@@ -1,8 +1,6 @@
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../core/design_system/app_icon.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/layout/responsive_layout.dart';
 import '../../l10n/app_localizations.dart';
@@ -46,37 +44,6 @@ class ProfileDestination extends ConsumerWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class PropertyDetailsDestination extends StatelessWidget {
-  const PropertyDetailsDestination({required this.propertyId, super.key});
-
-  final String propertyId;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-          icon: const AppIcon(AppIcons.back, size: 22),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go('/home');
-            }
-          },
-        ),
-        title: Text(l10n.propertyDetailsTitle),
-      ),
-      body: _DestinationContent(
-        message: l10n.propertyDetailsPending,
-        children: [Text(propertyId, textDirection: TextDirection.ltr)],
-      ),
     );
   }
 }

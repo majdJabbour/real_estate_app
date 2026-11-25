@@ -11,6 +11,8 @@ enum AppIcons {
   notification('actions/notification'),
   filter('actions/filter'),
   back('actions/back'),
+  detailsBack('actions/details-back'),
+  location('property/location'),
   heartOutline('property/heart-outline'),
   ratingStar('property/rating-star');
 
@@ -54,7 +56,7 @@ class AppIcon extends StatelessWidget {
       colorMapper: icon == AppIcons.exploreSelected && tint != null
           ? _ExploreColorMapper(tint)
           : null,
-      matchTextDirection: icon == AppIcons.back,
+      matchTextDirection: icon == AppIcons.back || icon == AppIcons.detailsBack,
       semanticsLabel: semanticLabel,
       excludeFromSemantics: semanticLabel == null,
     );

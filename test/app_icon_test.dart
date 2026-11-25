@@ -28,7 +28,7 @@ void main() {
   test(
     'every registered source SVG loads and paints nonempty artwork',
     () async {
-      expect(AppIcons.values.map((icon) => icon.asset).toSet(), hasLength(11));
+      expect(AppIcons.values.map((icon) => icon.asset).toSet(), hasLength(13));
       for (final icon in AppIcons.values) {
         final svg = await rootBundle.loadString(icon.asset);
         expect(svg, contains('viewBox='));

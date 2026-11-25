@@ -254,10 +254,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get propertyDetailsTitle => 'Property Details';
 
   @override
-  String get propertyDetailsPending =>
-      'Property details are coming in a later phase.';
-
-  @override
   String get exploreTitle => 'Search for Your Ideal Home';
 
   @override
@@ -357,4 +353,202 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clearFeaturedFilter => 'Clear featured filter';
+
+  @override
+  String get detailsAgent => 'Agent';
+
+  @override
+  String get detailsOverview => 'Overview';
+
+  @override
+  String get detailsFacilities => 'Facilities';
+
+  @override
+  String get detailsNoFacilities => 'No facilities listed.';
+
+  @override
+  String get detailsGallery => 'Gallery';
+
+  @override
+  String get detailsNoPhotos => 'No photos available.';
+
+  @override
+  String get detailsLocation => 'Location';
+
+  @override
+  String get detailsLatitude => 'Latitude';
+
+  @override
+  String get detailsLongitude => 'Longitude';
+
+  @override
+  String get detailsReviews => 'Reviews';
+
+  @override
+  String get detailsNoReviews => 'No reviews available.';
+
+  @override
+  String get detailsMonthlyRent => 'Monthly rent';
+
+  @override
+  String get detailsBookingUnavailable => 'Booking unavailable';
+
+  @override
+  String detailsPhotoPosition(int position, int total) {
+    final intl.NumberFormat positionNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String positionString = positionNumberFormat.format(position);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'Photo $positionString of $totalString';
+  }
+
+  @override
+  String detailsOpenPhoto(int position, int total) {
+    final intl.NumberFormat positionNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String positionString = positionNumberFormat.format(position);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'Open photo $positionString of $totalString';
+  }
+
+  @override
+  String detailsMorePhotos(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '+$countString';
+  }
+
+  @override
+  String detailsOpenMorePhotos(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Open gallery, $countString more photos',
+      one: 'Open gallery, $countString more photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String detailsBedrooms(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString bedrooms',
+      one: '$countString bedroom',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String detailsBathrooms(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString bathrooms',
+      one: '$countString bathroom',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get detailsTypeApartment => 'Apartment';
+
+  @override
+  String get detailsTypeTownhome => 'Townhome';
+
+  @override
+  String get detailsTypeHouse => 'House';
+
+  @override
+  String get detailsTypeCondo => 'Condo';
+
+  @override
+  String get detailsTypeDuplex => 'Duplex';
+
+  @override
+  String get detailsTypeStudio => 'Studio';
+
+  @override
+  String get detailsFacilityAirConditioning => 'Air conditioning';
+
+  @override
+  String get detailsFacilityBalcony => 'Balcony';
+
+  @override
+  String get detailsFacilityBikeStorage => 'Bike storage';
+
+  @override
+  String get detailsFacilityConcierge => 'Concierge';
+
+  @override
+  String get detailsFacilityCoveredParking => 'Covered parking';
+
+  @override
+  String get detailsFacilityDeck => 'Outdoor deck';
+
+  @override
+  String get detailsFacilityElevator => 'Elevator';
+
+  @override
+  String get detailsFacilityEvCharging => 'EV charging';
+
+  @override
+  String get detailsFacilityFrontPorch => 'Front porch';
+
+  @override
+  String get detailsFacilityFurnished => 'Furnished';
+
+  @override
+  String get detailsFacilityGarage => 'Garage';
+
+  @override
+  String get detailsFacilityGarden => 'Garden';
+
+  @override
+  String get detailsFacilityGym => 'Gym';
+
+  @override
+  String get detailsFacilityInUnitLaundry => 'In-unit laundry';
+
+  @override
+  String get detailsFacilityPatio => 'Patio';
+
+  @override
+  String get detailsFacilityPetFriendly => 'Pet friendly';
+
+  @override
+  String get detailsFacilityPool => 'Pool';
+
+  @override
+  String get detailsFacilityRoofTerrace => 'Roof terrace';
+
+  @override
+  String get detailsFacilitySecureEntry => 'Secure entry';
+
+  @override
+  String get detailsFacilitySharedLaundry => 'Shared laundry';
+
+  @override
+  String get detailsFacilityStorage => 'Storage';
 }

@@ -39,10 +39,10 @@ Verified Iconly provenance, bundled the original Home and navigation SVG shapes,
 
 ## 5 — Explore and Advanced Filters
 
-Implemented both Explore layouts with one request controller, server search and pagination, and the Figma-based filter sheet with draft/apply/reset behavior. Existing Home intents open the production branch and preserve its state on regular tab returns. Verified English and Arabic layouts, compact and landscape behavior, and the deployed API. Review is pending. Suggested commit `feat: implement Explore and advanced property filters`.
+Implemented both Explore layouts with one request controller, server search and pagination, and the Figma-based filter sheet with draft/apply/reset behavior. Existing Home intents open the production branch and preserve its state on regular tab returns. Verified English and Arabic layouts, compact and landscape behavior, and the deployed API. Approved for continuation. Suggested commit `feat: implement Explore and advanced property filters`.
 
 ## 6 — Property details
-Implement approved details screen, gallery, location, facilities, agent, reviews and legitimate actions as supported by scope/data. No invented phone numbers or fake bookings. Handle missing optional fields and broken images. Verify scroll and RTL. Commit: `feat: implement property details`.
+Implemented the approved Property Details screen on the existing root route. A generated locale-aware provider loads by ID and cancels obsolete requests. Details renders the actual photos, property statistics, description, agent, facilities, coordinates, reviews and monthly USD price. It includes a swipeable hero and full-screen zoom viewer, localized failures and retry, and explicit empty-section states. Booking and favorites are presented as unavailable. Agent contact and share controls are omitted. Developer review is pending. Suggested commit `feat: implement property details`.
 
 ## 7 — Firebase authentication
 Developer confirms actual Android application ID and iOS bundle ID; register both in existing Firebase project via FlutterFire CLI and configure Google provider platform prerequisites. No new Admin keys or Firestore direct client. Implement sign-in, session restoration, logout, protected API token attachment and bounded refresh. Verify real Google login and `/auth/me` on supported platform; report pending platforms. Commit config and auth in meaningful groups.

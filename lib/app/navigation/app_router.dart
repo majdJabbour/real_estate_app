@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../features/properties/presentation/details/property_details_screen.dart';
 import '../../features/properties/presentation/explore/explore_screen.dart';
 import '../../features/properties/presentation/home/home_screen.dart';
 import '../../l10n/app_localizations.dart';
@@ -54,7 +55,7 @@ GoRouter appRouter(Ref ref) {
         parentNavigatorKey: rootNavigator,
         path: '/properties/:propertyId',
         name: 'propertyDetails',
-        builder: (context, state) => PropertyDetailsDestination(
+        builder: (context, state) => PropertyDetailsScreen(
           propertyId: state.pathParameters['propertyId']!,
         ),
       ),

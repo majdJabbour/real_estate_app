@@ -551,12 +551,6 @@ abstract class AppLocalizations {
   /// **'Property Details'**
   String get propertyDetailsTitle;
 
-  /// No description provided for @propertyDetailsPending.
-  ///
-  /// In en, this message translates to:
-  /// **'Property details are coming in a later phase.'**
-  String get propertyDetailsPending;
-
   /// No description provided for @exploreTitle.
   ///
   /// In en, this message translates to:
@@ -712,6 +706,282 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear featured filter'**
   String get clearFeaturedFilter;
+
+  /// No description provided for @detailsAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent'**
+  String get detailsAgent;
+
+  /// No description provided for @detailsOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get detailsOverview;
+
+  /// No description provided for @detailsFacilities.
+  ///
+  /// In en, this message translates to:
+  /// **'Facilities'**
+  String get detailsFacilities;
+
+  /// No description provided for @detailsNoFacilities.
+  ///
+  /// In en, this message translates to:
+  /// **'No facilities listed.'**
+  String get detailsNoFacilities;
+
+  /// No description provided for @detailsGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get detailsGallery;
+
+  /// No description provided for @detailsNoPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos available.'**
+  String get detailsNoPhotos;
+
+  /// No description provided for @detailsLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get detailsLocation;
+
+  /// No description provided for @detailsLatitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Latitude'**
+  String get detailsLatitude;
+
+  /// No description provided for @detailsLongitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Longitude'**
+  String get detailsLongitude;
+
+  /// No description provided for @detailsReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews'**
+  String get detailsReviews;
+
+  /// No description provided for @detailsNoReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'No reviews available.'**
+  String get detailsNoReviews;
+
+  /// No description provided for @detailsMonthlyRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly rent'**
+  String get detailsMonthlyRent;
+
+  /// No description provided for @detailsBookingUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking unavailable'**
+  String get detailsBookingUnavailable;
+
+  /// No description provided for @detailsPhotoPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo {position} of {total}'**
+  String detailsPhotoPosition(int position, int total);
+
+  /// No description provided for @detailsOpenPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Open photo {position} of {total}'**
+  String detailsOpenPhoto(int position, int total);
+
+  /// No description provided for @detailsMorePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count}'**
+  String detailsMorePhotos(int count);
+
+  /// No description provided for @detailsOpenMorePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Open gallery, {count} more photo} other{Open gallery, {count} more photos}}'**
+  String detailsOpenMorePhotos(int count);
+
+  /// No description provided for @detailsBedrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} bedroom} other{{count} bedrooms}}'**
+  String detailsBedrooms(int count);
+
+  /// No description provided for @detailsBathrooms.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} bathroom} other{{count} bathrooms}}'**
+  String detailsBathrooms(int count);
+
+  /// No description provided for @detailsTypeApartment.
+  ///
+  /// In en, this message translates to:
+  /// **'Apartment'**
+  String get detailsTypeApartment;
+
+  /// No description provided for @detailsTypeTownhome.
+  ///
+  /// In en, this message translates to:
+  /// **'Townhome'**
+  String get detailsTypeTownhome;
+
+  /// No description provided for @detailsTypeHouse.
+  ///
+  /// In en, this message translates to:
+  /// **'House'**
+  String get detailsTypeHouse;
+
+  /// No description provided for @detailsTypeCondo.
+  ///
+  /// In en, this message translates to:
+  /// **'Condo'**
+  String get detailsTypeCondo;
+
+  /// No description provided for @detailsTypeDuplex.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplex'**
+  String get detailsTypeDuplex;
+
+  /// No description provided for @detailsTypeStudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Studio'**
+  String get detailsTypeStudio;
+
+  /// No description provided for @detailsFacilityAirConditioning.
+  ///
+  /// In en, this message translates to:
+  /// **'Air conditioning'**
+  String get detailsFacilityAirConditioning;
+
+  /// No description provided for @detailsFacilityBalcony.
+  ///
+  /// In en, this message translates to:
+  /// **'Balcony'**
+  String get detailsFacilityBalcony;
+
+  /// No description provided for @detailsFacilityBikeStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Bike storage'**
+  String get detailsFacilityBikeStorage;
+
+  /// No description provided for @detailsFacilityConcierge.
+  ///
+  /// In en, this message translates to:
+  /// **'Concierge'**
+  String get detailsFacilityConcierge;
+
+  /// No description provided for @detailsFacilityCoveredParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Covered parking'**
+  String get detailsFacilityCoveredParking;
+
+  /// No description provided for @detailsFacilityDeck.
+  ///
+  /// In en, this message translates to:
+  /// **'Outdoor deck'**
+  String get detailsFacilityDeck;
+
+  /// No description provided for @detailsFacilityElevator.
+  ///
+  /// In en, this message translates to:
+  /// **'Elevator'**
+  String get detailsFacilityElevator;
+
+  /// No description provided for @detailsFacilityEvCharging.
+  ///
+  /// In en, this message translates to:
+  /// **'EV charging'**
+  String get detailsFacilityEvCharging;
+
+  /// No description provided for @detailsFacilityFrontPorch.
+  ///
+  /// In en, this message translates to:
+  /// **'Front porch'**
+  String get detailsFacilityFrontPorch;
+
+  /// No description provided for @detailsFacilityFurnished.
+  ///
+  /// In en, this message translates to:
+  /// **'Furnished'**
+  String get detailsFacilityFurnished;
+
+  /// No description provided for @detailsFacilityGarage.
+  ///
+  /// In en, this message translates to:
+  /// **'Garage'**
+  String get detailsFacilityGarage;
+
+  /// No description provided for @detailsFacilityGarden.
+  ///
+  /// In en, this message translates to:
+  /// **'Garden'**
+  String get detailsFacilityGarden;
+
+  /// No description provided for @detailsFacilityGym.
+  ///
+  /// In en, this message translates to:
+  /// **'Gym'**
+  String get detailsFacilityGym;
+
+  /// No description provided for @detailsFacilityInUnitLaundry.
+  ///
+  /// In en, this message translates to:
+  /// **'In-unit laundry'**
+  String get detailsFacilityInUnitLaundry;
+
+  /// No description provided for @detailsFacilityPatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Patio'**
+  String get detailsFacilityPatio;
+
+  /// No description provided for @detailsFacilityPetFriendly.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet friendly'**
+  String get detailsFacilityPetFriendly;
+
+  /// No description provided for @detailsFacilityPool.
+  ///
+  /// In en, this message translates to:
+  /// **'Pool'**
+  String get detailsFacilityPool;
+
+  /// No description provided for @detailsFacilityRoofTerrace.
+  ///
+  /// In en, this message translates to:
+  /// **'Roof terrace'**
+  String get detailsFacilityRoofTerrace;
+
+  /// No description provided for @detailsFacilitySecureEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure entry'**
+  String get detailsFacilitySecureEntry;
+
+  /// No description provided for @detailsFacilitySharedLaundry.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared laundry'**
+  String get detailsFacilitySharedLaundry;
+
+  /// No description provided for @detailsFacilityStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get detailsFacilityStorage;
 }
 
 class _AppLocalizationsDelegate

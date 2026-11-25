@@ -12,10 +12,21 @@ typedef ListingLoader = FutureOr<PaginatedResult<PropertySummary>> Function(
   RequestCancellation cancellation,
 );
 
+typedef DetailsLoader = FutureOr<PropertyDetails> Function(
+  String id,
+  RequestCancellation cancellation,
+);
+
 class FakeHomeRepository implements PropertyRepository {
-  FakeHomeRepository({required this.loadListings, required this.loadOptions});
+  FakeHomeRepository({
+    required this.loadListings,
+    required this.loadOptions,
+    this.loadDetails,
+  });
 
   final ListingLoader loadListings;
+  final DetailsLoader? loadDetails;
+  final detailIds = <String>[];
   final FutureOr<PropertyFilterOptions> Function() loadOptions;
   final queries = <PropertyQuery>[];
   final listingCancellations = <RequestCancellation>[];
@@ -43,9 +54,11 @@ class FakeHomeRepository implements PropertyRepository {
   Future<PropertyDetails> getPropertyDetails(
     String propertyId, {
     RequestCancellation? cancellation,
-  }) async => throw StateError(
-    'Home must open details by ID without requesting details.',
-  );
+  }) async {
+    detailIds.add(propertyId);
+    return loadDetails?.call(propertyId, cancellation!) ??
+        homeDetails(propertyId);
+  }
 }
 
 PropertySummary homeProperty(
@@ -115,4 +128,27 @@ PaginatedResult<PropertySummary> resultPage(
     hasNextPage: more,
     hasPreviousPage: page > 1,
   ),
+);
+
+PropertyDetails homeDetails(
+  String id, {
+  bool arabic = false,
+  List<String> images = const [],
+  List<String> facilities = const [],
+  List<PropertyReview> reviews = const [],
+}) => PropertyDetails(
+  summary: homeProperty(id, arabic: arabic),
+  description: arabic
+      ? 'وصف العقار باللغة العربية.'
+      : 'A sunlit property near the park.',
+  bedrooms: 2,
+  bathrooms: 1,
+  area: 85.5,
+  areaUnit: 'sqm',
+  images: images,
+  facilities: facilities,
+  agent: const PropertyAgent(id: 'agent-1', name: 'Olivia Perez', avatar: null),
+  location: const PropertyLocation(latitude: 41.1234, longitude: -87.5678),
+  reviews: reviews,
+  createdAt: DateTime.utc(2026, 1, 1),
 );

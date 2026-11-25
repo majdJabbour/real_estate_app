@@ -166,3 +166,7 @@ The selected Explore glyph separates the themed lens and the pale #F9F9FA second
 ## Phase 5 usage
 
 Explore uses the shared 22 dp back and notification glyphs and 20 dp Iconly search and filter glyphs. The list card uses the 8 dp rating star from Search-v1 and the existing heart at 22 dp. The filter sheet uses the shared 20 dp back glyph. The Material layout toggle is an engineering addition. The 24 dp counter circles use Material plus and minus because the original counter icons lack confirmed provenance. [Phase 5 visual comparison](../DESIGN_SYSTEM.md#17-phase-5-explore-and-advanced-filters)
+
+## Phase 6 usage
+
+Details uses the 28 dp Iconly Light back export from `1:4267` and the 20 dp Iconly Bold location export from `1:4383`. The back glyph mirrors in Arabic. The location glyph keeps its orientation and takes the theme's accessible accent paint. The existing property heart and two-stop star are reused at the Details sizes. Bedroom, bathroom, area and facility silhouettes use Material SDK glyphs while the original unnamed artwork's provenance remains unresolved. The viewer close control uses the SDK glyph. Share, chat, call and review likes are omitted. [License and handling](ASSET_LICENSES.md#phase-6-property-details)

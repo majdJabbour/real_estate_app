@@ -105,7 +105,6 @@
   "exploreRecommendationsIntent": "Recommended properties",
   "exploreFiltersIntent": "Property filters",
   "propertyDetailsTitle": "Property Details",
-  "propertyDetailsPending": "Property details are coming in a later phase.",
   "@propertyMonthlyPrice": {
     "placeholders": {
       "price": {
@@ -188,5 +187,107 @@
   "filterSet": "Set Filter",
   "morePropertiesLoading": "Loading more properties…",
   "retryMoreProperties": "Retry next page",
-  "clearFeaturedFilter": "Clear featured filter"
+  "clearFeaturedFilter": "Clear featured filter",
+  "detailsAgent": "Agent",
+  "detailsOverview": "Overview",
+  "detailsFacilities": "Facilities",
+  "detailsNoFacilities": "No facilities listed.",
+  "detailsGallery": "Gallery",
+  "detailsNoPhotos": "No photos available.",
+  "detailsLocation": "Location",
+  "detailsLatitude": "Latitude",
+  "detailsLongitude": "Longitude",
+  "detailsReviews": "Reviews",
+  "detailsNoReviews": "No reviews available.",
+  "detailsMonthlyRent": "Monthly rent",
+  "detailsBookingUnavailable": "Booking unavailable",
+  "detailsPhotoPosition": "Photo {position} of {total}",
+  "@detailsPhotoPosition": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "detailsOpenPhoto": "Open photo {position} of {total}",
+  "@detailsOpenPhoto": {
+    "placeholders": {
+      "position": {
+        "type": "int",
+        "format": "decimalPattern"
+      },
+      "total": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "detailsMorePhotos": "+{count}",
+  "@detailsMorePhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "detailsOpenMorePhotos": "{count, plural, one{Open gallery, {count} more photo} other{Open gallery, {count} more photos}}",
+  "@detailsOpenMorePhotos": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "detailsBedrooms": "{count, plural, one{{count} bedroom} other{{count} bedrooms}}",
+  "@detailsBedrooms": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "detailsBathrooms": "{count, plural, one{{count} bathroom} other{{count} bathrooms}}",
+  "@detailsBathrooms": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "detailsTypeApartment": "Apartment",
+  "detailsTypeTownhome": "Townhome",
+  "detailsTypeHouse": "House",
+  "detailsTypeCondo": "Condo",
+  "detailsTypeDuplex": "Duplex",
+  "detailsTypeStudio": "Studio",
+  "detailsFacilityAirConditioning": "Air conditioning",
+  "detailsFacilityBalcony": "Balcony",
+  "detailsFacilityBikeStorage": "Bike storage",
+  "detailsFacilityConcierge": "Concierge",
+  "detailsFacilityCoveredParking": "Covered parking",
+  "detailsFacilityDeck": "Outdoor deck",
+  "detailsFacilityElevator": "Elevator",
+  "detailsFacilityEvCharging": "EV charging",
+  "detailsFacilityFrontPorch": "Front porch",
+  "detailsFacilityFurnished": "Furnished",
+  "detailsFacilityGarage": "Garage",
+  "detailsFacilityGarden": "Garden",
+  "detailsFacilityGym": "Gym",
+  "detailsFacilityInUnitLaundry": "In-unit laundry",
+  "detailsFacilityPatio": "Patio",
+  "detailsFacilityPetFriendly": "Pet friendly",
+  "detailsFacilityPool": "Pool",
+  "detailsFacilityRoofTerrace": "Roof terrace",
+  "detailsFacilitySecureEntry": "Secure entry",
+  "detailsFacilitySharedLaundry": "Shared laundry",
+  "detailsFacilityStorage": "Storage"
 }

@@ -142,4 +142,23 @@ Production read-only checks returned 30 listings across two pages with distinct 
 | iOS simulator | The standard `lib/main.dart` entry point built, launched, and hot reloaded on the iPhone 18 Pro Max. The visual captures are linked in the design review. |
 | `git diff --check` | Passed. |
 
-Android runtime and full Details, Profile, authentication, and favorite persistence remain outside this phase. Phase 5 is pending developer review.
+Android runtime and full Details, Profile, authentication, and favorite persistence remained outside Phase 5. The developer approved Phase 5 for continuation.
+
+## Phase 6 — Property Details
+
+The developer approved Phase 5 and requested the Details route, gallery, localized API data, responsive layouts, and verification. Codex inspected the sibling API contract and fixture and used Figma MCP with the Figma design-to-code and Figma Plugin API skills to inspect the three Details variants. The Flutter responsive layout, static analysis, and Dart and Flutter testing skills guided the implementation. Codex added one generated request provider, presentation widgets, English and Arabic strings, two licensed Iconly exports, and 19 deterministic tests. The gallery pinch test exposed a conflict with horizontal paging. Codex adjusted paging while multiple pointers are active or the photo is zoomed and verified both paging and pinch interaction.
+
+The existing public repository supplies the route data and cancellation bridge. Codex reused the property image and favorites controls, extracted the existing monthly price formatter for both cards and Details, and kept carousel selection local. The returned address and coordinates replace the sample map, all returned reviews appear inline, the price footer marks booking unavailable, and agent contact and share are omitted. The approved backend contract reference and dependency versions are unchanged. [Figma comparison and simulator screenshots](DESIGN_SYSTEM.md#18-phase-6-property-details) · [Asset provenance](assets/ASSET_LICENSES.md#phase-6-property-details)
+
+Public production requests for `rental-001` returned HTTP 200 in English and Arabic with matching `Content-Language` headers. A valid unknown ID returned HTTP 404 with `PROPERTY_NOT_FOUND`. On the iPhone 18 Pro Max, a Home tap opened Brick Row Townhome and an Explore tap opened Eastside Staircase Duplex. Captures used a temporary debug entry point with the real app and production configuration, pointer events, and a 320 dp constraint for the compact image. The capture helper is excluded from delivery.
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed on Flutter 3.50.1 and Dart 3.14.0. The lockfile is unchanged. |
+| `flutter gen-l10n` and `dart run build_runner build` | Passed. All 17 generated Dart files matched byte-for-byte after rerunning both generators. |
+| Formatting, `flutter analyze` and `git diff --check` | Passed. Formatting verified 91 Dart files and analysis reported no issues. |
+| `flutter test` and `flutter test --coverage` | Passed all 226 tests, including the 207 existing cases. LCOV recorded 3,075 of 3,359 instrumented lines overall (91.5%) and 480 of 497 in the Details provider and presentation (96.6%). |
+| iOS simulator | The standard `lib/main.dart` entry point built, launched and hot reloaded. The live Details and gallery captures are linked in the design review. |
+| Android debug build | `flutter build apk --debug` passed. Android runtime remains unverified in Phase 6. |
+
+Phase 6 is pending developer review.

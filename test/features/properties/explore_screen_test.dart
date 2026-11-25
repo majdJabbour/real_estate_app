@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:real_estate_app/app/app.dart';
 import 'package:real_estate_app/app/navigation/app_router.dart';
-import 'package:real_estate_app/app/navigation/temporary_destinations.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/design_system/design_controls.dart';
 import 'package:real_estate_app/core/errors/app_failure.dart';
@@ -17,6 +16,7 @@ import 'package:real_estate_app/features/properties/domain/property.dart';
 import 'package:real_estate_app/features/properties/domain/property_filter_options.dart';
 import 'package:real_estate_app/features/properties/domain/property_repository.dart';
 import 'package:real_estate_app/features/properties/domain/property_type.dart';
+import 'package:real_estate_app/features/properties/presentation/details/property_details_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/explore/explore_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/filters/property_filter_sheet.dart';
 import 'package:real_estate_app/features/properties/presentation/filters/property_range_control.dart';
@@ -90,18 +90,29 @@ void main() {
       expect(find.byType(PropertyListCard), findsWidgets);
       expect(repo.queries, hasLength(queries));
 
-      await tester.tap(find.text('Sunlit Townhome item-1').hitTestable());
+      final scrollable = find
+          .descendant(
+            of: find.byType(CustomScrollView),
+            matching: find.byType(Scrollable),
+          )
+          .first;
+      final position = tester.state<ScrollableState>(scrollable).position;
+      position.jumpTo(180);
+      await tester.pumpAndSettle();
+      expect(position.pixels, greaterThan(0));
+      final scrollOffset = position.pixels;
+      await tester.tap(find.text('Sunlit Townhome item-3').hitTestable());
       await tester.pumpAndSettle();
       expect(
         tester
-            .widget<PropertyDetailsDestination>(
-              find.byType(PropertyDetailsDestination),
-            )
+            .widget<PropertyDetailsScreen>(find.byType(PropertyDetailsScreen))
             .propertyId,
-        'item-1',
+        'item-3',
       );
+      expect(repo.detailIds, ['item-3']);
       await tester.tap(find.byTooltip('Back'));
       await tester.pumpAndSettle();
+      expect(position.pixels, scrollOffset);
       await tester.tap(find.text('Profile').hitTestable().last);
       await tester.pumpAndSettle();
       await tester.tap(find.text('Explore').hitTestable().last);

@@ -17,6 +17,7 @@ import 'package:real_estate_app/features/properties/application/property_provide
 import 'package:real_estate_app/features/properties/domain/property.dart';
 import 'package:real_estate_app/features/properties/domain/property_repository.dart';
 import 'package:real_estate_app/features/properties/domain/property_type.dart';
+import 'package:real_estate_app/features/properties/presentation/details/property_details_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/explore/explore_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/filters/property_filter_sheet.dart';
 import 'package:real_estate_app/features/properties/presentation/home/home_screen.dart';
@@ -98,7 +99,8 @@ void main() {
     'starts on Home and preserves the scroll position across tabs and details',
     (tester) async {
       final semantics = tester.ensureSemantics();
-      final container = await _pump(tester);
+      final repository = _repository();
+      final container = await _pump(tester, repository: repository);
       final router = container.read(appRouterProvider);
       expect(router.routerDelegate.currentConfiguration.uri.path, '/home');
       expect(find.byType(HomeScreen), findsOneWidget);
@@ -136,10 +138,11 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.byType(AppTabShell), findsNothing);
-      final details = tester.widget<PropertyDetailsDestination>(
-        find.byType(PropertyDetailsDestination),
+      final details = tester.widget<PropertyDetailsScreen>(
+        find.byType(PropertyDetailsScreen),
       );
       expect(details.propertyId, 'recommendation-0');
+      expect(repository.detailIds, ['recommendation-0']);
       await tester.tap(find.byTooltip('Back'));
       await tester.pumpAndSettle();
       expect(tester.getTopLeft(card).dy, closeTo(cardTop, 0.5));
@@ -336,7 +339,7 @@ void main() {
       await tester.tap(favorite);
       await tester.pumpAndSettle();
       expect(find.byType(HomeScreen), findsOneWidget);
-      expect(find.byType(PropertyDetailsDestination), findsNothing);
+      expect(find.byType(PropertyDetailsScreen), findsNothing);
       expect(find.byType(PropertyImage), findsWidgets);
     },
   );

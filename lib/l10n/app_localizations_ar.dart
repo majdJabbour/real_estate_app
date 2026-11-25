@@ -250,9 +250,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get propertyDetailsTitle => 'تفاصيل العقار';
 
   @override
-  String get propertyDetailsPending => 'ستتوفر تفاصيل العقار في مرحلة لاحقة.';
-
-  @override
   String get exploreTitle => 'ابحث عن منزلك المثالي';
 
   @override
@@ -354,4 +351,184 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get clearFeaturedFilter => 'إلغاء تصفية العقارات المميزة';
+
+  @override
+  String get detailsAgent => 'الوكيل';
+
+  @override
+  String get detailsOverview => 'نظرة عامة';
+
+  @override
+  String get detailsFacilities => 'المرافق';
+
+  @override
+  String get detailsNoFacilities => 'لا توجد مرافق مدرجة.';
+
+  @override
+  String get detailsGallery => 'معرض الصور';
+
+  @override
+  String get detailsNoPhotos => 'لا توجد صور متاحة.';
+
+  @override
+  String get detailsLocation => 'الموقع';
+
+  @override
+  String get detailsLatitude => 'خط العرض';
+
+  @override
+  String get detailsLongitude => 'خط الطول';
+
+  @override
+  String get detailsReviews => 'التقييمات';
+
+  @override
+  String get detailsNoReviews => 'لا توجد تقييمات متاحة.';
+
+  @override
+  String get detailsMonthlyRent => 'الإيجار الشهري';
+
+  @override
+  String get detailsBookingUnavailable => 'الحجز غير متاح';
+
+  @override
+  String detailsPhotoPosition(int position, int total) {
+    final intl.NumberFormat positionNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String positionString = positionNumberFormat.format(position);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'الصورة $positionString من $totalString';
+  }
+
+  @override
+  String detailsOpenPhoto(int position, int total) {
+    final intl.NumberFormat positionNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String positionString = positionNumberFormat.format(position);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'افتح الصورة $positionString من $totalString';
+  }
+
+  @override
+  String detailsMorePhotos(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '+$countString';
+  }
+
+  @override
+  String detailsOpenMorePhotos(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'افتح المعرض، صور إضافية: $countString';
+  }
+
+  @override
+  String detailsBedrooms(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'غرف النوم: $countString';
+  }
+
+  @override
+  String detailsBathrooms(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'الحمّامات: $countString';
+  }
+
+  @override
+  String get detailsTypeApartment => 'شقة';
+
+  @override
+  String get detailsTypeTownhome => 'منزل متلاصق';
+
+  @override
+  String get detailsTypeHouse => 'منزل';
+
+  @override
+  String get detailsTypeCondo => 'شقة تمليك';
+
+  @override
+  String get detailsTypeDuplex => 'دوبلكس';
+
+  @override
+  String get detailsTypeStudio => 'استوديو';
+
+  @override
+  String get detailsFacilityAirConditioning => 'تكييف الهواء';
+
+  @override
+  String get detailsFacilityBalcony => 'شرفة';
+
+  @override
+  String get detailsFacilityBikeStorage => 'تخزين الدراجات';
+
+  @override
+  String get detailsFacilityConcierge => 'خدمة الاستقبال';
+
+  @override
+  String get detailsFacilityCoveredParking => 'موقف سيارات مغطّى';
+
+  @override
+  String get detailsFacilityDeck => 'منصّة خارجية';
+
+  @override
+  String get detailsFacilityElevator => 'مصعد';
+
+  @override
+  String get detailsFacilityEvCharging => 'شحن السيارات الكهربائية';
+
+  @override
+  String get detailsFacilityFrontPorch => 'شرفة أمامية';
+
+  @override
+  String get detailsFacilityFurnished => 'مفروش';
+
+  @override
+  String get detailsFacilityGarage => 'مرآب';
+
+  @override
+  String get detailsFacilityGarden => 'حديقة';
+
+  @override
+  String get detailsFacilityGym => 'صالة رياضية';
+
+  @override
+  String get detailsFacilityInUnitLaundry => 'غسيل داخل الوحدة';
+
+  @override
+  String get detailsFacilityPatio => 'فناء';
+
+  @override
+  String get detailsFacilityPetFriendly => 'يُسمح بالحيوانات الأليفة';
+
+  @override
+  String get detailsFacilityPool => 'مسبح';
+
+  @override
+  String get detailsFacilityRoofTerrace => 'تراس على السطح';
+
+  @override
+  String get detailsFacilitySecureEntry => 'مدخل آمن';
+
+  @override
+  String get detailsFacilitySharedLaundry => 'غسيل مشترك';
+
+  @override
+  String get detailsFacilityStorage => 'مساحة تخزين';
 }

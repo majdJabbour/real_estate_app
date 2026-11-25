@@ -10,12 +10,14 @@ class PropertyFavoriteButton extends StatelessWidget {
     required this.selected,
     required this.onPressed,
     this.onPhoto = false,
+    this.iconSize,
     super.key,
   });
 
   final bool selected;
   final VoidCallback? onPressed;
   final bool onPhoto;
+  final double? iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class PropertyFavoriteButton extends StatelessWidget {
         : onPhoto
         ? Colors.white
         : colors.favoriteOutline;
+    final size = iconSize ?? (onPhoto ? 22.0 : 20.0);
     final label = onPressed == null
         ? l10n.favoriteUnavailable
         : selected
@@ -37,10 +40,10 @@ class PropertyFavoriteButton extends StatelessWidget {
         tooltip: label,
         onPressed: onPressed,
         isSelected: selected,
-        icon: AppIcon(AppIcons.heartOutline, size: onPhoto ? 22 : 20),
+        icon: AppIcon(AppIcons.heartOutline, size: size),
         selectedIcon: const Icon(Icons.favorite_rounded),
         style: IconButton.styleFrom(
-          iconSize: onPhoto ? 22 : 20,
+          iconSize: size,
           foregroundColor: foreground,
           disabledForegroundColor: foreground,
           minimumSize: const Size.square(DesignSize.tapTarget),
