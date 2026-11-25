@@ -1199,6 +1199,24 @@ abstract class AppLocalizations {
   /// **'Sign out of your account?'**
   String get confirmSignOut;
 
+  /// No description provided for @detailsMapLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading map…'**
+  String get detailsMapLoading;
+
+  /// No description provided for @detailsMapTilesFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Some map tiles could not load.'**
+  String get detailsMapTilesFailed;
+
+  /// No description provided for @detailsMapUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'An embedded map is unavailable for this location.'**
+  String get detailsMapUnavailable;
+
   /// No description provided for @detailsOpenMap.
   ///
   /// In en, this message translates to:

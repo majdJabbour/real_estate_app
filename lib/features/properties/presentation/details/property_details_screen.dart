@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:intl/intl.dart' show DateFormat, NumberFormat;
 import 'package:material_ui/material_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,6 +23,7 @@ import '../widgets/property_image.dart';
 import '../widgets/property_price_label.dart';
 import 'property_facilities.dart';
 import 'property_gallery.dart';
+import 'property_location_map.dart';
 
 const _sectionGap = 30.0;
 
@@ -469,9 +471,11 @@ class _Location extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final location = details.location;
-    final latitude = location.latitude;
-    final longitude = location.longitude;
+    final latitude = location?.latitude;
+    final longitude = location?.longitude;
     final valid =
+        latitude != null &&
+        longitude != null &&
         latitude.isFinite &&
         latitude.abs() <= 90 &&
         longitude.isFinite &&
@@ -500,6 +504,13 @@ class _Location extends StatelessWidget {
           ],
         ),
         Text(l10n.detailsDemoLocation, style: theme.textTheme.bodySmall),
+        if (valid && latitude.abs() <= 85.05112878)
+          PropertyLocationMap(
+            key: ValueKey((latitude, longitude)),
+            point: LatLng(latitude, longitude),
+          )
+        else
+          Text(l10n.detailsMapUnavailable, style: theme.textTheme.bodySmall),
         if (valid)
           Align(
             alignment: AlignmentDirectional.centerStart,

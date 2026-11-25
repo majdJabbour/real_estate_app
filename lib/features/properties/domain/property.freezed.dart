@@ -678,14 +678,14 @@ abstract mixin class $PropertyDetailsCopyWith<$Res> {
     List<String> images,
     List<String> facilities,
     PropertyAgent agent,
-    PropertyLocation location,
+    PropertyLocation? location,
     List<PropertyReview> reviews,
     DateTime createdAt,
   });
 
   $PropertySummaryCopyWith<$Res> get summary;
   $PropertyAgentCopyWith<$Res> get agent;
-  $PropertyLocationCopyWith<$Res> get location;
+  $PropertyLocationCopyWith<$Res>? get location;
 }
 
 /// @nodoc
@@ -710,7 +710,7 @@ class _$PropertyDetailsCopyWithImpl<$Res>
     Object? images = null,
     Object? facilities = null,
     Object? agent = null,
-    Object? location = null,
+    Object? location = freezed,
     Object? reviews = null,
     Object? createdAt = null,
   }) {
@@ -752,10 +752,10 @@ class _$PropertyDetailsCopyWithImpl<$Res>
             ? _self.agent
             : agent // ignore: cast_nullable_to_non_nullable
                   as PropertyAgent,
-        location: null == location
+        location: freezed == location
             ? _self.location
             : location // ignore: cast_nullable_to_non_nullable
-                  as PropertyLocation,
+                  as PropertyLocation?,
         reviews: null == reviews
             ? _self.reviews
             : reviews // ignore: cast_nullable_to_non_nullable
@@ -792,8 +792,12 @@ class _$PropertyDetailsCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PropertyLocationCopyWith<$Res> get location {
-    return $PropertyLocationCopyWith<$Res>(_self.location, (value) {
+  $PropertyLocationCopyWith<$Res>? get location {
+    if (_self.location == null) {
+      return null;
+    }
+
+    return $PropertyLocationCopyWith<$Res>(_self.location!, (value) {
       return _then(_self.copyWith(location: value));
     });
   }

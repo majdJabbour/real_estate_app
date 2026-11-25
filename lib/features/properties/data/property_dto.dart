@@ -96,7 +96,7 @@ final class PropertyDetailsDto {
   @JsonKey(fromJson: _agent)
   final PropertyAgent agent;
   @JsonKey(fromJson: _location)
-  final PropertyLocation location;
+  final PropertyLocation? location;
   @JsonKey(fromJson: _reviews)
   final List<PropertyReview> reviews;
   @JsonKey(fromJson: _timestamp)
@@ -186,10 +186,20 @@ PropertyAgent _agent(Map<String, Object?> json) {
   );
 }
 
-PropertyLocation _location(Map<String, Object?> json) => PropertyLocation(
-  latitude: _inRange(json['latitude'] as num, -90, 90),
-  longitude: _inRange(json['longitude'] as num, -180, 180),
-);
+PropertyLocation? _location(Object? json) {
+  if (json
+      case {'latitude': final num latitude, 'longitude': final num longitude}
+      when latitude.isFinite &&
+          latitude.abs() <= 90 &&
+          longitude.isFinite &&
+          longitude.abs() <= 180) {
+    return PropertyLocation(
+      latitude: latitude.toDouble(),
+      longitude: longitude.toDouble(),
+    );
+  }
+  return null;
+}
 
 List<PropertyReview> _reviews(List<Object?> list) =>
     list.map((value) => _review(value as Map<String, Object?>)).toList();

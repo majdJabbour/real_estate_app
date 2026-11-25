@@ -33,7 +33,7 @@ PropertyDetailsDto _$PropertyDetailsDtoFromJson(Map<String, dynamic> json) =>
       images: _images(json['images'] as List),
       facilities: _facilities(json['facilities'] as List),
       agent: _agent(json['agent'] as Map<String, Object?>),
-      location: _location(json['location'] as Map<String, Object?>),
+      location: _location(json['location']),
       reviews: _reviews(json['reviews'] as List),
       createdAt: _timestamp(json['createdAt'] as String),
     );

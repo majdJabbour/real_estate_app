@@ -52,7 +52,7 @@ class PropertyDetails with _$PropertyDetails {
   final List<String> images;
   final List<String> facilities;
   final PropertyAgent agent;
-  final PropertyLocation location;
+  final PropertyLocation? location;
   final List<PropertyReview> reviews;
   final DateTime createdAt;
 }

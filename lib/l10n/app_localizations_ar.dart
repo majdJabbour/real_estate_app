@@ -647,6 +647,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmSignOut => 'هل تريد تسجيل الخروج من حسابك؟';
 
   @override
+  String get detailsMapLoading => 'جارٍ تحميل الخريطة…';
+
+  @override
+  String get detailsMapTilesFailed => 'تعذر تحميل بعض أجزاء الخريطة.';
+
+  @override
+  String get detailsMapUnavailable => 'الخريطة المضمّنة غير متاحة لهذا الموقع.';
+
+  @override
   String get detailsOpenMap => 'فتح في الخرائط';
 
   @override

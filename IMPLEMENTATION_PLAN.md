@@ -69,5 +69,9 @@ Run generation as applicable, formatting, analyze, unit/provider/widget tests an
 
 Updated the Details footer to share favorites state with the hero heart, and replaced numeric coordinates with a fictional-listing address and an external map action. Explore signals applied filters without extra requests. Preserved approved white foregrounds and selected chip geometry, audited icon substitutions, and applied one original mark to Flutter Splash and the native launcher and launch resources. Phase 9.1 stops for developer review. [Comparison and verification](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
 
+### 9.1.1 — Original Figma assets and embedded map
+
+Implemented the actual Details map and localized degraded states. The external handoff remains available for valid coordinates. The map libraries resolved without upgrades to existing lockfile entries. Reviewed original logo and Auth exports against the Figma references. New originals remain deferred pending rights for the logo and photos, with the existing shipping artwork retained. Stop for developer review before Phase 9.2. [Design and licensing status](DESIGN_SYSTEM.md#phase-911--embedded-map-and-original-asset-review)
+
 ## Priority and scope guard
 The assessment is primarily Flutter and suggests 12–14 working hours. Complete approved public screens and required bilingual/API behavior before expanding optional auth/profile features if time is constrained. Firebase configuration can be performed earlier as a separate setup task with developer approval, but must not block public UI work. Do not claim completion for untested features or silently change the contract. No artificial commits or arbitrary test-count goals.

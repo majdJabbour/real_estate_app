@@ -667,6 +667,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmSignOut => 'Sign out of your account?';
 
   @override
+  String get detailsMapLoading => 'Loading map…';
+
+  @override
+  String get detailsMapTilesFailed => 'Some map tiles could not load.';
+
+  @override
+  String get detailsMapUnavailable =>
+      'An embedded map is unavailable for this location.';
+
+  @override
   String get detailsOpenMap => 'Open in Maps';
 
   @override

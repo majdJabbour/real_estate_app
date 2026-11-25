@@ -163,7 +163,7 @@ void main() {
       expect(uri.host, 'www.google.com');
       expect(uri.path, '/maps/search/');
       expect(uri.queryParameters['api'], '1');
-      final location = homeDetails('rental-001').location;
+      final location = homeDetails('rental-001').location!;
       expect(
         uri.queryParameters['query'],
         '${location.latitude},${location.longitude}',

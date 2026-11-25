@@ -55,8 +55,8 @@ void main() {
       expect(details.agent.id, 'agent-austin');
       expect(details.agent.name, 'Jonah Reyes');
       expect(details.agent.avatar, isNull);
-      expect(details.location.latitude, 30.263);
-      expect(details.location.longitude, -97.722);
+      expect(details.location?.latitude, 30.263);
+      expect(details.location?.longitude, -97.722);
       expect(details.createdAt, DateTime.utc(2025, 6, 23, 16));
       final review = details.reviews.single;
       expect(review.id, 'rental-022-review-1');
@@ -101,12 +101,25 @@ void main() {
       expect(() => details.images.clear(), throwsUnsupportedError);
     });
 
+    test('invalid or missing coordinates preserve the rest of Details', () {
+      for (final location in [
+        null,
+        {'latitude': 91, 'longitude': 30},
+        {},
+      ]) {
+        final json = detailsJson()..remove('location');
+        if (location != null) json['location'] = location;
+        final details = PropertyDetailsDto.fromJson(json).toDomain();
+        expect(details.location, isNull);
+        expect(details.summary.address, isNotEmpty);
+      }
+    });
+
     for (final (field, value) in <(String, Object?)>[
       ('agent', null),
       ('agent', {'id': 'agent-austin', 'name': 'Jonah Reyes'}),
       ('agent', {'id': 'agent-austin', 'name': 'Jonah Reyes', 'avatar': 1}),
       ('bedrooms', 2.5),
-      ('location', {'latitude': 91, 'longitude': 30}),
       ('images', [false]),
       ('facilities', ['patio', 42]),
       ('reviews', [null]),
