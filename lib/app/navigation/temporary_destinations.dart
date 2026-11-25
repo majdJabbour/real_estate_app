@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../core/design_system/app_icon.dart';
 import '../../core/localization/app_locale.dart';
 import '../../core/layout/responsive_layout.dart';
 import '../../l10n/app_localizations.dart';
@@ -83,7 +84,9 @@ class PropertyDetailsDestination extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
+        leading: IconButton(
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          icon: const AppIcon(AppIcons.back, size: 22),
           onPressed: () {
             if (context.canPop()) {
               context.pop();

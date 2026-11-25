@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
+import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/app_theme.dart';
 import '../../../../core/design_system/design_tokens.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -36,7 +37,7 @@ class PropertyFavoriteButton extends StatelessWidget {
         tooltip: label,
         onPressed: onPressed,
         isSelected: selected,
-        icon: const Icon(Icons.favorite_border_rounded),
+        icon: AppIcon(AppIcons.heartOutline, size: onPhoto ? 22 : 20),
         selectedIcon: const Icon(Icons.favorite_rounded),
         style: IconButton.styleFrom(
           iconSize: onPhoto ? 22 : 20,

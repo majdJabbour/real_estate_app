@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../core/design_system/app_icon.dart';
 import '../../core/design_system/design_typography.dart';
 import '../../core/layout/responsive_layout.dart';
 import '../../l10n/app_localizations.dart';
@@ -15,9 +16,9 @@ class AppTabShell extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final tabs = [
-      (l10n.homeTab, Icons.home_outlined, Icons.home_rounded),
-      (l10n.exploreTab, Icons.search_outlined, Icons.search_rounded),
-      (l10n.profileTab, Icons.person_outline_rounded, Icons.person_rounded),
+      (l10n.homeTab, AppIcons.homeOutline, AppIcons.homeSelected),
+      (l10n.exploreTab, AppIcons.exploreOutline, AppIcons.exploreSelected),
+      (l10n.profileTab, AppIcons.profileOutline, AppIcons.profileSelected),
     ];
     return Scaffold(
       body: shell,
@@ -31,19 +32,27 @@ class AppTabShell extends StatelessWidget {
           ),
           child: SafeArea(
             top: false,
-            child: AdaptiveContent(
-              child: Row(
-                children: [
-                  for (final (index, (label, outline, filled)) in tabs.indexed)
-                    Expanded(
-                      child: _Tab(
-                        label: label,
-                        icon: shell.currentIndex == index ? filled : outline,
-                        selected: shell.currentIndex == index,
-                        onTap: () => shell.goBranch(index),
+            child: Center(
+              heightFactor: 1,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 86,
+                  maxWidth: ResponsiveLayout.collectionMaxWidth,
+                ),
+                child: Row(
+                  children: [
+                    for (final (index, (label, outline, filled))
+                        in tabs.indexed)
+                      Expanded(
+                        child: _Tab(
+                          label: label,
+                          icon: shell.currentIndex == index ? filled : outline,
+                          selected: shell.currentIndex == index,
+                          onTap: () => shell.goBranch(index),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -62,7 +71,7 @@ class _Tab extends StatelessWidget {
   });
 
   final String label;
-  final IconData icon;
+  final AppIcons icon;
   final bool selected;
   final VoidCallback onTap;
 
@@ -84,7 +93,7 @@ class _Tab extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             spacing: 6,
             children: [
-              Icon(icon, size: 24, color: foreground),
+              AppIcon(icon, size: 24, color: foreground),
               Text(
                 label,
                 style: DesignTypography.navigationLabel.copyWith(

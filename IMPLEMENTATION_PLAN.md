@@ -31,7 +31,11 @@ Screen state belongs with its approved consumers in Phases 4–6. Locale-sensiti
 
 ## 4 — Production navigation and Home
 
-Implemented the stateful Home, Explore, and Profile tab shell and the root property-details route. Home uses the approved Blue reference, shared theme palettes, real listing and category data, and independently refreshable sections. Explore, Filters, Details, and Profile intent handling is temporary, with language selection available in Profile. Authentication and persistent favorites remain in their planned phases. Review is pending. Suggested commit `feat: implement home and navigation`.
+Implemented the stateful Home, Explore, and Profile tab shell and the root property-details route. Home uses the approved Blue reference, shared theme palettes, real listing and category data, and independently refreshable sections. Explore, Filters, Details, and Profile intent handling is temporary, with language selection available in Profile. Authentication and persistent favorites remain in their planned phases. Phase 4 is functionally approved.
+
+### 4.1 — Original Figma icons and Home refinement
+
+Verified Iconly provenance, bundled the original Home and navigation SVG shapes, and refined Home spacing and controls using the Blue Figma reference and live simulator captures. The shared icon system keeps theme paints and RTL behavior explicit. The original icon inventory and outstanding artwork provenance are recorded for later phases. Review is pending. Suggested commit `feat: use original Figma icons on Home`.
 
 ## 5 — Explore and filters
 Implement approved list/grid layouts, server search, category selection, pagination, draft/apply/reset filters, histogram and sliders from global filter options. Ensure filters and query survive appropriate navigation, reset pages on changes, retry next page and cancel stale work. Verify combined filters and empty/equal bounds. Commit search and filters separately if cohesive.

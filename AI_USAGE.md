@@ -107,3 +107,20 @@ The developer approved Phase 3 and requested production navigation, the Home scr
 | `git diff --check` | Passed. |
 
 Explore, Filters, full Details, Profile data, authentication, and persistent favorites remain pending. Android runtime was outside this verification pass. Phase 4 is pending developer review.
+
+## Phase 4.1 — Original Figma icons and Home refinement
+
+The developer approved Phase 4 functionally and requested source icon fidelity, provenance, Home refinements, and a new live visual comparison. Codex used the Figma design-to-code and inspection skills to read the eight Blue frames, inspect matching vector paths, paint roles, and selected states across palettes, and export the eleven Iconly assets used by the app. Codex checked Piqo Studio's free release, Figma's Community licensing, and Iconsax's distinct redistribution terms. The asset docs record attribution, export changes, the measurement inventory, and outstanding artwork origins. No Figma frames were edited. [Provenance](assets/ASSET_LICENSES.md) · [Inventory](assets/FIGMA_ICON_INVENTORY.md)
+
+Codex added the shared Flutter SVG renderer, retained the independent control semantics, and compared the running Home with its Phase 4 captures and Blue Figma node `1:4426`. The clipped Explore handle edge was added after the Arabic simulator review showed the pale handle had low visibility on white. The label and themed icon tints, native insets, guest avatar, accessible search border, and selected-chip checkmark are documented differences. [Design comparison](DESIGN_SYSTEM.md#16-phase-41-icons-and-home-refinement)
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed with six informational update notices. The lockfile matches Phase 4. The manifest diff registers three SVG asset directories. |
+| Formatting and `flutter analyze` | Passed over 75 Dart files with no analyzer issues. |
+| `flutter test` and `flutter test --coverage` | Both passed all 185 tests, including the original 178, six icon cases, and a tap-driven locale and tab regression case. LCOV recorded 1,691 of 1,856 instrumented lines (91.1%). Tests parsed and rasterized all registered SVGs and checked sizing, semantic ownership, theme paint isolation, and pixel-level RTL behavior. |
+| iOS simulator | Built and ran on the same iPhone 18 Pro Max at 440 × 956 dp with live property data. Captured English Home, the recommendation grid, Arabic Home, and a temporary 320 dp viewport. The Arabic tab states were exercised through the running shell. Flutter hot reloaded and hot restarted the final changes. One direct debugger-driven restore call reached the router during a frame and triggered a build-phase assertion. The tap-driven regression test switched tabs while a locale save was pending and completed without an exception. |
+| SwiftPM files | Both files are tracked in the Phase 4 commit and byte-identical. They pin 16 native transitive packages for the Flutter-generated Swift package. They were left in place for reproducible Xcode resolution. Apple recommends checking an app's package-resolution lockfile into Git. [Apple Xcode package documentation](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app?language=swift) |
+| `git diff --check` | Passed. |
+
+The selected favorite, guest avatar, and image placeholders retain Material glyphs. The Google mark, Iconsax variants, Real Scout branding, and unnamed facility, stat and map artwork remain inventoried for later review. Phase 4.1 is pending developer review.

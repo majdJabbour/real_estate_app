@@ -9,6 +9,7 @@ import 'package:real_estate_app/app/navigation/app_router.dart';
 import 'package:real_estate_app/app/navigation/app_tab_shell.dart';
 import 'package:real_estate_app/app/navigation/explore_intent.dart';
 import 'package:real_estate_app/app/navigation/temporary_destinations.dart';
+import 'package:real_estate_app/core/design_system/app_icon.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/errors/app_failure.dart';
 import 'package:real_estate_app/core/localization/app_locale.dart';
@@ -137,7 +138,7 @@ void main() {
         find.byType(PropertyDetailsDestination),
       );
       expect(details.propertyId, 'recommendation-0');
-      await tester.pageBack();
+      await tester.tap(find.byTooltip('Back'));
       await tester.pumpAndSettle();
       expect(tester.getTopLeft(card).dy, closeTo(cardTop, 0.5));
       semantics.dispose();
@@ -354,6 +355,32 @@ void main() {
     },
   );
 
+  testWidgets('tab taps remain valid while a locale change is saving', (
+    tester,
+  ) async {
+    final container = await _pump(tester);
+    final preferences =
+        container.read(localePreferencesProvider) as MemoryLocalePreferences;
+    final save = Completer<void>();
+    preferences.beforeWrite = (_) => save.future;
+
+    await tester.tap(_tab('Profile'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('العربية'));
+    await tester.pump();
+    await tester.tap(_tab('Explore'));
+    save.complete();
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ExploreDestination), findsOneWidget);
+    expect(_tab('استكشاف'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    await tester.tap(_tab('الرئيسية'));
+    await tester.pumpAndSettle();
+    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   for (final (variant, brand) in [
     (AppThemeVariant.blue, const Color(0xFF0061FF)),
     (AppThemeVariant.purple, const Color(0xFF6338C6)),
@@ -363,7 +390,12 @@ void main() {
       'uses the shared ${variant.name} palette for the selected tab',
       (tester) async {
         await _pump(tester, variant: variant);
-        final icon = tester.widget<Icon>(find.byIcon(Icons.home_rounded));
+        final icon = tester.widget<AppIcon>(
+          find.byWidgetPredicate(
+            (widget) =>
+                widget is AppIcon && widget.icon == AppIcons.homeSelected,
+          ),
+        );
         expect(icon.color, brand);
         expect(find.byType(FeaturedPropertyCard), findsWidgets);
       },

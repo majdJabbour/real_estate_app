@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:material_ui/material_ui.dart';
 
+import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/design_tokens.dart';
 import '../../../../l10n/app_localizations.dart';
 
@@ -30,20 +31,13 @@ class PropertyRatingBadge extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: featured ? 10 : 6,
-            vertical: featured ? 4 : 3,
+            vertical: 4,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             spacing: 4,
             children: [
-              ShaderMask(
-                shaderCallback: DesignColors.ratingStar.createShader,
-                child: Icon(
-                  Icons.star_rounded,
-                  size: featured ? 14 : 10,
-                  color: Colors.white,
-                ),
-              ),
+              AppIcon(AppIcons.ratingStar, size: featured ? 14 : 10),
               Text(
                 value,
                 style: TextStyle(

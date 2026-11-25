@@ -2,6 +2,7 @@ import 'dart:ui' show SemanticsAction;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:real_estate_app/core/design_system/app_icon.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/design_system/design_controls.dart';
 import 'package:real_estate_app/preview/preview_app.dart';
@@ -241,8 +242,16 @@ void main() {
       direction: TextDirection.rtl,
     );
 
-    final search = tester.getCenter(find.byIcon(Icons.search));
-    final filter = tester.getCenter(find.byIcon(Icons.tune));
+    final search = tester.getCenter(
+      find.byWidgetPredicate(
+        (widget) => widget is AppIcon && widget.icon == AppIcons.exploreOutline,
+      ),
+    );
+    final filter = tester.getCenter(
+      find.byWidgetPredicate(
+        (widget) => widget is AppIcon && widget.icon == AppIcons.filter,
+      ),
+    );
     expect(search.dx, greaterThan(filter.dx));
   });
 

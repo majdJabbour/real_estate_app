@@ -90,6 +90,9 @@ flutter:
 
   assets:
     - assets/fonts/rubik/OFL.txt
+    - assets/icons/navigation/
+    - assets/icons/actions/
+    - assets/icons/property/
 
   fonts:
     - family: Rubik

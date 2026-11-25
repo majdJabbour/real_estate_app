@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'app_icon.dart';
 import 'design_tokens.dart';
 import 'design_typography.dart';
 
@@ -147,7 +148,14 @@ class AppSearchField extends StatelessWidget {
         ),
         decoration: InputDecoration(
           hintText: hintText,
-          prefixIcon: const Icon(Icons.search, size: DesignSize.searchIcon),
+          prefixIcon: const Center(
+            widthFactor: 1,
+            heightFactor: 1,
+            child: AppIcon(
+              AppIcons.exploreOutline,
+              size: DesignSize.searchIcon,
+            ),
+          ),
           prefixIconConstraints: const BoxConstraints(
             minWidth: DesignSize.searchIconSlot,
             minHeight: DesignSize.tapTarget,
@@ -157,7 +165,10 @@ class AppSearchField extends StatelessWidget {
               : IconButton(
                   tooltip: trailingAction.label,
                   onPressed: enabled ? trailingAction.onPressed : null,
-                  icon: const Icon(Icons.tune, size: DesignSize.searchIcon),
+                  icon: const AppIcon(
+                    AppIcons.filter,
+                    size: DesignSize.searchIcon,
+                  ),
                 ),
         ),
       ),
@@ -196,10 +207,10 @@ class AppChoiceChip extends StatelessWidget {
       onSelected: onSelected,
       focusNode: focusNode,
       materialTapTargetSize: MaterialTapTargetSize.padded,
-      padding: compact
-          ? const EdgeInsets.symmetric(
-              horizontal: DesignSpacing.page,
-              vertical: DesignSpacing.xSmall,
+      padding: compact || selected
+          ? EdgeInsets.symmetric(
+              horizontal: selected ? DesignSpacing.chipGap : DesignSpacing.page,
+              vertical: compact ? DesignSpacing.xSmall : DesignSpacing.small,
             )
           : null,
       checkmarkColor: foreground,

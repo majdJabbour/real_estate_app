@@ -115,7 +115,7 @@ class FeaturedPropertyCard extends StatelessWidget {
         ),
         PositionedDirectional(
           end: 3,
-          bottom: 4,
+          bottom: 8,
           child: PropertyFavoriteButton(
             selected: isFavorite,
             onPressed: onFavoritePressed,
@@ -237,11 +237,7 @@ class _PropertyText extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: featured
               ? _featuredAddress
-              : TextStyle(
-                  fontSize: 12,
-                  height: 1.4,
-                  color: scheme.onSurfaceVariant,
-                ),
+              : TextStyle(fontSize: 12, color: scheme.onSurfaceVariant),
         ),
         Padding(
           padding: const EdgeInsetsDirectional.only(end: 36),

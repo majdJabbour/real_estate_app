@@ -7,6 +7,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../app/navigation/explore_intent.dart';
+import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/design_controls.dart';
 import '../../../../core/design_system/design_tokens.dart';
 import '../../../../core/errors/app_failure.dart';
@@ -318,11 +319,10 @@ class _GuestHeader extends StatelessWidget {
         IconButton(
           onPressed: null,
           tooltip: l10n.notificationsUnavailable,
-          icon: const Icon(Icons.notifications_none_rounded, size: 22),
+          icon: const AppIcon(AppIcons.notification, size: 22),
           style: IconButton.styleFrom(
-            backgroundColor: scheme.surface,
-            shape: const CircleBorder(),
-            side: BorderSide(color: scheme.outlineVariant),
+            minimumSize: const Size.square(DesignSize.tapTarget),
+            disabledForegroundColor: scheme.onSurfaceVariant,
           ),
         ),
       ],
