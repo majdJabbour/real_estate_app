@@ -56,10 +56,10 @@ class AppIcon extends StatelessWidget {
         excludeFromSemantics: semanticLabel == null,
       );
     }
-    final solid =
-        icon != AppIcons.ratingStar && icon != AppIcons.exploreSelected;
+    final solid = icon != AppIcons.ratingStar;
 
     final (width, height) = switch (icon) {
+      AppIcons.exploreSelected => (dimension * 20 / 24, dimension * 20 / 24),
       AppIcons.profileLanguage => (23.0833, 23.0833),
       AppIcons.profileLogout => (24.2891, 23.0833),
       AppIcons.profileChevron => (13.1667, 7.33333),
@@ -72,9 +72,6 @@ class AppIcon extends StatelessWidget {
       colorFilter: solid && tint != null
           ? ColorFilter.mode(tint, BlendMode.srcIn)
           : null,
-      colorMapper: icon == AppIcons.exploreSelected && tint != null
-          ? _ExploreColorMapper(tint)
-          : null,
       matchTextDirection:
           icon == AppIcons.back ||
           icon == AppIcons.detailsBack ||
@@ -82,7 +79,8 @@ class AppIcon extends StatelessWidget {
       semanticsLabel: semanticLabel,
       excludeFromSemantics: semanticLabel == null,
     );
-    if (icon == AppIcons.profileChevron ||
+    if (icon == AppIcons.exploreSelected ||
+        icon == AppIcons.profileChevron ||
         icon == AppIcons.profileLanguage ||
         icon == AppIcons.profileLogout) {
       return SizedBox.square(
@@ -101,30 +99,4 @@ class AppIcon extends StatelessWidget {
     }
     return picture;
   }
-}
-
-final class _ExploreColorMapper extends ColorMapper {
-  const _ExploreColorMapper(this.accent);
-
-  final Color accent;
-
-  @override
-  Color substitute(
-    String? id,
-    String elementName,
-    String attributeName,
-    Color color,
-  ) =>
-      elementName == 'path' &&
-          (attributeName == 'fill' || attributeName == 'stroke') &&
-          color == const Color(0xFF0061FF)
-      ? accent
-      : color;
-
-  @override
-  bool operator ==(Object other) =>
-      other is _ExploreColorMapper && other.accent == accent;
-
-  @override
-  int get hashCode => accent.hashCode;
 }

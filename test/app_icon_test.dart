@@ -170,7 +170,7 @@ void main() {
   );
 
   testWidgets(
-    'tints the Explore main path and retains the pale accent and rating gradient',
+    'tints the original Explore silhouette and retains the rating gradient',
     (tester) async {
       await tester.pumpWidget(
         _host(
@@ -185,10 +185,13 @@ void main() {
       final pictures = tester
           .widgetList<SvgPicture>(find.byType(SvgPicture))
           .toList();
+      expect(pictures[0].width, 20);
+      expect(pictures[0].height, 20);
       expect(
-        pictures.map((picture) => picture.colorFilter),
-        everyElement(isNull),
+        pictures[0].colorFilter,
+        const ColorFilter.mode(Color(0xFF6338C6), BlendMode.srcIn),
       );
+      expect(pictures[1].colorFilter, isNull);
       await tester.runAsync(() async {
         final explore = await vg.loadPicture(pictures[0].bytesLoader, null);
         final star = await vg.loadPicture(pictures[1].bytesLoader, null);
@@ -198,16 +201,11 @@ void main() {
           canvas.scale(3);
           canvas.drawPicture(explore.picture);
           final scaled = recorder.endRecording();
-          final exploreBytes = await _pixels(await scaled.toImage(72, 72));
+          final exploreBytes = await _pixels(await scaled.toImage(60, 60));
           scaled.dispose();
-          int pixel(int x, int y) => exploreBytes.getUint32((y * 72 + x) * 4);
-          expect(pixel(30, 30), 0x6338C6FF);
-          final handleColors = {
-            for (var y = 54; y < 66; y++)
-              for (var x = 54; x < 66; x++) pixel(x, y),
-          };
-          expect(handleColors, contains(0xF9F9FAFF));
-          expect(handleColors, contains(0x6338C6FF));
+          int pixel(int x, int y) => exploreBytes.getUint32((y * 60 + x) * 4);
+          expect(pixel(24, 24), 0x0061FFFF);
+          expect(pixel(54, 52), 0x0061FFFF);
           final starBytes = await _pixels(await star.picture.toImage(14, 14));
           final starColors = {
             for (var i = 0; i < starBytes.lengthInBytes; i += 4)

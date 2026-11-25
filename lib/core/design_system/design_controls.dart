@@ -236,7 +236,6 @@ class AppChoiceChip extends StatelessWidget {
               vertical: compact ? DesignSpacing.xSmall : DesignSpacing.small,
             )
           : null,
-      checkmarkColor: foreground,
       labelStyle: theme.textTheme.labelMedium!.copyWith(
         color: foreground,
         fontWeight: selected

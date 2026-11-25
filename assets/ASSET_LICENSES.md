@@ -9,7 +9,7 @@
 | `navigation/home-outline.svg` | `1:4112` | Original 1.5 px round stroke |
 | `navigation/home-selected.svg` | `1:4491` | Original filled silhouette |
 | `navigation/explore-outline.svg` | `1:4494`, shared with search input `1:4460` | Original clipped outline, scaled to the requested slot |
-| `navigation/explore-selected.svg` | `1:4115` | Original compound geometry split at its two exported subpaths. A clipped 1.8 px stroke keeps the pale #F9F9FA handle distinguishable on white without extending the silhouette |
+| `navigation/explore-selected.svg` | `1:4115` | Unmodified 20 × 20 compound-path export centered in the 24 × 24 slot. Both the lens and handle take the palette paint |
 | `navigation/profile-outline.svg` | `1:4497` | Original compound paths |
 | `navigation/profile-selected.svg` | `1:3865` | Original filled silhouette |
 | `actions/notification.svg` | `1:4456` | Bell only. The sample badge is a separate layer `1:4457` |
@@ -18,12 +18,12 @@
 | `property/heart-outline.svg` | `I1:4473;85001:13433`, shared with `I1:4470;85001:13415` | Original outline reused at 20 and 22 dp |
 | `property/rating-star.svg` | `I1:4470;85001:13417`, shared with `I1:4473;85001:13426` | Original two-stop gradient reused at 14 and 10 dp |
 
-The SVGs keep the exported view boxes and path coordinates. Opaque white Figma luminance masks were expressed as equivalent clip paths for `flutter_svg`. Internal IDs were shortened. App tinting changes semantic paint at runtime. The themed Explore path alone is recolored and its pale secondary paint remains fixed. Every SVG was parsed and rasterized in Flutter tests. [Measured node inventory](FIGMA_ICON_INVENTORY.md)
+The SVGs keep the exported view boxes and path coordinates. Opaque white Figma luminance masks were expressed as equivalent clip paths for `flutter_svg`. Internal IDs were shortened. App tinting changes semantic paint at runtime. The Explore export uses one themed paint for both lens and handle. Every SVG was parsed and rasterized in Flutter tests. [Measured node inventory](FIGMA_ICON_INVENTORY.md)
 
 ## Retained alternatives and future assets
 
 - **Iconsax (Vuesax)** supplies the `setting-4` outline in `1:4078` and `1:3890`. It differs from Home's Iconly filter. Iconsax's developer terms permit integration subject to their notice and redistribution rules and prohibit loose icon files. This phase bundles no Iconsax SVGs. [Iconsax license](https://docs.iconsax.io/license-and-terms/license) · [Iconsax identity and distribution](https://docs.iconsax.io/faqs/key)
-- **Material Icons from the installed Flutter SDK** supply the guest avatar, selected favorite heart, placeholder images and the accessibility checkmark in the selected chip. The Figma Home cards show an outline heart for both card styles. No original selected card-heart state was found. [Material Icons license](https://github.com/google/material-design-icons/blob/master/LICENSE)
+- **Material Icons from the installed Flutter SDK** supply the guest avatar, selected favorite heart, placeholder images. The Figma Home cards show an outline heart for both card styles. No original selected card-heart state was found. [Material Icons license](https://github.com/google/material-design-icons/blob/master/LICENSE)
 - **Google mark** `1:4549` has four fixed colors. It is inventoried only. The shipped mark comes from the official Google branding package. [Google branding guidelines](https://developers.google.com/identity/branding-guidelines)
 - **Real Scout branding and unnamed facility, stat and map glyphs** are inventoried for reference. Their originating author or redistribution terms could not be confirmed from the supplied Community copy. No files from those groups are bundled.
 - **Rubik** remains bundled under SIL OFL 1.1 with its attribution and complete notice. The runtime property photos remain server-supplied and are sourced as described in the API repository. [Rubik license](fonts/rubik/OFL.txt) · [Design system asset notes](../DESIGN_SYSTEM.md#7-assets-and-provenance)

@@ -393,8 +393,8 @@ void main() {
 
   for (final (variant, brand) in [
     (AppThemeVariant.blue, const Color(0xFF0061FF)),
-    (AppThemeVariant.purple, const Color(0xFF6338C6)),
-    (AppThemeVariant.orange, const Color(0xFF9A4500)),
+    (AppThemeVariant.purple, const Color(0xFF8B5DFF)),
+    (AppThemeVariant.orange, const Color(0xFFFF8000)),
   ]) {
     testWidgets(
       'uses the shared ${variant.name} palette for the selected tab',

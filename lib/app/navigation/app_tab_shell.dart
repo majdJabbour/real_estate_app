@@ -78,7 +78,7 @@ class _Tab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final foreground = selected ? scheme.secondary : scheme.onSurfaceVariant;
+    final foreground = selected ? scheme.primary : scheme.onSurfaceVariant;
     return Semantics(
       label: label,
       selected: selected,

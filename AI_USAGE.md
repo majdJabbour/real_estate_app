@@ -233,3 +233,9 @@ Changes cover the Favorites domain, remote data source, DTO, repositories, gener
 | Outstanding | Developer verification of authenticated production favorite writes, cold-start Firebase session restoration, live sign-out and account switching, and live Google Sign-In on both platforms. [Manual sequence](README.md#live-favorites-verification) |
 
 Suggested commits are `feat: add session-scoped property favorites`, `feat: complete profile and persist appearance`, and `docs: record Phase 8 verification and screenshots`.
+
+## Three-palette design fidelity correction
+
+The developer required the original Figma paints and geometry, white primary foregrounds, and an audit of remaining icon fallbacks. Codex used Figma design context and screenshot tools to inspect the three Filters frames, Explore states, and relevant fallback nodes. The three selected Explore SVG exports had identical path data and differed only in fill. Flutter now uses the unmodified Blue export in its original slot with the active brand tint. The shared theme sets white filled-button and selected-chip text, removes chip checkmarks absent from the reference, and applies original selected-tab paint. Orange uses a dark keyboard-focus border to keep focus visible. The design system documents the intentional contrast limits, and the icon inventory records unavailable originals and retained alternatives.
+
+Flutter rendered Explore and Filters at 430 × 932 with test fixtures in all three palettes. The comparisons are linked in the design system. The Android emulator ran the app and hot reload succeeded. These captures do not establish full-app visual parity or iOS runtime verification. [Visual verification](DESIGN_SYSTEM.md#three-palette-fidelity-verification)

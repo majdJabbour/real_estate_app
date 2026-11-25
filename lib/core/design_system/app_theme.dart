@@ -9,13 +9,11 @@ enum AppThemeVariant { blue, purple, orange }
 final class _Palette {
   const _Palette({
     required this.brand,
-    required this.onBrand,
     required this.brandInk,
     required this.detailsTintOpacity,
   });
 
   final Color brand;
-  final Color onBrand;
   final Color brandInk;
   final double detailsTintOpacity;
 }
@@ -93,19 +91,16 @@ abstract final class AppTheme {
     final palette = switch (variant) {
       AppThemeVariant.blue => const _Palette(
         brand: Color(0xFF0061FF),
-        onBrand: DesignColors.surface,
         brandInk: Color(0xFF0061FF),
         detailsTintOpacity: DesignColors.subtleTintOpacity,
       ),
       AppThemeVariant.purple => const _Palette(
         brand: Color(0xFF8B5DFF),
-        onBrand: Color(0xFF101018),
         brandInk: Color(0xFF6338C6),
         detailsTintOpacity: DesignColors.strongTintOpacity,
       ),
       AppThemeVariant.orange => const _Palette(
         brand: Color(0xFFFF8000),
-        onBrand: DesignColors.text,
         brandInk: Color(0xFF9A4500),
         detailsTintOpacity: DesignColors.strongTintOpacity,
       ),
@@ -118,7 +113,7 @@ abstract final class AppTheme {
     );
     final scheme = ColorScheme.light(
       primary: palette.brand,
-      onPrimary: palette.onBrand,
+      onPrimary: Colors.white,
       primaryContainer: Color.alphaBlend(strongTint, DesignColors.surface),
       onPrimaryContainer: DesignColors.text,
       secondary: palette.brandInk,
@@ -164,11 +159,10 @@ abstract final class AppTheme {
         );
     final unselectedFill = Color.alphaBlend(subtleTint, scheme.surface);
 
-    // Lighten a brand background paired with dark ink, and darken one with
-    // white ink. Both state layers improve the resting text contrast.
-    final onBrandStateLayer = scheme.onPrimary == Colors.white
-        ? Colors.black
-        : Colors.white;
+    const onBrandStateLayer = Colors.black;
+    final brandFocusRing = variant == AppThemeVariant.orange
+        ? DesignColors.text
+        : scheme.onPrimary;
 
     return theme.copyWith(
       textTheme: textTheme.copyWith(
@@ -228,7 +222,7 @@ abstract final class AppTheme {
           side: WidgetStateBorderSide.resolveWith(
             (states) => states.contains(WidgetState.focused)
                 ? BorderSide(
-                    color: scheme.onPrimary,
+                    color: brandFocusRing,
                     width: DesignShape.focusBorder,
                   )
                 : BorderSide.none,
@@ -301,7 +295,7 @@ abstract final class AppTheme {
           if (states.contains(WidgetState.focused)) {
             return BorderSide(
               color: states.contains(WidgetState.selected)
-                  ? scheme.onPrimary
+                  ? brandFocusRing
                   : scheme.secondary,
               width: DesignShape.focusBorder,
             );
@@ -310,8 +304,7 @@ abstract final class AppTheme {
               ? BorderSide.none
               : BorderSide(color: strongTint);
         }),
-        checkmarkColor: scheme.onPrimary,
-        showCheckmark: true,
+        showCheckmark: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(DesignShape.chipRadius),

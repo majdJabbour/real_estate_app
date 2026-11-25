@@ -161,7 +161,7 @@ The Figma path data, relative positions, layer sizes, and fill rules matched for
 | Facility block (15 vector paths) | `1:4316` | `1:3518` | `1:2719` |
 | Google mark (four vector paths) | `1:4549` | `1:3751` | `1:2952` |
 
-The selected Explore glyph separates the themed lens and the pale #F9F9FA secondary path. The sampled Home cards contain outline hearts only. The existing filled Material heart remains the compatible selected-state glyph.
+The visible lens and handle of the selected Explore icon export as one solid compound path in all three palettes. The Blue export retains the native 20 × 20 viewBox and sits inside the 24 × 24 app slot. The sampled Home cards contain outline hearts only. The existing filled Material heart remains the compatible selected-state glyph.
 
 ## Phase 5 usage
 
@@ -187,3 +187,22 @@ Details uses the 28 dp Iconly Light back export from `1:4267` and the 20 dp Icon
 | `1:3855` | Sign out | Iconly Curved Logout. Original 24.2891 × 23.0833 geometry in a 28 dp slot, mirrored in RTL and tinted with the theme’s error ink. |
 
 My Favorites reuses the licensed Light-Outline Heart. Appearance and the avatar fallback use Material SDK glyphs. The Material filled heart remains in use because a directly attributable free-set Bold Heart export and its geometry could not be verified. [Attribution](ASSET_LICENSES.md#phase-8-profile)
+
+## Fidelity audit of remaining glyphs
+
+| Runtime use | Glyph in the app | Reference and reason |
+| --- | --- | --- |
+| Home guest or missing avatar, Profile missing avatar, Details agent and review photo fallback | Material person outline | The reference uses sample portraits in these slots. The runtime placeholder covers unavailable account or API media. |
+| Property image loading and failure | Material image and broken image outlines | No corresponding Figma placeholder was identified. |
+| Selected favorite on property cards and Details | Material filled heart | The supplied property heart instances have an outline state. The Figma source for a matching selected property heart is unavailable. |
+| Explore list/grid switch and search clear action | Material grid, list and close glyphs | The reference supplies separate result views and has no switch or input-clear affordance. |
+| Explore grid and Filters search, filter and notification | Shared Iconly fallback artwork | Search-v2 uses `search-normal` (`1:4080`) and an unnamed notification node (`1:4108`). The provenance of these exact exports is unresolved. The Vuesax `setting-4` nodes (`1:4078`, `1:3890`) are excluded from the loose SVG asset registry under the published license terms. Search-v1 uses the corresponding shared Iconly assets. |
+| Filters bedroom and bathroom counters | Material minus and plus | Original nested vectors in `1:4033`, `1:4035`, `1:4040` and `1:4042` have no verified family or redistribution grant. |
+| Details bed, bath and area | Material bed, bathtub and expand glyphs | Reference wrappers `1:4284`, `1:4293` and `1:4298` export the correct artwork, but the supplied copy leaves the source family and redistribution terms unresolved. |
+| Details facilities | Material AC, balcony, bike, concierge, parking, deck/patio, elevator, EV, porch, furnished, garage, garden, gym, laundry, pets, pool, roof, lock, storage and generic facility glyphs | The visible reference slots and vectors are inventoried above. Their source remains unresolved. Other facility keys and unknown keys are supplied by the API. |
+| Details photo viewer | Native CloseButton | The fullscreen viewer has no matching supplied frame. |
+| Profile appearance and language selection | Material palette and selected check icon | The reference Profile frame has no palette row or preference picker. The Profile language row itself uses the original Iconly asset. |
+| Existing Favorites destination | Native BackButton and the shared favorite and photo glyphs | No standalone Favorites frame was found in the supplied design. |
+| Development previews | Material heart, bell, error, success and image glyphs | Preview-only sample glyphs exercise states without a corresponding product frame. |
+
+[Material Icons license](https://github.com/google/material-design-icons/blob/master/LICENSE) · [Iconsax license](https://docs.iconsax.io/license-and-terms/license) · [Bundled artwork and provenance](ASSET_LICENSES.md)

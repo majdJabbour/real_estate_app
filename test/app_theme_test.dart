@@ -56,7 +56,7 @@ void main() {
     );
 
     test(
-      '${variant.name} control text and state indicators meet contrast targets',
+      '${variant.name} preserves white primary foreground and control contrast roles',
       () {
         final theme = AppTheme.light(variant);
         final scheme = theme.colorScheme;
@@ -91,6 +91,15 @@ void main() {
           greaterThanOrEqualTo(4.5),
         );
 
+        expect(scheme.onPrimary, Colors.white);
+        expect(chip.showCheckmark, isFalse);
+        final restingContrast = _contrast(Colors.white, brand);
+        if (variant == AppThemeVariant.blue) {
+          expect(restingContrast, greaterThanOrEqualTo(4.5));
+        } else {
+          expect(restingContrast, lessThan(4.5));
+        }
+
         for (final state in [
           <WidgetState>{},
           focused,
@@ -102,17 +111,11 @@ void main() {
           final actualFill = overlay == null
               ? buttonFill
               : Color.alphaBlend(overlay, buttonFill);
-          final selectedChip = chip.color!.resolve({
-            ...state,
-            WidgetState.selected,
-          })!;
+          expect(buttonFill, brand);
+          expect(button.foregroundColor!.resolve(state), Colors.white);
           expect(
-            _contrast(button.foregroundColor!.resolve(state)!, actualFill),
-            greaterThanOrEqualTo(4.5),
-          );
-          expect(
-            _contrast(chip.checkmarkColor!, selectedChip),
-            greaterThanOrEqualTo(4.5),
+            _contrast(Colors.white, actualFill),
+            greaterThanOrEqualTo(restingContrast),
           );
           expect(
             _contrast(scheme.onSurface, chip.color!.resolve(state)!),
