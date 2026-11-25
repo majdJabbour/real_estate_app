@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/design_system/design_controls.dart';
 import 'package:real_estate_app/core/layout/responsive_layout.dart';
-import 'package:real_estate_app/app/app.dart';
+import 'package:real_estate_app/preview/preview_app.dart';
 import 'package:real_estate_app/l10n/app_localizations.dart';
 import 'package:real_estate_app/preview/responsive_preview.dart';
 
@@ -199,7 +199,7 @@ void main() {
     tester,
   ) async {
     _setSurface(tester, const Size(430, 932));
-    await tester.pumpWidget(createApp(MemoryLocalePreferences()));
+    await tester.pumpWidget(createPreviewApp(MemoryLocalePreferences()));
     await tester.scrollUntilVisible(
       find.text('Adaptive layout'),
       280,

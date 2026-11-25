@@ -75,5 +75,49 @@
     }
   },
   "sampleTile": "Sample tile",
-  "sampleLongTile": "Sample with a longer label"
+  "sampleLongTile": "Sample with a longer label",
+  "appTitle": "Real Estate",
+  "homeTab": "Home",
+  "exploreTab": "Explore",
+  "profileTab": "Profile",
+  "homeGreeting": "Welcome",
+  "guest": "Guest",
+  "featuredProperties": "Featured",
+  "recommendedProperties": "Our Recommendations",
+  "seeAll": "See All",
+  "seeAllFeatured": "See all featured properties",
+  "seeAllRecommendations": "See all recommendations",
+  "emptyFeatured": "No featured properties are available.",
+  "emptyRecommendations": "No properties in this category.",
+  "categoriesUnavailable": "Categories are unavailable. You can still view properties.",
+  "openPropertyFilters": "Open property filters",
+  "refreshHome": "Refresh listings",
+  "favoriteUnavailable": "Favorites require sign-in.",
+  "removeFavorite": "Remove from favorites",
+  "addFavorite": "Add to favorites",
+  "propertyMonthlyPrice": "{price}/mo",
+  "propertyRating": "Rating {rating} out of 5",
+  "backToHome": "Back to Home",
+  "explorePending": "Explore is coming in a later phase.",
+  "profilePending": "Profile and sign-in are coming in a later phase.",
+  "exploreSearchIntent": "Search properties",
+  "exploreFeaturedIntent": "Featured properties",
+  "exploreRecommendationsIntent": "Recommended properties",
+  "exploreFiltersIntent": "Property filters",
+  "propertyDetailsTitle": "Property Details",
+  "propertyDetailsPending": "Property details are coming in a later phase.",
+  "@propertyMonthlyPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "@propertyRating": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  }
 }

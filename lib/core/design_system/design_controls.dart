@@ -111,6 +111,7 @@ class AppSearchField extends StatelessWidget {
     this.controller,
     this.onChanged,
     this.onSubmitted,
+    this.onTap,
     this.filter,
     this.enabled = true,
     super.key,
@@ -120,6 +121,7 @@ class AppSearchField extends StatelessWidget {
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
+  final VoidCallback? onTap;
   final ({String label, VoidCallback onPressed})? filter;
   final bool enabled;
 
@@ -131,6 +133,9 @@ class AppSearchField extends StatelessWidget {
       label: hintText,
       child: TextField(
         controller: controller,
+        onTap: onTap,
+        readOnly: onTap != null,
+        showCursor: onTap == null,
         onChanged: onChanged,
         onSubmitted: onSubmitted,
         enabled: enabled,

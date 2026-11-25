@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/design_system/design_controls.dart';
-import 'package:real_estate_app/app/app.dart';
+import 'package:real_estate_app/preview/preview_app.dart';
 
 import 'support/memory_locale_preferences.dart';
 
@@ -28,7 +28,7 @@ void main() {
   testWidgets('preview starts in Blue and changes inherited themes', (
     tester,
   ) async {
-    await tester.pumpWidget(createApp(MemoryLocalePreferences()));
+    await tester.pumpWidget(createPreviewApp(MemoryLocalePreferences()));
     final button = find.widgetWithText(AppPrimaryButton, 'Apply filters');
     Color brand() => Theme.of(tester.element(button)).colorScheme.primary;
 
@@ -213,7 +213,7 @@ void main() {
   testWidgets('favorite preview changes outline to filled and back', (
     tester,
   ) async {
-    await tester.pumpWidget(createApp(MemoryLocalePreferences()));
+    await tester.pumpWidget(createPreviewApp(MemoryLocalePreferences()));
     final outline = find.byIcon(Icons.favorite_border);
     final filled = find.byIcon(Icons.favorite);
     expect(outline, findsOneWidget);
@@ -263,7 +263,7 @@ void main() {
           tester.platformDispatcher.clearTextScaleFactorTestValue();
         });
 
-        await tester.pumpWidget(createApp(MemoryLocalePreferences()));
+        await tester.pumpWidget(createPreviewApp(MemoryLocalePreferences()));
         final languageToggle = find.text('العربية');
         await tester.ensureVisible(languageToggle);
         await tester.pump();

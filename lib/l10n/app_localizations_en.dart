@@ -159,4 +159,101 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sampleLongTile => 'Sample with a longer label';
+
+  @override
+  String get appTitle => 'Real Estate';
+
+  @override
+  String get homeTab => 'Home';
+
+  @override
+  String get exploreTab => 'Explore';
+
+  @override
+  String get profileTab => 'Profile';
+
+  @override
+  String get homeGreeting => 'Welcome';
+
+  @override
+  String get guest => 'Guest';
+
+  @override
+  String get featuredProperties => 'Featured';
+
+  @override
+  String get recommendedProperties => 'Our Recommendations';
+
+  @override
+  String get seeAll => 'See All';
+
+  @override
+  String get seeAllFeatured => 'See all featured properties';
+
+  @override
+  String get seeAllRecommendations => 'See all recommendations';
+
+  @override
+  String get emptyFeatured => 'No featured properties are available.';
+
+  @override
+  String get emptyRecommendations => 'No properties in this category.';
+
+  @override
+  String get categoriesUnavailable =>
+      'Categories are unavailable. You can still view properties.';
+
+  @override
+  String get openPropertyFilters => 'Open property filters';
+
+  @override
+  String get refreshHome => 'Refresh listings';
+
+  @override
+  String get favoriteUnavailable => 'Favorites require sign-in.';
+
+  @override
+  String get removeFavorite => 'Remove from favorites';
+
+  @override
+  String get addFavorite => 'Add to favorites';
+
+  @override
+  String propertyMonthlyPrice(String price) {
+    return '$price/mo';
+  }
+
+  @override
+  String propertyRating(String rating) {
+    return 'Rating $rating out of 5';
+  }
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get explorePending => 'Explore is coming in a later phase.';
+
+  @override
+  String get profilePending =>
+      'Profile and sign-in are coming in a later phase.';
+
+  @override
+  String get exploreSearchIntent => 'Search properties';
+
+  @override
+  String get exploreFeaturedIntent => 'Featured properties';
+
+  @override
+  String get exploreRecommendationsIntent => 'Recommended properties';
+
+  @override
+  String get exploreFiltersIntent => 'Property filters';
+
+  @override
+  String get propertyDetailsTitle => 'Property Details';
+
+  @override
+  String get propertyDetailsPending =>
+      'Property details are coming in a later phase.';
 }

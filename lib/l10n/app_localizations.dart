@@ -376,6 +376,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sample with a longer label'**
   String get sampleLongTile;
+
+  /// No description provided for @appTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Real Estate'**
+  String get appTitle;
+
+  /// No description provided for @homeTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeTab;
+
+  /// No description provided for @exploreTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get exploreTab;
+
+  /// No description provided for @profileTab.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTab;
+
+  /// No description provided for @homeGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get homeGreeting;
+
+  /// No description provided for @guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get guest;
+
+  /// No description provided for @featuredProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured'**
+  String get featuredProperties;
+
+  /// No description provided for @recommendedProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Our Recommendations'**
+  String get recommendedProperties;
+
+  /// No description provided for @seeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See All'**
+  String get seeAll;
+
+  /// No description provided for @seeAllFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'See all featured properties'**
+  String get seeAllFeatured;
+
+  /// No description provided for @seeAllRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'See all recommendations'**
+  String get seeAllRecommendations;
+
+  /// No description provided for @emptyFeatured.
+  ///
+  /// In en, this message translates to:
+  /// **'No featured properties are available.'**
+  String get emptyFeatured;
+
+  /// No description provided for @emptyRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'No properties in this category.'**
+  String get emptyRecommendations;
+
+  /// No description provided for @categoriesUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Categories are unavailable. You can still view properties.'**
+  String get categoriesUnavailable;
+
+  /// No description provided for @openPropertyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Open property filters'**
+  String get openPropertyFilters;
+
+  /// No description provided for @refreshHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh listings'**
+  String get refreshHome;
+
+  /// No description provided for @favoriteUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites require sign-in.'**
+  String get favoriteUnavailable;
+
+  /// No description provided for @removeFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from favorites'**
+  String get removeFavorite;
+
+  /// No description provided for @addFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to favorites'**
+  String get addFavorite;
+
+  /// No description provided for @propertyMonthlyPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'{price}/mo'**
+  String propertyMonthlyPrice(String price);
+
+  /// No description provided for @propertyRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating {rating} out of 5'**
+  String propertyRating(String rating);
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHome;
+
+  /// No description provided for @explorePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore is coming in a later phase.'**
+  String get explorePending;
+
+  /// No description provided for @profilePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile and sign-in are coming in a later phase.'**
+  String get profilePending;
+
+  /// No description provided for @exploreSearchIntent.
+  ///
+  /// In en, this message translates to:
+  /// **'Search properties'**
+  String get exploreSearchIntent;
+
+  /// No description provided for @exploreFeaturedIntent.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured properties'**
+  String get exploreFeaturedIntent;
+
+  /// No description provided for @exploreRecommendationsIntent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended properties'**
+  String get exploreRecommendationsIntent;
+
+  /// No description provided for @exploreFiltersIntent.
+  ///
+  /// In en, this message translates to:
+  /// **'Property filters'**
+  String get exploreFiltersIntent;
+
+  /// No description provided for @propertyDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Property Details'**
+  String get propertyDetailsTitle;
+
+  /// No description provided for @propertyDetailsPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Property details are coming in a later phase.'**
+  String get propertyDetailsPending;
 }
 
 class _AppLocalizationsDelegate

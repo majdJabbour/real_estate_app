@@ -91,3 +91,19 @@ The developer approved Phase 2 for continuation and requested the public propert
 | `git diff --check` | Passed. The new untracked source, fixture, and configuration files also pass whitespace checks. |
 
 The production deployment revision, live authenticated behavior, and property UI integration remain unverified. Phase 3 is pending developer review.
+
+## Phase 4 — Production navigation and Home
+
+The developer approved Phase 3 and requested production navigation, the Home screen, live public API data, reusable cards, and visual verification. Codex used the Figma design-to-code and inspection skills to review the three Home variants, the selected tab states, and the underlying vector geometry. Codex used the Flutter routing, localization, responsive layout and widget-testing skills and the Dart unit-testing and static-analysis skills. Work included the indexed tab shell and root details route, an isolated preview entry point, generated Home providers, localized Home widgets, and deterministic tests. The Figma reference was read only. No source artwork was bundled.
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed with six informational update notices. The manifest and lockfile match Phase 3. |
+| `flutter gen-l10n` and `dart run build_runner build` | Passed. All 14 generated Dart files matched byte-for-byte on the second pass. |
+| Formatting and `flutter analyze` | Passed across 73 Dart files. The analyzer reported no issues. |
+| `flutter test` and `flutter test --coverage` | Both passed all 178 tests, including the 146 existing tests and 32 Phase 4 cases. LCOV recorded 1,665 of 1,831 instrumented lines overall (90.9%) and 532 of 566 for Home and navigation (94.0%). |
+| iOS simulator and production API | Xcode built and Flutter ran the app on iPhone 18 Pro Max with iOS 27.2. Home displayed the deployed API's featured and recommended listings, photos, and localized category labels. The Flutter debug service selected each language and scrolled the live grid. One Flutter engine frame-timestamp diagnostic was logged during debug work. The app continued rendering and hot reloaded after the changes. |
+| Figma visual comparison | Compared the final 440 × 956 dp English captures to Blue `1:4426`. Also inspected Arabic RTL and a temporary 320 dp constraint on the same simulator with live data. The constraint was removed after capture and the original simulator locale and scroll position were restored. The comparison and screenshots are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md#15-phase-4-home-and-navigation). |
+| `git diff --check` | Passed. |
+
+Explore, Filters, full Details, Profile data, authentication, and persistent favorites remain pending. Android runtime was outside this verification pass. Phase 4 is pending developer review.

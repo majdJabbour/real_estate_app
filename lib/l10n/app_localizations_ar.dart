@@ -155,4 +155,100 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sampleLongTile => 'عنصر تجريبي بعنوان أطول';
+
+  @override
+  String get appTitle => 'العقارات';
+
+  @override
+  String get homeTab => 'الرئيسية';
+
+  @override
+  String get exploreTab => 'استكشاف';
+
+  @override
+  String get profileTab => 'الملف الشخصي';
+
+  @override
+  String get homeGreeting => 'أهلاً بك';
+
+  @override
+  String get guest => 'زائر';
+
+  @override
+  String get featuredProperties => 'عقارات مميزة';
+
+  @override
+  String get recommendedProperties => 'توصياتنا';
+
+  @override
+  String get seeAll => 'عرض الكل';
+
+  @override
+  String get seeAllFeatured => 'عرض كل العقارات المميزة';
+
+  @override
+  String get seeAllRecommendations => 'عرض كل التوصيات';
+
+  @override
+  String get emptyFeatured => 'لا توجد عقارات مميزة متاحة.';
+
+  @override
+  String get emptyRecommendations => 'لا توجد عقارات في هذه الفئة.';
+
+  @override
+  String get categoriesUnavailable =>
+      'الفئات غير متاحة. يمكنك متابعة تصفح العقارات.';
+
+  @override
+  String get openPropertyFilters => 'فتح فلاتر العقارات';
+
+  @override
+  String get refreshHome => 'تحديث العقارات';
+
+  @override
+  String get favoriteUnavailable => 'تتطلب المفضلة تسجيل الدخول.';
+
+  @override
+  String get removeFavorite => 'إزالة من المفضلة';
+
+  @override
+  String get addFavorite => 'إضافة إلى المفضلة';
+
+  @override
+  String propertyMonthlyPrice(String price) {
+    return '$price شهرياً';
+  }
+
+  @override
+  String propertyRating(String rating) {
+    return 'التقييم $rating من ٥';
+  }
+
+  @override
+  String get backToHome => 'العودة إلى الرئيسية';
+
+  @override
+  String get explorePending => 'ستتوفر شاشة الاستكشاف في مرحلة لاحقة.';
+
+  @override
+  String get profilePending =>
+      'سيتوفر الملف الشخصي وتسجيل الدخول في مرحلة لاحقة.';
+
+  @override
+  String get exploreSearchIntent => 'البحث عن عقارات';
+
+  @override
+  String get exploreFeaturedIntent => 'العقارات المميزة';
+
+  @override
+  String get exploreRecommendationsIntent => 'العقارات المقترحة';
+
+  @override
+  String get exploreFiltersIntent => 'فلاتر العقارات';
+
+  @override
+  String get propertyDetailsTitle => 'تفاصيل العقار';
+
+  @override
+  String get propertyDetailsPending => 'ستتوفر تفاصيل العقار في مرحلة لاحقة.';
 }

@@ -25,12 +25,13 @@ Bootstrap loads persisted English or Arabic before mounting the app in `Provider
 
 ## 3 — Property data layer
 
-Implemented the domain repository, immutable models and query, generated DTO decoding and providers, and public listing, details, and filter calls with cancellation and pagination. Verified the four production response shapes in both languages and exercised malformed responses, locale changes, and dependency overrides with deterministic tests. Review is pending. Suggested commit `feat: implement property data layer`.
+Implemented the domain repository, immutable models and query, generated DTO decoding and providers, and public listing, details, and filter calls with cancellation and pagination. Verified the four production response shapes in both languages and exercised malformed responses, locale changes, and dependency overrides with deterministic tests. Approved for continuation.
 
 Screen state belongs with its approved consumers in Phases 4–6. Locale-sensitive providers will cancel obsolete requests and guard current state when locale, query, or route arguments change. Explore will own debounce, pagination, and filter drafts.
 
-## 4 — Navigation and home
-Implement approved shell/routes and home screen from Figma. Reusable cards and section headers; featured and recommended queries, loading/error/empty/retry, image fallback. Use real API data. Test navigation and layouts. Commit: `feat: implement home and navigation`.
+## 4 — Production navigation and Home
+
+Implemented the stateful Home, Explore, and Profile tab shell and the root property-details route. Home uses the approved Blue reference, shared theme palettes, real listing and category data, and independently refreshable sections. Explore, Filters, Details, and Profile intent handling is temporary, with language selection available in Profile. Authentication and persistent favorites remain in their planned phases. Review is pending. Suggested commit `feat: implement home and navigation`.
 
 ## 5 — Explore and filters
 Implement approved list/grid layouts, server search, category selection, pagination, draft/apply/reset filters, histogram and sliders from global filter options. Ensure filters and query survive appropriate navigation, reset pages on changes, retry next page and cancel stale work. Verify combined filters and empty/equal bounds. Commit search and filters separately if cohesive.

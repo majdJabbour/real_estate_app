@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:real_estate_app/app/app.dart';
+import 'package:real_estate_app/preview/preview_app.dart';
 import 'package:real_estate_app/core/errors/app_failure.dart';
 import 'package:real_estate_app/core/localization/app_locale.dart';
 import 'package:real_estate_app/core/localization/failure_message.dart';
@@ -77,7 +77,7 @@ void main() {
     'root switches direction and restores the choice in a new scope',
     (tester) async {
       final preferences = MemoryLocalePreferences();
-      await tester.pumpWidget(createApp(preferences));
+      await tester.pumpWidget(createPreviewApp(preferences));
       final english = find.text('Design system');
       expect(Directionality.of(tester.element(english)), TextDirection.ltr);
 
@@ -89,7 +89,7 @@ void main() {
       expect(preferences.languageCode, 'ar');
 
       await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pumpWidget(createApp(preferences));
+      await tester.pumpWidget(createPreviewApp(preferences));
       expect(Directionality.of(tester.element(arabic)), TextDirection.rtl);
 
       await tester.tap(find.text('English'));

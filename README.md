@@ -2,7 +2,7 @@
 
 A Flutter recruitment assessment for Android and iOS. The intended app browses fictional rental properties from a REST API and supports English and Arabic.
 
-The app opens a temporary design system preview with Blue, Purple, and Orange themes. English and Arabic switch at runtime and the selected language is restored at launch. The preview uses the shared infrastructure without fetching property data or initializing Firebase.
+The app opens Home in the Blue theme and loads fictional rental listings from the deployed API. Use the temporary Profile destination to switch between English and Arabic. The selected language is restored at launch.
 
 ## Setup and verification
 
@@ -29,7 +29,7 @@ flutter run
 
 ## Design system preview
 
-Run `flutter run` to open the preview. Use the chips to choose a theme and **العربية** or **English** to switch the app language and direction. Language survives a restart. Theme, filter, and favorite samples reset when the preview closes.
+Run `flutter run -t lib/preview/main.dart` to open the isolated development preview. The preview is separate from the app's routes and does not fetch property data. Use the chips to choose a theme and **العربية** or **English** to switch the app language and direction. Language survives a restart. Theme, filter, and favorite samples reset when the preview closes.
 
 Flutter's Widget Previewer exposes standard, narrow with enlarged text, and landscape views through `flutter widget-preview start`. The preview lives in [lib/preview](lib/preview). The shared theme and components live in [lib/core/design_system](lib/core/design_system). [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records the measurements, accessible color roles, and pinned, locally bundled Rubik fonts.
 
@@ -88,7 +88,27 @@ The generated `propertyRemoteDataSourceProvider` and `propertyRepositoryProvider
 
 Separate English and Arabic GETs for the listing, featured listing, details for `rental-022`, and filter options returned HTTP 200 with matching `Content-Language` and `Vary: Accept-Language`. The two-item listing returned 30 total results over 15 pages, and the featured query returned 10 over five. Both locales returned the same IDs, prices, units, and histogram counts. Titles, addresses, descriptions, review comments, and type labels were localized. The detail included a required agent with a null avatar, coordinates, image and review arrays, and UTC timestamps. Filter options returned 20 buckets, including decimal edges, and counts totaling 30. Local fixtures cover empty and equal-bound shapes. Production HTTP is outside the automated suite.
 
-The Phase 3 test and coverage runs both passed all 146 tests. The interactive design preview also rendered after hot reload on the iPhone 18 Pro simulator. Home, Explore, Details, and Filters UI remain future work. [Verification log](AI_USAGE.md#phase-3--property-data-layer)
+The Phase 3 test and coverage runs both passed all 146 tests. [Verification log](AI_USAGE.md#phase-3--property-data-layer)
+
+## Production navigation and Home
+
+`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore and Details show temporary destinations for the current intent or property ID. Profile provides a language switch while sign-in and profile data are pending.
+
+| Home action | Destination |
+| --- | --- |
+| Search field | Explore with the search intent |
+| Filter icon | Explore with the filter-opening intent |
+| Featured See All | Explore with the Featured intent |
+| Recommendations See All | Explore with the current category ID |
+| Featured or grid card | Full-screen property route with the returned ID |
+
+Home starts three independent public requests. Featured uses `GET /properties?featured=true&limit=5`, Recommendations uses `GET /properties?limit=6`, and categories come from `GET /properties/filter-options`. Listings use the repository's page-one, newest-first defaults. Selecting a category adds its server ID to the recommendation query and leaves the other reads alone. All clears the type constraint. Language changes keep the selected type and refresh all localized data. The mounted tab retains its current section results in memory. Providers cancel obsolete requests, discard late results, and dispose when unobserved. Only the image cache persists property media.
+
+Loading placeholders reserve carousel and grid geometry. Each section can show its own empty or error state and retry independently. Pull to refresh or use the Home accessibility refresh action to rerun all three requests while keeping the current sections visible during a same-query refresh. Cancellation has no error message, and image failures show a localized placeholder without hiding the listing.
+
+Home uses a guest avatar, reusable featured and grid cards, image and rating widgets, and separate favorite controls. Favorites require sign-in and notifications are disabled. Prices use locale-aware USD monthly formatting. The layout takes its gutters and grid columns from the shared responsive policy, uses a horizontal featured carousel and category strip, and lazily builds variable-height grid rows in one vertical scroll view. The tab bar uses native safe areas and mirrors in Arabic. [Design comparison](DESIGN_SYSTEM.md#15-phase-4-home-and-navigation) · [English Home](docs/screenshots/phase-4/home-en.png) · [Arabic Home](docs/screenshots/phase-4/home-ar.png) · [Compact Home](docs/screenshots/phase-4/home-compact.png)
+
+Explore results, Filters, full Details and Profile, authentication, and favorite persistence remain future work.
 
 ## Mobile platform configuration
 
