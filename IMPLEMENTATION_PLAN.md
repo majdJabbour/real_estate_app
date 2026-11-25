@@ -23,8 +23,11 @@ Approved for continuation. The layout foundation uses local safe-area constraint
 
 Bootstrap loads persisted English or Arabic before mounting the app in `ProviderScope`. Generated providers expose configuration, the locale controller, and the Dio client. Shared request handling covers cancellation, language headers, stale responses, explicit authentication policy, typed errors, and envelopes. Firebase token acquisition and property repositories are later phases. Review this phase before moving to property data and state. Suggested commit `feat: add core networking and localization`.
 
-## 3 — Property data and state
-DTOs, mapping, repository contract and implementation. Listing, details, filter options, typed query serialization and pagination. Provider state for featured, listing, details, filters, search debounce and stale result guards. Tests against contract and mocked responses. Public API smoke checks. Commit: `feat: implement property data and query state`.
+## 3 — Property data layer
+
+Implemented the domain repository, immutable models and query, generated DTO decoding and providers, and public listing, details, and filter calls with cancellation and pagination. Verified the four production response shapes in both languages and exercised malformed responses, locale changes, and dependency overrides with deterministic tests. Review is pending. Suggested commit `feat: implement property data layer`.
+
+Screen state belongs with its approved consumers in Phases 4–6. Locale-sensitive providers will cancel obsolete requests and guard current state when locale, query, or route arguments change. Explore will own debounce, pagination, and filter drafts.
 
 ## 4 — Navigation and home
 Implement approved shell/routes and home screen from Figma. Reusable cards and section headers; featured and recommended queries, loading/error/empty/retry, image fallback. Use real API data. Test navigation and layouts. Commit: `feat: implement home and navigation`.

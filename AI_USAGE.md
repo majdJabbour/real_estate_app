@@ -75,3 +75,19 @@ The developer approved Phase 1.3 and requested the bootstrap, configurable API c
 | `git diff --check` | Passed. |
 
 Property repositories, authenticated traffic, and Android runtime verification remain future checks. Phase 2 is pending developer review.
+
+## Phase 3 — Property data layer
+
+The developer approved Phase 2 for continuation and requested the public property repository, contract verification, domain and transport models, query encoding, cancellation, generated providers, and deterministic tests. Codex read the project and sibling backend references, inspected the installed generators and Riverpod APIs, and used the Dart unit-testing and static-analysis skills. Codex implemented the data layer and extracted the existing fake Dio adapter for reuse in tests. The existing pagination data moved into a shared model, with JSON validation staying in the API response parser. Freezed formatting is enabled through the generator configuration. No generated files were edited by hand.
+
+| Check | Result |
+| --- | --- |
+| Public production smoke checks | Separate English and Arabic GETs for listing, featured listing, details for `rental-022`, and global filter options all returned HTTP 200 with matching `Content-Language` and `Vary: Accept-Language`. The payloads matched the copied contract. The normal and featured listings had 30 and 10 results respectively. The detail returned a required agent with a null avatar. The filter response returned 20 price buckets with integer and decimal edges and counts totaling 30. |
+| `flutter pub get` | Passed with six newer-version notices. The manifest and lockfile match the Phase 2 commit. |
+| `flutter gen-l10n` and `dart run build_runner build` | Passed. All 12 generated source files matched byte-for-byte across runs, including the six new Phase 3 outputs. |
+| `dart format --output=none --set-exit-if-changed lib test` and `flutter analyze` | Passed across 56 Dart files. The analyzer reported no issues. |
+| `flutter test` and `flutter test --coverage` | Both passed all 146 tests, including the 93 prior tests and 53 new cases. LCOV recorded 1,026 of 1,144 instrumented lines overall (89.7%) and 302 of 303 in the properties feature (99.7%). |
+| Existing preview | Flutter attached to the running iPhone 18 Pro simulator on iOS 27.2 and hot reloaded. A simulator capture showed the Orange preview rendered in Arabic RTL. Existing widget tests exercised preview controls, themes, locale, and responsive layouts. Native builds were skipped for this data-only phase. |
+| `git diff --check` | Passed. The new untracked source, fixture, and configuration files also pass whitespace checks. |
+
+The production deployment revision, live authenticated behavior, and property UI integration remain unverified. Phase 3 is pending developer review.

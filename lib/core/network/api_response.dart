@@ -1,10 +1,11 @@
 import '../errors/app_failure.dart';
+import '../models/pagination.dart';
 
 final class ApiResponse<T> {
   const ApiResponse({required this.data, this.pagination});
 
   final T data;
-  final ApiPagination? pagination;
+  final Pagination? pagination;
 
   static ApiResponse<T> decode<T>(
     Object? body,
@@ -19,7 +20,7 @@ final class ApiResponse<T> {
         when data != null || null is T) {
       try {
         final pagination = body.containsKey('pagination')
-            ? ApiPagination.decode(body['pagination'])
+            ? _decodePagination(body['pagination'])
             : null;
         return ApiResponse(data: decodeData(data), pagination: pagination);
       } catch (error, stack) {
@@ -38,44 +39,26 @@ final class ApiResponse<T> {
   }
 }
 
-final class ApiPagination {
-  const ApiPagination({
-    required this.page,
-    required this.limit,
-    required this.total,
-    required this.totalPages,
-    required this.hasNextPage,
-    required this.hasPreviousPage,
-  });
-
-  final int page;
-  final int limit;
-  final int total;
-  final int totalPages;
-  final bool hasNextPage;
-  final bool hasPreviousPage;
-
-  static ApiPagination decode(Object? value) => switch (value) {
-    {
-      'page': final int page,
-      'limit': final int limit,
-      'total': final int total,
-      'totalPages': final int totalPages,
-      'hasNextPage': final bool hasNextPage,
-      'hasPreviousPage': final bool hasPreviousPage,
-    }
-        when page > 0 && limit > 0 && total >= 0 && totalPages >= 0 =>
-      ApiPagination(
-        page: page,
-        limit: limit,
-        total: total,
-        totalPages: totalPages,
-        hasNextPage: hasNextPage,
-        hasPreviousPage: hasPreviousPage,
-      ),
-    _ => throw const FormatException('Invalid API pagination.'),
-  };
-}
+Pagination _decodePagination(Object? value) => switch (value) {
+  {
+    'page': final int page,
+    'limit': final int limit,
+    'total': final int total,
+    'totalPages': final int totalPages,
+    'hasNextPage': final bool hasNextPage,
+    'hasPreviousPage': final bool hasPreviousPage,
+  }
+      when page > 0 && limit > 0 && total >= 0 && totalPages >= 0 =>
+    Pagination(
+      page: page,
+      limit: limit,
+      total: total,
+      totalPages: totalPages,
+      hasNextPage: hasNextPage,
+      hasPreviousPage: hasPreviousPage,
+    ),
+  _ => throw const FormatException('Invalid API pagination.'),
+};
 
 final _stableCode = RegExp(r'^[A-Z][A-Z0-9_]{0,63}$');
 

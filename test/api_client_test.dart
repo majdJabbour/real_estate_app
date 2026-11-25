@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,37 +8,8 @@ import 'package:real_estate_app/core/errors/app_failure.dart';
 import 'package:real_estate_app/core/localization/app_locale.dart';
 import 'package:real_estate_app/core/network/api_client.dart';
 
+import 'support/fake_dio_adapter.dart';
 import 'support/memory_locale_preferences.dart';
-
-typedef AdapterResponse = FutureOr<ResponseBody> Function(
-  RequestOptions request,
-  Future<void>? cancellation,
-);
-
-final class FakeAdapter implements HttpClientAdapter {
-  FakeAdapter(this.respond);
-
-  final AdapterResponse respond;
-  final requests = <RequestOptions>[];
-  final sentBodies = <List<int>>[];
-  bool closed = false;
-
-  @override
-  Future<ResponseBody> fetch(
-    RequestOptions options,
-    Stream<Uint8List>? requestStream,
-    Future<void>? cancelFuture,
-  ) async {
-    requests.add(options);
-    if (requestStream != null) {
-      sentBodies.add(await requestStream.expand((chunk) => chunk).toList());
-    }
-    return respond(options, cancelFuture);
-  }
-
-  @override
-  void close({bool force = false}) => closed = true;
-}
 
 ResponseBody _body([
   String json = '{"success":true,"data":"sample"}',

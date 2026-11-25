@@ -25,7 +25,7 @@ git diff --check
 flutter run
 ```
 
-[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, and response decoding. Network tests use fake Dio adapters and Riverpod overrides. Production smoke checks are separate.
+[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, and repository behavior. Network tests use fake Dio adapters and Riverpod overrides. Production smoke checks are separate.
 
 ## Design system preview
 
@@ -48,7 +48,7 @@ Scroll to **Adaptive layout** to see the local viewport size, side padding, capp
 | `cached_network_image`, `flutter_svg`, `skeletonizer` | Property image caching, SVG assets, and loading placeholders |
 | `flutter_test`, `mocktail`, `flutter_lints` | Flutter tests, test doubles, and static analysis rules |
 
-The planned structure is feature-first. Presentation reads application state, application logic depends on domain contracts, and data adapters handle REST requests and DTO mapping. The properties feature will group home, explore, filters, and details. Core will hold shared configuration, transport, errors, localization, and design tokens. English is the planned default, with Arabic layout direction and language switching at runtime. See the [implementation plan](IMPLEMENTATION_PLAN.md).
+The app uses a feature-first structure. Presentation reads application state, application logic depends on domain contracts, and data adapters handle REST requests and DTO mapping. The properties feature will group Home, Explore, Filters, and Details. Core holds shared configuration, transport, errors, localization, and design tokens. English is the default, with Arabic layout direction and language switching at runtime. [Implementation plan](IMPLEMENTATION_PLAN.md)
 
 ## Bootstrap and infrastructure
 
@@ -64,11 +64,31 @@ Dio uses 15-second connect and send timeouts and a 20-second receive timeout. It
 
 The response parser validates the success envelope and optional pagination before returning a typed payload. HTTP and transport failures preserve status codes and safe backend error codes where available. User messages come from a separate localization mapper. Cancellation has no display message, and raw headers, payloads, and server diagnostics are excluded from failure text and application logging.
 
-[API_CONTRACT.md](API_CONTRACT.md) is a byte-for-byte copy from the sibling `real-estate-api` checkout at revision `d92fdf0b84e76ac8977efc6c17ff67e59ab66c26`. The contract covers public listings, details and filter options, protected profile and favorite operations (including `GET /favorites/ids`), pagination, English and Arabic responses, and error envelopes. The source documents describe deployment verification as pending. Phase 0 confirmed that the supplied deployment's health endpoint returned HTTP 200 with `data.status: "ok"`. The deployed Git revision and endpoint behavior beyond liveness remain unverified. [Public health endpoint](https://real-estate-api-gray.vercel.app/api/v1/health)
+[API_CONTRACT.md](API_CONTRACT.md) is a byte-for-byte copy from the sibling `real-estate-api` checkout at revision `d92fdf0b84e76ac8977efc6c17ff67e59ab66c26`. The contract covers public listings, details and filter options, protected profile and favorite operations (including `GET /favorites/ids`), pagination, English and Arabic responses, and error envelopes. Phase 0 confirmed that the supplied deployment's health endpoint returned HTTP 200 with `data.status: "ok"`. The deployed Git revision remains unverified. [Public health endpoint](https://real-estate-api-gray.vercel.app/api/v1/health)
 
 The backend uses fictional rental data and external property images. Google Sign-In, Firebase ID-token verification, and authenticated favorites persistence still require live testing.
 
 Phase 2 smoke checks returned HTTP 200 for `GET /health` and `GET /properties?limit=1` in English and Arabic. The listings returned the same property ID, localized titles, matching `Content-Language` headers, and contract-shaped pagination. On the iPhone 18 Pro Max simulator, the app switched from English/LTR to Arabic/RTL and restored Arabic after a full process restart.
+
+## Property data layer
+
+[Properties](lib/features/properties) provides a domain repository for paginated summaries, detail by ID, and global filter options. The [domain models](lib/features/properties/domain) are independent of Flutter and Dio. Freezed supplies value equality and copying where useful, and domain collections are snapshotted. Details include a summary and typed agent, location, and review values. [Data adapters](lib/features/properties/data) use generated JSON decoding for response DTOs and map straightforward nested values directly to their domain types. The agent object is required and its avatar may be null. Amounts, ratings, coordinates, and histogram edges accept integer or decimal JSON numbers. Counts stay integers. Unknown property type IDs and facility keys are preserved. Unknown property types have no known enum value and cannot be selected using the current typed query. Price and area units come from the response.
+
+The default query encodes `sortBy=createdAt&sortOrder=desc&page=1&limit=20`. For example, a query with apartment and condo, a price cap, zero bedrooms, and non-featured results encodes the following decoded parameters:
+
+```text
+types=apartment,condo&maxPrice=1500.25&minBedrooms=0&featured=false&sortBy=price&sortOrder=asc&page=2&limit=10
+```
+
+The query trims search, omits blank search and empty type sets, and encodes type IDs in canonical order. Decimal bounds use plain decimal notation. The constructor and `copyWith` enforce the API's ranges, page and limit bounds, and 120-code-point search limit. Search, filtering, sorting, and pagination run on the server. Listing calls return summaries and shared pagination metadata. The filter endpoint supplies global bounds and localized type labels in server order. Null and equal bounds and empty or single-bucket histograms are supported.
+
+The generated `propertyRemoteDataSourceProvider` and `propertyRepositoryProvider` use the shared Dio client and auto-dispose when unobserved. They hold dependencies only. All three requests are public and inherit request-time language headers and typed failures. A caller can pass `RequestCancellation`, which the data source bridges to a per-request Dio token and detaches when the request finishes. Future screen providers should watch `appLocaleProvider`, cancel their request scopes on invalidation or disposal, reset locale-sensitive state, and guard writes after each await against superseded queries or request generations. The shared client already rejects responses from obsolete locale revisions. Phase 3 adds no property cache or screen controllers.
+
+### Production verification
+
+Separate English and Arabic GETs for the listing, featured listing, details for `rental-022`, and filter options returned HTTP 200 with matching `Content-Language` and `Vary: Accept-Language`. The two-item listing returned 30 total results over 15 pages, and the featured query returned 10 over five. Both locales returned the same IDs, prices, units, and histogram counts. Titles, addresses, descriptions, review comments, and type labels were localized. The detail included a required agent with a null avatar, coordinates, image and review arrays, and UTC timestamps. Filter options returned 20 buckets, including decimal edges, and counts totaling 30. Local fixtures cover empty and equal-bound shapes. Production HTTP is outside the automated suite.
+
+The Phase 3 test and coverage runs both passed all 146 tests. The interactive design preview also rendered after hot reload on the iPhone 18 Pro simulator. Home, Explore, Details, and Filters UI remain future work. [Verification log](AI_USAGE.md#phase-3--property-data-layer)
 
 ## Mobile platform configuration
 
