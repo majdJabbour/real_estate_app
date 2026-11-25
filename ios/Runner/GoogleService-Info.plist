@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>264176383366-11dqigg7i3e5s439luc858f0gb23si07.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.264176383366-11dqigg7i3e5s439luc858f0gb23si07</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAG6habrzdAqp7pwA4afCyiCa0hVMoGVGE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>264176383366</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.majdjabbour.realestate</string>
+	<key>PROJECT_ID</key>
+	<string>real-estate-app-91394</string>
+	<key>STORAGE_BUCKET</key>
+	<string>real-estate-app-91394.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:264176383366:ios:21de78beb4460e1ff9e807</string>
+</dict>
+</plist>

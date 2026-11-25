@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "264176383366",
+    "project_id": "real-estate-app-91394",
+    "storage_bucket": "real-estate-app-91394.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264176383366:android:ec7e69b2075325cdf9e807",
+        "android_client_info": {
+          "package_name": "com.majdjabbour.realestate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264176383366-gni05butl551hka94ecfekmqc7b0quvv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLjzt6C9TrwZOizBRkCa9SNPhiABiTTMQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264176383366-gni05butl551hka94ecfekmqc7b0quvv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
