@@ -161,4 +161,25 @@ Public production requests for `rental-001` returned HTTP 200 in English and Ara
 | iOS simulator | The standard `lib/main.dart` entry point built, launched and hot reloaded. The live Details and gallery captures are linked in the design review. |
 | Android debug build | `flutter build apk --debug` passed. Android runtime remains unverified in Phase 6. |
 
-Phase 6 is pending developer review.
+The developer approved Phase 6 functionally and authorized Phase 7.0.
+
+## Phase 7.0 — Native platform preparation
+
+The developer requested the shared mobile identifier `com.majdjabbour.realestate`, the proposed Real Scout display name, and build and signing verification before Firebase setup. Codex inspected the Android Gradle and manifest configuration, the iOS Runner and RunnerTests targets, the locked sign-in plugin documentation, and the Firebase setup guides. The app contract matches the sibling backend reference at `d92fdf0b84e76ac8977efc6c17ff67e59ab66c26` byte for byte. Codex used the Dart static-analysis skill for verification.
+
+Codex updated the Android application ID and namespace, moved `MainActivity` into the matching package, and set the launcher label. In Xcode, Codex updated the Runner and RunnerTests IDs in Debug, Profile and Release and set the display and bundle names to Real Scout. The test target still loads `Runner.app`. The Dart package is `real_estate_app`. Android SDK levels, iOS 15.0 deployment target, SwiftPM project references and resolution files, dependencies, and lockfile were preserved. Firebase registration, initialization, and authentication remain pending developer approval.
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed on Flutter 3.50.1 stable and Dart 3.14.0. Six informational package update notices. The dependency manifest and lockfile were unchanged. |
+| `flutter analyze` | Passed with no issues. |
+| `flutter test` | All 226 existing tests passed. |
+| `flutter build apk --debug` | Passed. `aapt` confirmed the application ID, launcher label, and `com.majdjabbour.realestate.MainActivity`. The APK installed and the activity reached the foreground on the Pixel 10 Pro XL Android emulator. |
+| `flutter build ios --simulator` | Passed with Xcode 27.2. The built plist confirmed the bundle ID, Real Scout label, and iOS 15.0 minimum. The app installed and launched on the iPhone 18 Pro Max simulator running iOS 27.2. |
+| `./gradlew :app:signingReport` | Passed. The debug variant uses Gradle's standard debug config and `AndroidDebugKey` alias. `apksigner` independently matched both public certificate fingerprints against the built APK. |
+| `git diff --check` | Passed. |
+
+- Debug SHA-1: `59:21:4B:64:2E:DE:A7:1E:4A:55:25:A8:BA:11:71:EE:BB:8A:E2:CB`
+- Debug SHA-256: `37:8B:45:8F:E0:17:1E:4D:48:59:CF:60:BF:C4:47:5C:65:73:E2:F0:12:7C:D4:24:FC:B1:62:28:8E:AF:41:3C`
+
+Phase 7.0 is ready for developer review. Runtime verification covered app launch on the emulator and simulator. Physical device and live authentication checks are pending.

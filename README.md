@@ -136,14 +136,22 @@ Profile, authentication, and favorite persistence remain future work.
 
 | Setting | Value |
 | --- | --- |
-| Android application ID and namespace | `com.example.real_estate_app` |
+| Android application ID and namespace | `com.majdjabbour.realestate` |
 | Android minimum SDK | 24, inherited from Flutter |
 | Android compile and target SDK | 36, inherited from Flutter |
-| iOS Runner bundle identifier | `com.example.realEstateApp` |
+| iOS Runner bundle identifier (Debug, Profile, Release) | `com.majdjabbour.realestate` |
+| iOS RunnerTests bundle identifier | `com.majdjabbour.realestate.RunnerTests` |
 | iOS deployment target | 15.0 |
+| Native app display name | Real Scout |
+| Dart package name | `real_estate_app` |
 
-The platform minimums match the installed Firebase and Google Sign-In plugins. This checkout has no Firebase client configuration, Google Services Gradle plugin, iOS Google Sign-In URL scheme, or Firebase initialization.
+Real Scout is the proposed mobile display name, taken from the design reference's wordmark. Phase 7.0 applies it to the Android and iOS app labels. Both builds passed, and inspection of the APK and simulator app confirmed the packaged identifiers and display name. Dependency resolution preserved the lockfile, static analysis found no issues, and all 226 tests passed. [Phase 7.0 verification](AI_USAGE.md#phase-70--native-platform-preparation)
 
-During the approved authentication phase, register the confirmed Android and iOS IDs in the same Firebase project as the backend, enable the Google provider, and generate client options with FlutterFire CLI. Configure Android signing fingerprints for the builds that will sign in. The Android plugin supports Google Services Gradle configuration with a web OAuth client entry or an explicit web client ID via `serverClientId`. On iOS, configure the client ID and reversed-client-ID URL scheme in Runner. The locked `google_sign_in` 7.2.0 uses `GoogleSignIn.instance.initialize()` before mobile `authenticate()`. The signed-in Firebase user supplies the ID token for protected REST requests. Firebase Admin credentials stay on the backend.
+The Android debug variant uses the standard Gradle debug signing configuration with the local `AndroidDebugKey` certificate. The scaffold also uses debug signing for its release variant. Run `cd android && ./gradlew :app:signingReport` to obtain the fingerprints for your local debug certificate. Phase 7.0 cross-checked its report against the signed APK. [Local verification fingerprints](AI_USAGE.md#phase-70--native-platform-preparation)
 
-The Android main manifest declares `INTERNET` for all build variants. The release build currently uses debug signing.
+### Firebase setup pending approval
+
+1. Register both `com.majdjabbour.realestate` apps in the existing Firebase project used by the backend. Confirm the Google provider is enabled and use FlutterFire CLI to generate the Android and iOS client options. [FlutterFire setup](https://firebase.google.com/docs/flutter/setup) · [Firebase Google Sign-In](https://firebase.google.com/docs/auth/flutter/federated-auth#google)
+2. On Android, register the debug SHA-1 and SHA-256 and the fingerprints of any distribution certificates used for sign-in. Use the refreshed `google-services.json` with the Google Services Gradle plugin and a web OAuth client entry, or pass the web OAuth client ID as `serverClientId` for Google Sign-In. [Android Google setup](https://firebase.google.com/docs/auth/android/google-signin) · [Google Sign-In Android plugin](https://pub.dev/packages/google_sign_in_android/versions/7.2.19)
+3. On iOS, obtain Runner's Apple client configuration. Set `GIDClientID` or pass `clientId` during Google Sign-In initialization. Add `REVERSED_CLIENT_ID` as a URL scheme under `CFBundleURLTypes` in Runner. Use the existing SwiftPM integration. [Google Sign-In iOS plugin](https://pub.dev/packages/google_sign_in_ios/versions/6.4.0)
+4. In the authentication implementation phase, initialize Firebase and call `GoogleSignIn.instance.initialize()` before `authenticate()` with the locked `google_sign_in` 7.2.0. Use the signed-in Firebase user's ID token for protected API requests and verify live sign-in and `/auth/me` on both platforms. Firebase Admin credentials stay on the backend. [Firebase Google Sign-In](https://firebase.google.com/docs/auth/flutter/federated-auth#google)
