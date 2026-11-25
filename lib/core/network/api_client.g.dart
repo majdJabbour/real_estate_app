@@ -50,6 +50,56 @@ final class ApiTokenSourceProvider
 
 String _$apiTokenSourceHash() => r'c424e956f549a17b926a7d0827a6ffed034c625b';
 
+@ProviderFor(accountApiTokenSource)
+final accountApiTokenSourceProvider = AccountApiTokenSourceProvider._();
+
+final class AccountApiTokenSourceProvider
+    extends
+        $FunctionalProvider<
+          Future<String?> Function(String),
+          Future<String?> Function(String),
+          Future<String?> Function(String)
+        >
+    with $Provider<Future<String?> Function(String)> {
+  AccountApiTokenSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'accountApiTokenSourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$accountApiTokenSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<Future<String?> Function(String)> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  Future<String?> Function(String) create(Ref ref) {
+    return accountApiTokenSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Future<String?> Function(String) value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Future<String?> Function(String)>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$accountApiTokenSourceHash() =>
+    r'938c8e260f05c894019c9fabcf0dadf1abd530ea';
+
 @ProviderFor(dio)
 final dioProvider = DioProvider._();
 
@@ -88,4 +138,4 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$dioHash() => r'06f98b6fe4d517df5906acaa64dde412f39fe0fa';
+String _$dioHash() => r'eeb65b213e5a6e013c3a72363087530b8848abdc';

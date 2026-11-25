@@ -1,25 +1,25 @@
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/app_theme.dart';
 import '../../../../core/design_system/design_tokens.dart';
+import '../../../../core/errors/app_failure.dart';
+import '../../../../core/localization/failure_message.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../authentication/application/authentication_providers.dart';
-import '../../../authentication/presentation/auth_routes.dart';
+import '../../../authentication/presentation/account_sign_in.dart';
+import '../../../favorites/application/favorites_providers.dart';
 
 class PropertyFavoriteButton extends ConsumerWidget {
   const PropertyFavoriteButton({
-    required this.selected,
-    required this.onPressed,
+    required this.propertyId,
     this.onPhoto = false,
     this.iconSize,
     super.key,
   });
 
-  final bool selected;
-  final VoidCallback? onPressed;
+  final String propertyId;
   final bool onPhoto;
   final double? iconSize;
 
@@ -27,33 +27,72 @@ class PropertyFavoriteButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final colors = AppThemeColors.of(context);
-    final foreground = selected
+    final account = ref.watch(
+      activeFavoritesSessionProvider.select((session) => session.accountId),
+    );
+    final canSignIn =
+        account == null && ref.watch(authenticationInitializerProvider) != null;
+    final (selected, pending, retry) = account == null
+        ? (null, false, false)
+        : ref.watch(
+            favoriteMembershipControllerProvider.select((membership) {
+              final current = membership.isLoading
+                  ? null
+                  : membership.asData?.value;
+              final uncertain =
+                  current?.uncertain.contains(propertyId) ?? false;
+              return (
+                uncertain ? null : current?.ids.contains(propertyId),
+                current?.pending.contains(propertyId) ?? membership.isLoading,
+                uncertain || membership.hasError,
+              );
+            }),
+          );
+
+    final size = iconSize ?? (onPhoto ? 22.0 : 20.0);
+    final foreground = selected == true
         ? colors.favoriteSelected
         : onPhoto
         ? Colors.white
         : colors.favoriteOutline;
-    final size = iconSize ?? (onPhoto ? 22.0 : 20.0);
-    final requiresSignIn =
-        onPressed == null &&
-        ref.watch(authenticationInitializerProvider) != null &&
-        ref.watch(authenticationSessionProvider).asData?.value == null;
-    final label = requiresSignIn
-        ? l10n.signInToSave
-        : onPressed == null
-        ? l10n.favoriteUnavailable
-        : selected
-        ? l10n.removeFavorite
-        : l10n.addFavorite;
+    final label = switch ((account, pending, retry, selected)) {
+      (null, _, _, _) =>
+        canSignIn ? l10n.signInToSave : l10n.favoriteUnavailable,
+      (_, true, _, null) => l10n.favoriteLoading,
+      (_, true, _, _) => l10n.favoriteUpdating,
+      (_, _, true, _) => l10n.favoriteRetry,
+      (_, _, _, true) => l10n.removeFavorite,
+      _ => l10n.addFavorite,
+    };
+    final progress = SizedBox.square(
+      dimension: selected == null ? DesignSize.loadingIcon : 8,
+      child: CircularProgressIndicator(color: foreground, strokeWidth: 2),
+    );
+    final heart = selected == true
+        ? Icon(Icons.favorite_rounded, size: size)
+        : AppIcon(AppIcons.heartOutline, size: size);
+
     return Listener(
       behavior: HitTestBehavior.opaque,
       child: IconButton(
         tooltip: label,
-        onPressed: requiresSignIn
-            ? () => context.go(signInLocation(GoRouterState.of(context).uri))
-            : onPressed,
+        onPressed: pending || (account == null && !canSignIn)
+            ? null
+            : () => account == null
+                  ? _requestSignIn(context, ref)
+                  : _toggle(context, ref),
         isSelected: selected,
-        icon: AppIcon(AppIcons.heartOutline, size: size),
-        selectedIcon: const Icon(Icons.favorite_rounded),
+        icon: !pending
+            ? heart
+            : selected == null
+            ? progress
+            : Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  heart,
+                  PositionedDirectional(end: -3, bottom: -3, child: progress),
+                ],
+              ),
         style: IconButton.styleFrom(
           iconSize: size,
           foregroundColor: foreground,
@@ -63,5 +102,50 @@ class PropertyFavoriteButton extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _requestSignIn(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final approved = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.signInToSave),
+        content: Text(l10n.favoriteUnavailable),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.googleSignIn),
+          ),
+        ],
+      ),
+    );
+    if (approved == true && context.mounted) {
+      await showAccountSignIn(context, ref);
+    }
+  }
+
+  Future<void> _toggle(BuildContext context, WidgetRef ref) async {
+    try {
+      if (ref.read(favoriteMembershipControllerProvider).hasError) {
+        ref.invalidate(favoriteMembershipControllerProvider);
+        return;
+      }
+      await ref
+          .read(favoriteMembershipControllerProvider.notifier)
+          .toggle(propertyId);
+    } catch (error) {
+      if (!context.mounted) return;
+      final l10n = AppLocalizations.of(context);
+      final message = error is AppFailure
+          ? failureMessage(l10n, error)
+          : l10n.unexpectedError;
+      if (message == null) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    }
   }
 }

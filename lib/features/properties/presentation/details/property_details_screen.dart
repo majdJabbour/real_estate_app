@@ -188,9 +188,8 @@ class _DetailsContent extends StatelessWidget {
                               Material(
                                 color: theme.colorScheme.surface,
                                 shape: const CircleBorder(),
-                                child: const PropertyFavoriteButton(
-                                  selected: false,
-                                  onPressed: null,
+                                child: PropertyFavoriteButton(
+                                  propertyId: details.summary.id,
                                   iconSize: 28,
                                 ),
                               ),

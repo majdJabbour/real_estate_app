@@ -6,13 +6,14 @@ import '../../features/authentication/application/authentication_providers.dart'
 import '../../features/authentication/presentation/auth_routes.dart';
 import '../../features/authentication/presentation/auth_screen.dart';
 import '../../features/authentication/presentation/splash_screen.dart';
+import '../../features/favorites/presentation/favorites_screen.dart';
+import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/properties/presentation/details/property_details_screen.dart';
 import '../../features/properties/presentation/explore/explore_screen.dart';
 import '../../features/properties/presentation/home/home_screen.dart';
 import '../../l10n/app_localizations.dart';
 import 'app_tab_shell.dart';
 import 'explore_intent.dart';
-import 'temporary_destinations.dart';
 
 part 'app_router.g.dart';
 
@@ -96,11 +97,16 @@ GoRouter appRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: '/profile',
-                builder: (context, state) => const ProfileDestination(),
+                builder: (context, state) => const ProfileScreen(),
               ),
             ],
           ),
         ],
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigator,
+        path: FavoritesScreen.path,
+        builder: (context, state) => const FavoritesScreen(),
       ),
       GoRoute(
         parentNavigatorKey: rootNavigator,

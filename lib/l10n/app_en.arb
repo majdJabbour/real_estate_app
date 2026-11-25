@@ -316,5 +316,21 @@
         "type": "String"
       }
     }
-  }
+  },
+  "myFavorites": "My Favorites",
+  "emptyFavorites": "No favorite properties yet.",
+  "emptyFavoritesPage": "There are no favorites on this page.",
+  "favoriteLoading": "Loading favorites…",
+  "favoriteUpdating": "Updating favorites…",
+  "favoriteRetry": "Retry loading favorite status",
+  "previousFavoritesPage": "Previous page",
+  "nextFavoritesPage": "Next page",
+  "profileLanguage": "Language",
+  "appearance": "Appearance",
+  "originalBlue": "Original Blue",
+  "newPurple": "New Purple",
+  "newOrange": "New Orange",
+  "themeSaveError": "Could not save the app appearance.",
+  "accountNameUnavailable": "Name unavailable",
+  "confirmSignOut": "Sign out of your account?"
 }

@@ -335,15 +335,11 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
             key: ValueKey(property.id),
             property: property,
             onOpen: open,
-            isFavorite: false,
-            onFavoritePressed: null,
           )
         : PropertyGridCard(
             key: ValueKey(property.id),
             property: property,
             onOpen: open,
-            isFavorite: false,
-            onFavoritePressed: null,
           );
   }
 

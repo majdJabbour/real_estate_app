@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../domain/authentication_repository.dart';
 
 final class FirebaseAuthenticationRepository
-    implements AuthenticationRepository {
+    implements AuthenticationRepository, AccountTokenRepository {
   FirebaseAuthenticationRepository(this._firebase, this._google);
 
   final FirebaseAuth _firebase;
@@ -70,9 +70,18 @@ final class FirebaseAuthenticationRepository
   }
 
   @override
-  Future<String?> idToken() async {
+  Future<String?> idToken() => _idToken();
+
+  @override
+  Future<String?> idTokenForAccount(String accountId) => _idToken(accountId);
+
+  Future<String?> _idToken([String? accountId]) async {
     final user = _firebase.currentUser;
-    if (_signingOut || user == null) return null;
+    if (_signingOut ||
+        user == null ||
+        (accountId != null && user.uid != accountId)) {
+      return null;
+    }
     final revision = _sessionRevision;
     bool isCurrent() =>
         !_signingOut &&

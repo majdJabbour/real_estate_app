@@ -166,5 +166,21 @@
   "verifyingProfile": "جارٍ التحقّق من ملفك الشخصي…",
   "verifiedProfile": "ملف شخصي موثّق",
   "profileUnauthorized": "تعذّر التحقّق من جلستك. حاول مجددًا أو سجّل الخروج ثم سجّل الدخول مرة أخرى.",
-  "signInToSave": "سجّل الدخول لحفظ العقارات"
+  "signInToSave": "سجّل الدخول لحفظ العقارات",
+  "myFavorites": "مفضلاتي",
+  "emptyFavorites": "لا توجد عقارات مفضلة بعد.",
+  "emptyFavoritesPage": "لا توجد مفضلات في هذه الصفحة.",
+  "favoriteLoading": "جارٍ تحميل المفضلات…",
+  "favoriteUpdating": "جارٍ تحديث المفضلات…",
+  "favoriteRetry": "إعادة محاولة تحميل حالة المفضلة",
+  "previousFavoritesPage": "الصفحة السابقة",
+  "nextFavoritesPage": "الصفحة التالية",
+  "profileLanguage": "اللغة",
+  "appearance": "المظهر",
+  "originalBlue": "الأزرق الأصلي",
+  "newPurple": "البنفسجي الجديد",
+  "newOrange": "البرتقالي الجديد",
+  "themeSaveError": "تعذّر حفظ مظهر التطبيق.",
+  "accountNameUnavailable": "الاسم غير متاح",
+  "confirmSignOut": "هل تريد تسجيل الخروج من حسابك؟"
 }

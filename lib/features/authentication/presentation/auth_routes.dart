@@ -12,7 +12,12 @@ String? publicDestination(String? value) {
   if (uri == null || uri.hasAuthority || uri.hasScheme || uri.hasFragment) {
     return null;
   }
-  if (const {'/home', '/explore', '/profile'}.contains(uri.path)) {
+  if (const {
+    '/home',
+    '/explore',
+    '/profile',
+    '/favorites',
+  }.contains(uri.path)) {
     return uri.toString();
   }
   final segments = uri.pathSegments;

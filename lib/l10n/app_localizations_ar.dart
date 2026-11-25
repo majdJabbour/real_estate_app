@@ -597,4 +597,52 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get signInToSave => 'سجّل الدخول لحفظ العقارات';
+
+  @override
+  String get myFavorites => 'مفضلاتي';
+
+  @override
+  String get emptyFavorites => 'لا توجد عقارات مفضلة بعد.';
+
+  @override
+  String get emptyFavoritesPage => 'لا توجد مفضلات في هذه الصفحة.';
+
+  @override
+  String get favoriteLoading => 'جارٍ تحميل المفضلات…';
+
+  @override
+  String get favoriteUpdating => 'جارٍ تحديث المفضلات…';
+
+  @override
+  String get favoriteRetry => 'إعادة محاولة تحميل حالة المفضلة';
+
+  @override
+  String get previousFavoritesPage => 'الصفحة السابقة';
+
+  @override
+  String get nextFavoritesPage => 'الصفحة التالية';
+
+  @override
+  String get profileLanguage => 'اللغة';
+
+  @override
+  String get appearance => 'المظهر';
+
+  @override
+  String get originalBlue => 'الأزرق الأصلي';
+
+  @override
+  String get newPurple => 'البنفسجي الجديد';
+
+  @override
+  String get newOrange => 'البرتقالي الجديد';
+
+  @override
+  String get themeSaveError => 'تعذّر حفظ مظهر التطبيق.';
+
+  @override
+  String get accountNameUnavailable => 'الاسم غير متاح';
+
+  @override
+  String get confirmSignOut => 'هل تريد تسجيل الخروج من حسابك؟';
 }

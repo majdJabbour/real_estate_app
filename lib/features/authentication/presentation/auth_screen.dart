@@ -13,12 +13,21 @@ import '../application/authentication_providers.dart';
 import 'auth_feedback.dart';
 
 class AuthScreen extends ConsumerWidget {
-  const AuthScreen({required this.guestDestination, super.key});
+  const AuthScreen({required this.guestDestination, this.onDismiss, super.key});
 
   final String guestDestination;
+  final VoidCallback? onDismiss;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (onDismiss != null) {
+      ref.listen(authenticationSessionProvider, (_, next) {
+        if (next.asData?.value != null &&
+            ModalRoute.of(context)?.isCurrent == true) {
+          onDismiss!();
+        }
+      });
+    }
     final l10n = AppLocalizations.of(context);
     final action = ref.watch(authenticationActionProvider);
     final scheme = Theme.of(context).colorScheme;
@@ -148,12 +157,18 @@ class AuthScreen extends ConsumerWidget {
                           ? null
                           : () {
                               ref.invalidate(authenticationActionProvider);
-                              context.go(guestDestination);
+                              if (onDismiss case final dismiss?) {
+                                dismiss();
+                              } else {
+                                context.go(guestDestination);
+                              }
                             },
                       style: TextButton.styleFrom(
                         minimumSize: const Size(0, DesignSize.tapTarget),
                       ),
-                      child: Text(l10n.continueAsGuest),
+                      child: Text(
+                        onDismiss == null ? l10n.continueAsGuest : l10n.cancel,
+                      ),
                     ),
                   ],
                 ),

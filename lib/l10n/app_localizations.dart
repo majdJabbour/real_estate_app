@@ -1102,6 +1102,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign in to save properties'**
   String get signInToSave;
+
+  /// No description provided for @myFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'My Favorites'**
+  String get myFavorites;
+
+  /// No description provided for @emptyFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'No favorite properties yet.'**
+  String get emptyFavorites;
+
+  /// No description provided for @emptyFavoritesPage.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no favorites on this page.'**
+  String get emptyFavoritesPage;
+
+  /// No description provided for @favoriteLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading favorites…'**
+  String get favoriteLoading;
+
+  /// No description provided for @favoriteUpdating.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating favorites…'**
+  String get favoriteUpdating;
+
+  /// No description provided for @favoriteRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry loading favorite status'**
+  String get favoriteRetry;
+
+  /// No description provided for @previousFavoritesPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
+  String get previousFavoritesPage;
+
+  /// No description provided for @nextFavoritesPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
+  String get nextFavoritesPage;
+
+  /// No description provided for @profileLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get profileLanguage;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @originalBlue.
+  ///
+  /// In en, this message translates to:
+  /// **'Original Blue'**
+  String get originalBlue;
+
+  /// No description provided for @newPurple.
+  ///
+  /// In en, this message translates to:
+  /// **'New Purple'**
+  String get newPurple;
+
+  /// No description provided for @newOrange.
+  ///
+  /// In en, this message translates to:
+  /// **'New Orange'**
+  String get newOrange;
+
+  /// No description provided for @themeSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the app appearance.'**
+  String get themeSaveError;
+
+  /// No description provided for @accountNameUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Name unavailable'**
+  String get accountNameUnavailable;
+
+  /// No description provided for @confirmSignOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out of your account?'**
+  String get confirmSignOut;
 }
 
 class _AppLocalizationsDelegate

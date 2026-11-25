@@ -32,9 +32,27 @@ Stream<AuthenticatedUser?> authenticationSession(Ref ref) async* {
   }
 }
 
-ApiTokenSource authenticatedApiTokenSource(Ref ref) => () async {
+ApiTokenSource authenticatedApiTokenSource(Ref ref) =>
+    () => _readApiToken(ref);
+
+Future<String?> Function(String) authenticatedAccountApiTokenSource(Ref ref) =>
+    (accountId) => _readApiToken(ref, accountId: accountId);
+
+Future<String?> _readApiToken(Ref ref, {String? accountId}) async {
   try {
     final repository = await ref.read(authenticationRepositoryProvider.future);
+    if (!ref.mounted) return null;
+    if (accountId != null) {
+      String? currentId() =>
+          ref.read(authenticationSessionProvider).asData?.value?.id;
+      if (currentId() != accountId) return null;
+      final token = repository is AccountTokenRepository
+          ? await (repository as AccountTokenRepository).idTokenForAccount(
+              accountId,
+            )
+          : await repository?.idToken();
+      return ref.mounted && currentId() == accountId ? token : null;
+    }
     return await repository?.idToken();
   } on AuthenticationFailure catch (error) {
     throw AppFailure(switch (error) {
@@ -45,7 +63,7 @@ ApiTokenSource authenticatedApiTokenSource(Ref ref) => () async {
       AuthenticationFailure.unexpected => FailureKind.unexpected,
     });
   }
-};
+}
 
 @Riverpod(keepAlive: true)
 class AuthenticationAction extends _$AuthenticationAction {

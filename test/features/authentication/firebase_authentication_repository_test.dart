@@ -108,6 +108,25 @@ void main() {
   });
 
   test(
+    'an account-bound request cannot use a replacement account token',
+    () async {
+      expect(await repository.idTokenForAccount('previous'), isNull);
+      verifyNever(() => user.getIdToken());
+
+      final pending = Completer<String?>();
+      when(() => user.getIdToken()).thenAnswer((_) => pending.future);
+      final token = repository.idTokenForAccount('current');
+      final replacement = _User();
+      when(() => replacement.uid).thenReturn('replacement');
+      when(() => firebase.currentUser).thenReturn(replacement);
+      pending.complete('synthetic-previous-token');
+
+      expect(await token, isNull);
+      verifyNever(() => replacement.getIdToken());
+    },
+  );
+
+  test(
     'reads the Firebase ID token and drops one acquired after sign-out',
     () async {
       when(() => user.getIdToken())

@@ -391,6 +391,8 @@ void main() {
       await tester.tap(find.text('Profile').hitTestable().last);
       await tester.pumpAndSettle();
       arabic = true;
+      await tester.tap(find.text('Language'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('العربية'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('استكشاف').hitTestable().last);

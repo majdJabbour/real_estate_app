@@ -214,3 +214,22 @@ Screenshots are available locally under `/private/tmp/real-scout-phase-7.2/`:
 - `android-auth-ar.png`
 - `android-auth-compact-ar.png` and `android-auth-compact-controls-ar.png`
 - `android-guest-home.png`
+
+## Phase 8 — Favorites, Profile, and preferences
+
+The developer approved Phase 8, confirmed real Google Sign-In with the actual account name and avatar and successful backend profile verification, and reported that setting `NODE_OPTIONS=--experimental-require-module` in Vercel resolved `ERR_REQUIRE_ESM`. The developer chose to carry out authenticated production favorites verification. Phase 8 used an isolated emulator and synthetic account for private-data visual and interaction checks.
+
+Codex inspected the checked-in and sibling API contracts, backend pagination and favorite handlers, Flutter auth/session/token code, property components, GoRouter, design tokens, and localization. It verified that the contract is byte-identical to the backend checkout at `d92fdf0b84e76ac8977efc6c17ff67e59ab66c26`. Figma MCP inspected all three Profile frames and provided the licensed chevron, language and sign-out SVG exports. The original filled-heart variant could not be verified in the free set, so the existing Material fallback is retained. After comparing the emulator Profile with Original Blue, Codex corrected the title, name and menu glyph foregrounds and retook the affected screenshots.
+
+Changes cover the Favorites domain, remote data source, DTO, repositories, generated providers and screen. The active account and revision scope private reads and writes. A shared ID set drives the hearts, and definite failures roll back only the ID involved. A bounded reconciliation read resolves uncertain outcomes when possible. The Profile replacement uses verified account fields with Firebase fallbacks. Settings use the existing locale controller and theme factory with the persisted `blue`, `purple` and `orange` IDs. The account token boundary, auth modal, root router, property hearts, translations, tests, screenshots and asset attribution were also updated.
+
+| Verification | Evidence |
+| --- | --- |
+| Toolchain and checks | Flutter 3.50.1 and Dart 3.14.0. Package resolution, localization and code generation, formatting, analysis, and diff checks passed. A second generation run reproduced every generated source byte for byte. Both full test runs passed 281 tests, including all 256 existing tests and 25 additions. Line coverage was 90.70% overall, 95.67% for Favorites and 92.63% for Profile. |
+| Production HTTP | Anonymous `GET /auth/me`, `GET /favorites`, `GET /favorites/ids`, `PUT /favorites/rental-022`, and `DELETE /favorites/rental-022` returned 401 with `UNAUTHORIZED`. The public list returned 200 and identified `rental-022` as Eastside Staircase Duplex. |
+| Firestore | Read the deployed default database rules using the existing Firebase CLI authorization. The deployed source matched the repository’s deny-all rule. This verification used read-only API calls. |
+| Runtime | The regular APK launched on the Android emulator. On the isolated emulator, the regular APK restored Arabic and New Orange after process launch and showed the guest sign-in treatment in Favorites. The iOS simulator build installed and launched on iPhone 18 Pro Max. |
+| Visual and interaction | The isolated Android run used the actual Flutter UI, live public properties, and a synthetic account and favorite repository. Hot reload completed. Adding a favorite in Details updated the Explore and Home hearts. Removing the fixture favorite emptied Favorites. The run verified both languages, all palettes, 430 dp and 320 dp, and restored Arabic and New Orange on cold start. The fixture entry point was removed after review. [Ten screenshots](docs/screenshots/phase-8) |
+| Outstanding | Developer verification of authenticated production favorite writes, cold-start Firebase session restoration, live sign-out and account switching, and live Google Sign-In on both platforms. [Manual sequence](README.md#live-favorites-verification) |
+
+Suggested commits are `feat: add session-scoped property favorites`, `feat: complete profile and persist appearance`, and `docs: record Phase 8 verification and screenshots`.

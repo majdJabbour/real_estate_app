@@ -16,8 +16,6 @@ class FeaturedPropertyCard extends StatelessWidget {
   const FeaturedPropertyCard({
     required this.property,
     required this.onOpen,
-    required this.isFavorite,
-    required this.onFavoritePressed,
     super.key,
   });
 
@@ -26,8 +24,6 @@ class FeaturedPropertyCard extends StatelessWidget {
 
   final PropertySummary property;
   final VoidCallback onOpen;
-  final bool isFavorite;
-  final VoidCallback? onFavoritePressed;
 
   static double heightFor(
     BuildContext context,
@@ -115,11 +111,7 @@ class FeaturedPropertyCard extends StatelessWidget {
         PositionedDirectional(
           end: 3,
           bottom: 8,
-          child: PropertyFavoriteButton(
-            selected: isFavorite,
-            onPressed: onFavoritePressed,
-            onPhoto: true,
-          ),
+          child: PropertyFavoriteButton(propertyId: property.id, onPhoto: true),
         ),
       ],
     ),
@@ -130,8 +122,6 @@ class PropertyGridCard extends StatelessWidget {
   const PropertyGridCard({
     required this.property,
     required this.onOpen,
-    required this.isFavorite,
-    required this.onFavoritePressed,
     super.key,
   });
 
@@ -139,8 +129,6 @@ class PropertyGridCard extends StatelessWidget {
 
   final PropertySummary property;
   final VoidCallback onOpen;
-  final bool isFavorite;
-  final VoidCallback? onFavoritePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -192,10 +180,7 @@ class PropertyGridCard extends StatelessWidget {
             PositionedDirectional(
               end: 0,
               bottom: 4,
-              child: PropertyFavoriteButton(
-                selected: isFavorite,
-                onPressed: onFavoritePressed,
-              ),
+              child: PropertyFavoriteButton(propertyId: property.id),
             ),
           ],
         ),
@@ -295,15 +280,11 @@ class PropertyListCard extends StatelessWidget {
   const PropertyListCard({
     required this.property,
     required this.onOpen,
-    required this.isFavorite,
-    required this.onFavoritePressed,
     super.key,
   });
 
   final PropertySummary property;
   final VoidCallback onOpen;
-  final bool isFavorite;
-  final VoidCallback? onFavoritePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -444,10 +425,7 @@ class PropertyListCard extends StatelessWidget {
             PositionedDirectional(
               top: 10,
               end: 4,
-              child: PropertyFavoriteButton(
-                selected: isFavorite,
-                onPressed: onFavoritePressed,
-              ),
+              child: PropertyFavoriteButton(propertyId: property.id),
             ),
           ],
         ),

@@ -47,3 +47,15 @@ Both SVGs are credited to Piqo Studio under the recorded Iconly CC BY 4.0 grant.
 - `auth/property-collage.jpg` is original ImageGen output created for Phase 7.2 from a description of the three-column property composition. It depicts illustrative buildings, with no source photo or Figma render embedded. The local JPEG is shared across themes and available offline. The original Figma photos and Real Scout illustration remain reference-only because their redistribution rights could not be confirmed.
 - `icons/auth/google.png` is the unretouched center crop of the Google mark in the official 4× light icon-mode pill PNG for Android and Web. The 80 × 80 crop renders at 20 dp without recoloring, stretching or mirroring and appears only in the white Google sign-in control. The Google mark remains subject to Google's brand terms. [Google branding guidelines and asset bundle](https://developers.google.com/identity/branding-guidelines#download_pre-approved_brand_icons)
 - `fonts/google-sans/GoogleSans-Medium.ttf` is an upright static Medium instance of the upstream Google Sans variable font, subset to Latin and the ellipsis to keep the app asset small. Arabic glyphs use the existing Rubik font. The SIL Open Font License 1.1 and copyright are bundled next to the font. [Google Sans upstream](https://github.com/googlefonts/googlesans) · [Google Fonts distribution](https://github.com/google/fonts/tree/main/ofl/googlesans)
+
+## Phase 8 Profile
+
+Three unmodified Blue-frame group SVG exports use the existing Iconly CC BY 4.0 attribution to Piqo Studio. Flutter supplies the surrounding Figma slot, direction and tint through `AppIcon`.
+
+| File | Figma node | Glyph |
+| --- | --- | --- |
+| `actions/profile-chevron.svg` | `1:3824` | Light Arrow - Right 2 |
+| `actions/profile-language.svg` | `1:3843` | Curved More Circle |
+| `actions/profile-logout.svg` | `1:3855` | Curved Logout |
+
+The existing Outline Heart is reused. The selected heart, appearance and avatar fallback use Material SDK glyphs. Piqo’s release describes the free Bold family. Access to the original Community Heart export could not be confirmed, so no filled Iconly asset was added. [Piqo Studio’s Iconly 2.3 release](https://dribbble.com/shots/15543844-Iconly-Roadmap) · [Existing Iconly attribution](#home-and-navigation-svgs)

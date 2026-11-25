@@ -17,6 +17,10 @@ ApiTokenSource apiTokenSource(Ref ref) =>
     () async => null;
 
 @Riverpod(keepAlive: true)
+Future<String?> Function(String) accountApiTokenSource(Ref ref) =>
+    (_) => ref.read(apiTokenSourceProvider)();
+
+@Riverpod(keepAlive: true)
 Dio dio(Ref ref) {
   final base = ref.watch(appConfigProvider).apiBaseUrl;
   final client = Dio(
@@ -56,7 +60,10 @@ Dio dio(Ref ref) {
               return;
             }
             request.followRedirects = false;
-            final token = await ref.read(apiTokenSourceProvider)();
+            final accountId = request.extra[_accountKey] as String?;
+            final token = accountId == null
+                ? await ref.read(apiTokenSourceProvider)()
+                : await ref.read(accountApiTokenSourceProvider)(accountId);
             if (!ref.mounted || (request.cancelToken?.isCancelled ?? false)) {
               handler.reject(_cancelled(request));
               return;
@@ -88,7 +95,9 @@ Dio dio(Ref ref) {
           }
         }
         request.headers['Accept-Language'] = ref.read(appLocaleProvider).code;
-        request.extra[_localeRevisionKey] = localeRevision;
+        if (request.extra[_localeSensitiveKey] != false) {
+          request.extra[_localeRevisionKey] = localeRevision;
+        }
         handler.next(request);
       },
       onResponse: (response, handler) {
@@ -112,6 +121,8 @@ Dio dio(Ref ref) {
 }
 
 const _accessKey = 'app.apiAccess';
+const _accountKey = 'app.accountId';
+const _localeSensitiveKey = 'app.localeSensitive';
 const _localeRevisionKey = 'app.localeRevision';
 final _bearerToken = RegExp(r'^[A-Za-z0-9._~+/=-]+$');
 
@@ -126,6 +137,8 @@ Future<ApiResponse<T>> requestApi<T>(
   String endpoint, {
   required T Function(Object?) decodeData,
   required ApiAccess access,
+  String? accountId,
+  bool localeSensitive = true,
   String method = 'GET',
   Map<String, Object?>? queryParameters,
   Object? data,
@@ -137,7 +150,14 @@ Future<ApiResponse<T>> requestApi<T>(
       queryParameters: queryParameters,
       data: data,
       cancelToken: cancelToken,
-      options: Options(method: method, extra: {_accessKey: access}),
+      options: Options(
+        method: method,
+        extra: {
+          _accessKey: access,
+          _accountKey: accountId,
+          _localeSensitiveKey: localeSensitive,
+        },
+      ),
     );
     return ApiResponse.decode(
       response.data,

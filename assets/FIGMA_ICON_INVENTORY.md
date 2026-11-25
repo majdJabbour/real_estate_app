@@ -177,3 +177,13 @@ Details uses the 28 dp Iconly Light back export from `1:4267` and the 20 dp Icon
 - The three original Real Scout marks remain references. Flutter Splash renders a localized text wordmark and tagline in Rubik with palette accent and system progress.
 - The nine original Auth photos remain references. Auth uses one original generated real-estate collage, shared by all palettes. The direction of its composition is unchanged in Arabic.
 - The multicolor mark used by `AppIcon` comes from Google's published light Android/Web asset, center-cropped to the original 20 dp mark area from the 4× PNG. The supplied Figma vector remains a reference. [Asset sources and licenses](ASSET_LICENSES.md#authentication-assets)
+
+## Phase 8 — Profile and favorite controls
+
+| Blue node | Role | Bundled source and handling |
+| --- | --- | --- |
+| `1:3824` | Menu chevron | Iconly Light Arrow - Right 2. The original 13.1667 × 7.33333 SVG is rotated in a 20 dp slot for LTR and RTL. |
+| `1:3843` | Language | Iconly Curved More Circle. Original 23.0833 × 23.0833 geometry in a 28 dp slot. |
+| `1:3855` | Sign out | Iconly Curved Logout. Original 24.2891 × 23.0833 geometry in a 28 dp slot, mirrored in RTL and tinted with the theme’s error ink. |
+
+My Favorites reuses the licensed Light-Outline Heart. Appearance and the avatar fallback use Material SDK glyphs. The Material filled heart remains in use because a directly attributable free-set Bold Heart export and its geometry could not be verified. [Attribution](ASSET_LICENSES.md#phase-8-profile)

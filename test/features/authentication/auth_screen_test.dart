@@ -12,11 +12,13 @@ import 'package:real_estate_app/features/authentication/application/authenticati
 import 'package:real_estate_app/features/authentication/domain/authentication_repository.dart';
 import 'package:real_estate_app/features/authentication/presentation/auth_screen.dart';
 import 'package:real_estate_app/features/authentication/presentation/splash_screen.dart';
+import 'package:real_estate_app/features/favorites/application/favorites_providers.dart';
 import 'package:real_estate_app/features/properties/application/property_providers.dart';
 import 'package:real_estate_app/features/properties/presentation/home/home_screen.dart';
 import 'package:real_estate_app/l10n/app_localizations.dart';
 
 import '../../support/memory_locale_preferences.dart';
+import '../favorites/fake_favorites.dart';
 import '../properties/home_fakes.dart';
 import 'fake_authentication.dart';
 
@@ -51,6 +53,7 @@ Future<ProviderContainer> _pumpApp(
       ),
       authenticationInitializerProvider.overrideWithValue(initialize),
       profileRepositoryProvider.overrideWithValue(_VerifiedProfile()),
+      favoritesRepositoryProvider.overrideWithValue(FakeFavorites()),
       propertyRepositoryProvider.overrideWithValue(
         FakeHomeRepository(
           loadListings: (query, cancellation) => homePage([]),
@@ -161,6 +164,8 @@ void main() {
     await tester.ensureVisible(heart);
     await tester.tap(heart);
     await tester.pumpAndSettle();
+    await tester.tap(find.text('Sign in with Google'));
+    await tester.pumpAndSettle();
     expect(find.byType(AuthScreen), findsOneWidget);
     final button = find.text('Sign in with Google');
     await tester.ensureVisible(button);
@@ -186,6 +191,8 @@ void main() {
     expect(find.text('Verified fixture'), findsOneWidget);
     expect(find.text('fixture@example.test'), findsOneWidget);
     await tester.tap(find.text('Sign out'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(TextButton, 'Sign out'));
     await tester.pumpAndSettle();
     expect(find.text('Guest'), findsOneWidget);
     expect(find.text('Verified fixture'), findsNothing);

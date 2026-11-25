@@ -12,6 +12,9 @@ enum AppIcons {
   filter('actions/filter'),
   back('actions/back'),
   detailsBack('actions/details-back'),
+  profileLanguage('actions/profile-language'),
+  profileLogout('actions/profile-logout'),
+  profileChevron('actions/profile-chevron'),
   location('property/location'),
   heartOutline('property/heart-outline'),
   ratingStar('property/rating-star'),
@@ -56,20 +59,47 @@ class AppIcon extends StatelessWidget {
     final solid =
         icon != AppIcons.ratingStar && icon != AppIcons.exploreSelected;
 
-    return SvgPicture.asset(
+    final (width, height) = switch (icon) {
+      AppIcons.profileLanguage => (23.0833, 23.0833),
+      AppIcons.profileLogout => (24.2891, 23.0833),
+      AppIcons.profileChevron => (13.1667, 7.33333),
+      _ => (dimension, dimension),
+    };
+    final picture = SvgPicture.asset(
       icon.asset,
-      width: dimension,
-      height: dimension,
+      width: width,
+      height: height,
       colorFilter: solid && tint != null
           ? ColorFilter.mode(tint, BlendMode.srcIn)
           : null,
       colorMapper: icon == AppIcons.exploreSelected && tint != null
           ? _ExploreColorMapper(tint)
           : null,
-      matchTextDirection: icon == AppIcons.back || icon == AppIcons.detailsBack,
+      matchTextDirection:
+          icon == AppIcons.back ||
+          icon == AppIcons.detailsBack ||
+          icon == AppIcons.profileLogout,
       semanticsLabel: semanticLabel,
       excludeFromSemantics: semanticLabel == null,
     );
+    if (icon == AppIcons.profileChevron ||
+        icon == AppIcons.profileLanguage ||
+        icon == AppIcons.profileLogout) {
+      return SizedBox.square(
+        dimension: dimension,
+        child: Center(
+          child: icon == AppIcons.profileChevron
+              ? RotatedBox(
+                  quarterTurns: Directionality.of(context) == TextDirection.rtl
+                      ? 1
+                      : 3,
+                  child: picture,
+                )
+              : picture,
+        ),
+      );
+    }
+    return picture;
   }
 }
 

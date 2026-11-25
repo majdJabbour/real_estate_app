@@ -99,7 +99,12 @@ void main() {
     );
     expect(
       tester
-          .widget<PropertyFavoriteButton>(find.byType(PropertyFavoriteButton))
+          .widget<IconButton>(
+            find.descendant(
+              of: find.byType(PropertyFavoriteButton),
+              matching: find.byType(IconButton),
+            ),
+          )
           .onPressed,
       isNull,
     );

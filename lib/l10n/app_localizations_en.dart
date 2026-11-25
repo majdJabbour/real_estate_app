@@ -617,4 +617,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signInToSave => 'Sign in to save properties';
+
+  @override
+  String get myFavorites => 'My Favorites';
+
+  @override
+  String get emptyFavorites => 'No favorite properties yet.';
+
+  @override
+  String get emptyFavoritesPage => 'There are no favorites on this page.';
+
+  @override
+  String get favoriteLoading => 'Loading favorites…';
+
+  @override
+  String get favoriteUpdating => 'Updating favorites…';
+
+  @override
+  String get favoriteRetry => 'Retry loading favorite status';
+
+  @override
+  String get previousFavoritesPage => 'Previous page';
+
+  @override
+  String get nextFavoritesPage => 'Next page';
+
+  @override
+  String get profileLanguage => 'Language';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get originalBlue => 'Original Blue';
+
+  @override
+  String get newPurple => 'New Purple';
+
+  @override
+  String get newOrange => 'New Orange';
+
+  @override
+  String get themeSaveError => 'Could not save the app appearance.';
+
+  @override
+  String get accountNameUnavailable => 'Name unavailable';
+
+  @override
+  String get confirmSignOut => 'Sign out of your account?';
 }

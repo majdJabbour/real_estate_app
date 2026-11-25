@@ -8,7 +8,7 @@ import 'package:real_estate_app/app/app.dart';
 import 'package:real_estate_app/app/navigation/app_router.dart';
 import 'package:real_estate_app/app/navigation/app_tab_shell.dart';
 import 'package:real_estate_app/app/navigation/explore_intent.dart';
-import 'package:real_estate_app/app/navigation/temporary_destinations.dart';
+import 'package:real_estate_app/features/profile/presentation/profile_screen.dart';
 import 'package:real_estate_app/core/design_system/app_icon.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/errors/app_failure.dart';
@@ -125,7 +125,7 @@ void main() {
       );
       await tester.tap(_tab('Profile'));
       await tester.pumpAndSettle();
-      expect(find.byType(ProfileDestination), findsOneWidget);
+      expect(find.byType(ProfileScreen), findsOneWidget);
       await tester.tap(_tab('Home'));
       await tester.pumpAndSettle();
       expect(tester.getTopLeft(card).dy, closeTo(cardTop, 0.5));
@@ -350,6 +350,8 @@ void main() {
       await _pump(tester);
       await tester.tap(_tab('Profile'));
       await tester.pumpAndSettle();
+      await tester.tap(find.text('Language'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('العربية'));
       await tester.pumpAndSettle();
       expect(find.text('الملف الشخصي'), findsWidgets);
@@ -372,8 +374,10 @@ void main() {
 
     await tester.tap(_tab('Profile'));
     await tester.pumpAndSettle();
+    await tester.tap(find.text('Language'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('العربية'));
-    await tester.pump();
+    await tester.pumpAndSettle();
     await tester.tap(_tab('Explore'));
     save.complete();
     await tester.pumpAndSettle();

@@ -123,8 +123,6 @@ class HomeScreen extends ConsumerWidget {
                               key: ValueKey('featured-${items[index].id}'),
                               property: items[index],
                               onOpen: () => open(items[index]),
-                              isFavorite: false,
-                              onFavoritePressed: null,
                             ),
                           ),
                     error: (error, _) => _content(
@@ -187,8 +185,6 @@ class HomeScreen extends ConsumerWidget {
                               key: ValueKey('recommended-${items[index].id}'),
                               property: items[index],
                               onOpen: () => open(items[index]),
-                              isFavorite: false,
-                              onFavoritePressed: null,
                             ),
                           ),
                     error: (error, _) => _content(

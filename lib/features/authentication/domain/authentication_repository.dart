@@ -25,6 +25,10 @@ abstract interface class ProfileRepository {
   Future<AuthenticatedUser> load(RequestCancellation cancellation);
 }
 
+abstract interface class AccountTokenRepository {
+  Future<String?> idTokenForAccount(String accountId);
+}
+
 enum AuthenticationFailure {
   cancelled,
   connection,
