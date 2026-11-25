@@ -68,6 +68,11 @@ Dio dio(Ref ref) {
               return;
             }
             request.headers['Authorization'] = 'Bearer $token';
+          } on AppFailure catch (failure) {
+            handler.reject(
+              DioException(requestOptions: request, error: failure),
+            );
+            return;
           } catch (error, stack) {
             handler.reject(
               DioException(

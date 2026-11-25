@@ -14,11 +14,13 @@ import '../../../../core/errors/app_failure.dart';
 import '../../../../core/layout/responsive_layout.dart';
 import '../../../../core/localization/failure_message.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../authentication/application/authentication_providers.dart';
 import '../../application/home_providers.dart';
 import '../../domain/property.dart';
 import '../../domain/property_filter_options.dart';
 import '../../domain/property_type.dart';
 import '../widgets/property_cards.dart';
+import '../widgets/property_image.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -79,7 +81,7 @@ class HomeScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(height: 4),
-                        const _GuestHeader(),
+                        const _AccountHeader(),
                         const SizedBox(height: DesignSpacing.large),
                         AppSearchField(
                           hintText: l10n.searchProperties,
@@ -274,13 +276,15 @@ class HomeScreen extends ConsumerWidget {
 
 typedef _TileBuilder = Widget Function(int index);
 
-class _GuestHeader extends StatelessWidget {
-  const _GuestHeader();
+class _AccountHeader extends ConsumerWidget {
+  const _AccountHeader();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
+    final user = ref.watch(authenticationSessionProvider).asData?.value;
+    final name = user?.name?.trim();
     return Row(
       spacing: 12,
       children: [
@@ -289,7 +293,17 @@ class _GuestHeader extends StatelessWidget {
             radius: 22,
             backgroundColor: scheme.primaryContainer,
             foregroundColor: scheme.secondary,
-            child: const Icon(Icons.person_outline_rounded, size: 22),
+            child: user?.avatar == null
+                ? const Icon(Icons.person_outline_rounded, size: 22)
+                : ClipOval(
+                    child: SizedBox.square(
+                      dimension: 44,
+                      child: PropertyImage(
+                        url: user!.avatar,
+                        placeholderIcon: Icons.person_outline_rounded,
+                      ),
+                    ),
+                  ),
           ),
         ),
         Expanded(
@@ -305,7 +319,11 @@ class _GuestHeader extends StatelessWidget {
                 ),
               ),
               Text(
-                l10n.guest,
+                user == null
+                    ? l10n.guest
+                    : name == null || name.isEmpty
+                    ? l10n.signedIn
+                    : name,
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.3,

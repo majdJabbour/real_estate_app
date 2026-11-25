@@ -2,6 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../features/authentication/application/authentication_providers.dart';
+import '../../features/authentication/presentation/auth_routes.dart';
+import '../../features/authentication/presentation/auth_screen.dart';
+import '../../features/authentication/presentation/splash_screen.dart';
 import '../../features/properties/presentation/details/property_details_screen.dart';
 import '../../features/properties/presentation/explore/explore_screen.dart';
 import '../../features/properties/presentation/home/home_screen.dart';
@@ -15,11 +19,58 @@ part 'app_router.g.dart';
 @Riverpod(keepAlive: true)
 GoRouter appRouter(Ref ref) {
   final rootNavigator = GlobalKey<NavigatorState>();
+  final authenticationEnabled =
+      ref.read(authenticationInitializerProvider) != null;
+  final refresh = ValueNotifier(0);
+  if (authenticationEnabled) {
+    ref.listen(authenticationSessionProvider, (_, _) => refresh.value++);
+  }
   final router = GoRouter(
     navigatorKey: rootNavigator,
-    initialLocation: '/home',
+    initialLocation: authenticationEnabled ? splashPath : '/home',
+    refreshListenable: refresh,
+    redirect: (context, state) {
+      if (!authenticationEnabled) return null;
+      final uri = state.uri;
+      final session = ref.read(authenticationSessionProvider);
+      final returnTo = publicDestination(uri.queryParameters['returnTo']);
+
+      if (session.isLoading || session.hasError) {
+        if (uri.path == splashPath) return null;
+        final destination = uri.path == signInPath
+            ? returnTo
+            : publicDestination(uri.toString());
+        return Uri(
+          path: splashPath,
+          queryParameters: destination == null
+              ? null
+              : {'returnTo': destination},
+        ).toString();
+      }
+
+      if (uri.path == splashPath || uri.path == '/') {
+        return returnTo ??
+            (session.asData?.value == null ? signInPath : '/home');
+      }
+      if (uri.path == signInPath && session.asData?.value != null) {
+        return returnTo ?? '/home';
+      }
+      return null;
+    },
     routes: [
       GoRoute(path: '/', redirect: (context, state) => '/home'),
+      GoRoute(
+        path: splashPath,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
+        path: signInPath,
+        builder: (context, state) => AuthScreen(
+          guestDestination:
+              publicDestination(state.uri.queryParameters['returnTo']) ??
+              '/home',
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, shell) => AppTabShell(shell: shell),
         branches: [
@@ -71,6 +122,9 @@ GoRouter appRouter(Ref ref) {
       ),
     ),
   );
-  ref.onDispose(router.dispose);
+  ref.onDispose(() {
+    router.dispose();
+    refresh.dispose();
+  });
   return router;
 }

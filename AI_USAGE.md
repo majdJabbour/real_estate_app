@@ -183,3 +183,34 @@ Codex updated the Android application ID and namespace, moved `MainActivity` int
 - Debug SHA-256: `37:8B:45:8F:E0:17:1E:4D:48:59:CF:60:BF:C4:47:5C:65:73:E2:F0:12:7C:D4:24:FC:B1:62:28:8E:AF:41:3C`
 
 Phase 7.0 is ready for developer review. Runtime verification covered app launch on the emulator and simulator. Physical device and live authentication checks are pending.
+
+## Phase 7.2 — Firebase authentication and session
+
+The developer approved Phase 7.0, supplied the Phase 7.2 scope, and had already registered the Android and iOS apps and generated their local files with FlutterFire CLI. The request covered native OAuth verification, Splash and Auth from the six Figma frames, Google-to-Firebase sign-in, restoration and logout, guest access, the protected backend profile, bilingual responsive presentation, and deterministic and native verification.
+
+Codex used Git, the cached package sources for `firebase_core` 5.2.0, `firebase_auth` 7.1.0, `google_sign_in` 7.2.0, Android 7.2.19 and iOS 6.4.0, the Figma design-to-code skill and MCP, the responsive layout, Dart test, Flutter widget test and static analysis skills, and ImageGen. The image prompt requested nine original property photographs in a shared three-column composition without brand artwork. The original Figma photos and logo remain reference-only. Google Developers supplied the official mark and Google Fonts supplied the OFL-licensed button font. Fonttools prepared a static Latin subset in a temporary environment. [Asset provenance](assets/ASSET_LICENSES.md#authentication-assets)
+
+Firebase CLI read the existing Android app's registered SHAs and current SDK config. Both SHA fingerprints match the local debug key. The prior JSON contained OAuth type 3 only. The refreshed JSON adds the Android client for the matching package/certificate and the linked iOS OAuth client while preserving the project, native app ID and web client. The local FlutterFire option blocks match each native app and Runner bundles the Firebase resource with the matching Google callback. Firebase and production checks were read-only.
+
+| Check | Observed result |
+| --- | --- |
+| Flutter dependencies, localization, and generated source | `flutter pub get`, `flutter gen-l10n` and `dart run build_runner build` passed. `pubspec.lock` is unchanged. A second generation produced byte-identical Dart output. |
+| Static verification | Repository-wide formatter check, `flutter analyze` and `git diff --check` passed. |
+| Tests | All 256 passed both normally and with coverage. The suite retains 226 prior cases and adds 30, including the official raster asset check. LCOV measured 90.7% overall (3,469/3,824 lines) and 91.2% under the authentication feature (302/331). |
+| Android | `flutter build apk --debug` built the APK. Installed and ran on the Pixel 10 Pro XL Android emulator. Flutter hot restart completed. The app reached Auth and loaded guest Home. Arabic selected from Profile persisted on cold restart. Auth actions were reachable by scrolling at 320 dp. The emulator was returned to its original display size and English. |
+| iOS | `flutter build ios --simulator` built Runner. Installed and launched on the iPhone 18 Pro Max simulator (iOS 27.2) and confirmed the guest Auth screen. |
+| Deployed API | Credential-free GETs on November 25 returned HTTP 200 and successful envelopes for health and listings. Repeated credential-free GETs for `/auth/me` returned an empty HTTP 500, where the contract specifies 401. |
+| Live account | No interactive Google account access was provided. Google credential exchange, authenticated profile HTTP 200, session restoration after full restart, and sign-out with a real account remain to be verified on both platforms. Covered with deterministic fakes and adapters. |
+
+The Blue Auth comparison used Android and iOS captures and the Figma frame. The rendered hierarchy, three image columns, fade, central headings and pill control follow the reference. The original illustration is represented by localized Splash typography with real progress. Auth differs in the generated photos, tile spacing, Google branding treatment, native safe areas and the added guest action. The compact and enlarged layouts keep actions scrollable. The Splash capture is Flutter’s production widget rendered with restoration pending in a test harness. Actual native launch screens remain the OS-owned experience.
+
+Account verification uses the [manual steps in README.md](README.md#live-account-verification). The implementation retains the SDK session on temporary backend errors and uses explicit retry. HTTP 401 causes verification failure without automatic token replay. Android Credential Manager can report some configuration failures as cancellation after account selection, as documented by the installed plugin. Phase 8 remains pending developer review. [Android plugin integration notes](https://pub.dev/packages/google_sign_in_android/versions/7.2.19)
+
+
+Screenshots are available locally under `/private/tmp/real-scout-phase-7.2/`:
+
+- `splash-flutter-harness.png`
+- `android-auth-en.png` and `ios-auth-en.png`
+- `android-auth-ar.png`
+- `android-auth-compact-ar.png` and `android-auth-compact-controls-ar.png`
+- `android-guest-home.png`

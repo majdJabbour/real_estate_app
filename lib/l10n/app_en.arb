@@ -289,5 +289,32 @@
   "detailsFacilityRoofTerrace": "Roof terrace",
   "detailsFacilitySecureEntry": "Secure entry",
   "detailsFacilitySharedLaundry": "Shared laundry",
-  "detailsFacilityStorage": "Storage"
+  "detailsFacilityStorage": "Storage",
+  "splashBrand": "REAL SCOUT",
+  "splashTagline": "Connecting you to your ideal home.",
+  "restoringSession": "Restoring your session",
+  "startupError": "Real Scout couldn’t restore your session. Please try again.",
+  "authWelcome": "WELCOME TO REAL SCOUT",
+  "authHeading": "Let’s Get You Closer\nTo {emphasis}",
+  "authHeadingEmphasis": "Your Ideal Home",
+  "authDescription": "Sign in to Real Scout with Google",
+  "googleSignIn": "Sign in with Google",
+  "signingIn": "Signing in…",
+  "continueAsGuest": "Continue as Guest",
+  "signInConfigurationError": "Google sign-in is unavailable on this build. You can continue as a guest.",
+  "authenticationError": "The authentication request couldn’t be completed. Please try again.",
+  "signedIn": "Signed in",
+  "signOut": "Sign out",
+  "signingOut": "Signing out…",
+  "verifyingProfile": "Verifying your profile…",
+  "verifiedProfile": "Verified profile",
+  "profileUnauthorized": "Your session could not be verified. Try again or sign out and sign back in.",
+  "signInToSave": "Sign in to save properties",
+  "@authHeading": {
+    "placeholders": {
+      "emphasis": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -14,13 +14,14 @@ enum AppIcons {
   detailsBack('actions/details-back'),
   location('property/location'),
   heartOutline('property/heart-outline'),
-  ratingStar('property/rating-star');
+  ratingStar('property/rating-star'),
+  google('auth/google');
 
   const AppIcons(this._path);
 
   final String _path;
 
-  String get asset => 'assets/icons/$_path.svg';
+  String get asset => 'assets/icons/$_path.${this == google ? 'png' : 'svg'}';
 }
 
 /// A visual glyph. Its surrounding control owns interaction and action labels.
@@ -43,6 +44,15 @@ class AppIcon extends StatelessWidget {
     final theme = IconTheme.of(context);
     final dimension = size ?? theme.size ?? 24;
     final tint = color ?? theme.color;
+    if (icon == AppIcons.google) {
+      return Image.asset(
+        icon.asset,
+        width: dimension,
+        height: dimension,
+        semanticLabel: semanticLabel,
+        excludeFromSemantics: semanticLabel == null,
+      );
+    }
     final solid =
         icon != AppIcons.ratingStar && icon != AppIcons.exploreSelected;
 

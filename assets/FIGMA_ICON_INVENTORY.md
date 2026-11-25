@@ -170,3 +170,10 @@ Explore uses the shared 22 dp back and notification glyphs and 20 dp Iconly sear
 ## Phase 6 usage
 
 Details uses the 28 dp Iconly Light back export from `1:4267` and the 20 dp Iconly Bold location export from `1:4383`. The back glyph mirrors in Arabic. The location glyph keeps its orientation and takes the theme's accessible accent paint. The existing property heart and two-stop star are reused at the Details sizes. Bedroom, bathroom, area and facility silhouettes use Material SDK glyphs while the original unnamed artwork's provenance remains unresolved. The viewer close control uses the SDK glyph. Share, chat, call and review likes are omitted. [License and handling](ASSET_LICENSES.md#phase-6-property-details)
+
+
+## Phase 7.2 — Splash and Auth delivery
+
+- The three original Real Scout marks remain references. Flutter Splash renders a localized text wordmark and tagline in Rubik with palette accent and system progress.
+- The nine original Auth photos remain references. Auth uses one original generated real-estate collage, shared by all palettes. The direction of its composition is unchanged in Arabic.
+- The multicolor mark used by `AppIcon` comes from Google's published light Android/Web asset, center-cropped to the original 20 dp mark area from the 4× PNG. The supplied Figma vector remains a reference. [Asset sources and licenses](ASSET_LICENSES.md#authentication-assets)

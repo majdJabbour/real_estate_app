@@ -982,6 +982,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Storage'**
   String get detailsFacilityStorage;
+
+  /// No description provided for @splashBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'REAL SCOUT'**
+  String get splashBrand;
+
+  /// No description provided for @splashTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting you to your ideal home.'**
+  String get splashTagline;
+
+  /// No description provided for @restoringSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring your session'**
+  String get restoringSession;
+
+  /// No description provided for @startupError.
+  ///
+  /// In en, this message translates to:
+  /// **'Real Scout couldn’t restore your session. Please try again.'**
+  String get startupError;
+
+  /// No description provided for @authWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'WELCOME TO REAL SCOUT'**
+  String get authWelcome;
+
+  /// No description provided for @authHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Let’s Get You Closer\nTo {emphasis}'**
+  String authHeading(String emphasis);
+
+  /// No description provided for @authHeadingEmphasis.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Ideal Home'**
+  String get authHeadingEmphasis;
+
+  /// No description provided for @authDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to Real Scout with Google'**
+  String get authDescription;
+
+  /// No description provided for @googleSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get googleSignIn;
+
+  /// No description provided for @signingIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in…'**
+  String get signingIn;
+
+  /// No description provided for @continueAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest'**
+  String get continueAsGuest;
+
+  /// No description provided for @signInConfigurationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign-in is unavailable on this build. You can continue as a guest.'**
+  String get signInConfigurationError;
+
+  /// No description provided for @authenticationError.
+  ///
+  /// In en, this message translates to:
+  /// **'The authentication request couldn’t be completed. Please try again.'**
+  String get authenticationError;
+
+  /// No description provided for @signedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed in'**
+  String get signedIn;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @signingOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing out…'**
+  String get signingOut;
+
+  /// No description provided for @verifyingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying your profile…'**
+  String get verifyingProfile;
+
+  /// No description provided for @verifiedProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified profile'**
+  String get verifiedProfile;
+
+  /// No description provided for @profileUnauthorized.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session could not be verified. Try again or sign out and sign back in.'**
+  String get profileUnauthorized;
+
+  /// No description provided for @signInToSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to save properties'**
+  String get signInToSave;
 }
 
 class _AppLocalizationsDelegate

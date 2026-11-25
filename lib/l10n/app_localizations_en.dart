@@ -551,4 +551,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get detailsFacilityStorage => 'Storage';
+
+  @override
+  String get splashBrand => 'REAL SCOUT';
+
+  @override
+  String get splashTagline => 'Connecting you to your ideal home.';
+
+  @override
+  String get restoringSession => 'Restoring your session';
+
+  @override
+  String get startupError =>
+      'Real Scout couldn’t restore your session. Please try again.';
+
+  @override
+  String get authWelcome => 'WELCOME TO REAL SCOUT';
+
+  @override
+  String authHeading(String emphasis) {
+    return 'Let’s Get You Closer\nTo $emphasis';
+  }
+
+  @override
+  String get authHeadingEmphasis => 'Your Ideal Home';
+
+  @override
+  String get authDescription => 'Sign in to Real Scout with Google';
+
+  @override
+  String get googleSignIn => 'Sign in with Google';
+
+  @override
+  String get signingIn => 'Signing in…';
+
+  @override
+  String get continueAsGuest => 'Continue as Guest';
+
+  @override
+  String get signInConfigurationError =>
+      'Google sign-in is unavailable on this build. You can continue as a guest.';
+
+  @override
+  String get authenticationError =>
+      'The authentication request couldn’t be completed. Please try again.';
+
+  @override
+  String get signedIn => 'Signed in';
+
+  @override
+  String get signOut => 'Sign out';
+
+  @override
+  String get signingOut => 'Signing out…';
+
+  @override
+  String get verifyingProfile => 'Verifying your profile…';
+
+  @override
+  String get verifiedProfile => 'Verified profile';
+
+  @override
+  String get profileUnauthorized =>
+      'Your session could not be verified. Try again or sign out and sign back in.';
+
+  @override
+  String get signInToSave => 'Sign in to save properties';
 }

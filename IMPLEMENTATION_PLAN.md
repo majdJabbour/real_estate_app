@@ -49,11 +49,15 @@ Implemented the approved Property Details screen on the existing root route. A g
 
 Set the Android application ID and namespace and the iOS Runner bundle ID to `com.majdjabbour.realestate`. Moved `MainActivity` to its matching Kotlin package and aligned the iOS RunnerTests identifier. Used Real Scout for the native display name from the design reference and kept the Dart package `real_estate_app`. SDK requirements, SwiftPM, and dependencies carry forward from Phase 6.
 
-Package resolution, analysis, all 226 existing tests, the Android debug APK build, and the iOS simulator build passed. Packaged metadata confirmed the IDs and display names. The Gradle debug signing report matched the APK certificate. Phase 7.0 is ready for developer review. Suggested commit `chore: prepare native app identifiers for Firebase`. [Verification and signing fingerprints](AI_USAGE.md#phase-70--native-platform-preparation)
+Package resolution, analysis, all 226 existing tests, the Android debug APK build, and the iOS simulator build passed. Packaged metadata confirmed the IDs and display names. The Gradle debug signing report matched the APK certificate. The developer approved Phase 7.0. Suggested commit `chore: prepare native app identifiers for Firebase`. [Verification and signing fingerprints](AI_USAGE.md#phase-70--native-platform-preparation)
 
-### Firebase configuration and authentication
+### 7.1 — Firebase client configuration
 
-After developer approval, register both apps in the existing Firebase project via FlutterFire CLI and configure Google provider prerequisites. Firebase Admin credentials and Firestore access stay on the backend. Implement sign-in, session restoration, logout, protected API token attachment and bounded refresh. Verify real Google login and `/auth/me` on each supported platform and report pending platforms. Commit configuration and authentication in meaningful groups. [Platform setup](README.md#firebase-setup-pending-approval)
+The developer registered the two native apps in the existing Firebase project and generated the FlutterFire files. Phase 7.2 verified the application IDs, project and native Firebase app IDs, the Android debug certificate against Firebase's registered SHA-1 and SHA-256, and the current OAuth clients. The Android JSON was refreshed with the matching Android OAuth client and linked iOS client. Runner now declares the iOS client ID and callback scheme.
+
+### 7.2 — Firebase authentication and session
+
+Implemented the Flutter Splash and Auth screens, a native Google credential exchange, Firebase session restoration and sign-out, guest navigation, the authenticated Home header, and backend profile verification in the temporary Profile destination. Protected requests use the existing Dio client with Firebase ID tokens. Backend profile requests are scoped to the current account and locale. Developer review and interactive account verification remain open. [Verification and remaining steps](README.md#live-account-verification)
 
 ## 8 — Favorites and profile
 Shared session-scoped ID set from GET /favorites/ids, optimistic PUT/DELETE, rollback, per-property concurrency and stale-session guards. Hearts across home/explore/details stay synchronized. No separate favorites screen. Implement approved profile and language controls; avoid inert menu actions. Verify real Firestore persistence across requests and relaunch, account isolation and logout; review effective cloud rules with developer. Commit: `feat: synchronize favorites and user profile`.

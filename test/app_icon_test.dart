@@ -28,8 +28,9 @@ void main() {
   test(
     'every registered source SVG loads and paints nonempty artwork',
     () async {
-      expect(AppIcons.values.map((icon) => icon.asset).toSet(), hasLength(13));
-      for (final icon in AppIcons.values) {
+      final svgIcons = AppIcons.values.where((icon) => icon != AppIcons.google);
+      expect(svgIcons.map((icon) => icon.asset).toSet(), hasLength(13));
+      for (final icon in svgIcons) {
         final svg = await rootBundle.loadString(icon.asset);
         expect(svg, contains('viewBox='));
         expect(svg, isNot(contains('https://')));
@@ -54,6 +55,43 @@ void main() {
           picture.picture.dispose();
         }
       }
+    },
+  );
+
+  testWidgets(
+    'Google uses the intact multicolor raster without tint or RTL mirroring',
+    (tester) async {
+      await tester.pumpWidget(
+        _host(
+          const Directionality(
+            textDirection: TextDirection.rtl,
+            child: AppIcon(AppIcons.google, size: 20, color: Colors.black),
+          ),
+        ),
+      );
+      final finder = find.byType(Image);
+      final widget = tester.widget<Image>(finder);
+      expect(widget.color, isNull);
+      expect(widget.matchTextDirection, isFalse);
+      expect(tester.getSize(finder), const Size.square(20));
+      await tester.runAsync(() async {
+        final bytes = await rootBundle.load(AppIcons.google.asset);
+        final codec = await ui.instantiateImageCodec(
+          bytes.buffer.asUint8List(),
+        );
+        try {
+          final frame = await codec.getNextFrame();
+          expect((frame.image.width, frame.image.height), (80, 80));
+          final pixels = await _pixels(frame.image);
+          final colors = {
+            for (var i = 0; i < pixels.lengthInBytes; i += 4)
+              pixels.getUint32(i),
+          };
+          expect(colors.length, greaterThan(20));
+        } finally {
+          codec.dispose();
+        }
+      });
     },
   );
 

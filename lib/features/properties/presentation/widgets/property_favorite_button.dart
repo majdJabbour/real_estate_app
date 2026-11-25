@@ -1,11 +1,15 @@
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/app_theme.dart';
 import '../../../../core/design_system/design_tokens.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../authentication/application/authentication_providers.dart';
+import '../../../authentication/presentation/auth_routes.dart';
 
-class PropertyFavoriteButton extends StatelessWidget {
+class PropertyFavoriteButton extends ConsumerWidget {
   const PropertyFavoriteButton({
     required this.selected,
     required this.onPressed,
@@ -20,7 +24,7 @@ class PropertyFavoriteButton extends StatelessWidget {
   final double? iconSize;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final colors = AppThemeColors.of(context);
     final foreground = selected
@@ -29,7 +33,13 @@ class PropertyFavoriteButton extends StatelessWidget {
         ? Colors.white
         : colors.favoriteOutline;
     final size = iconSize ?? (onPhoto ? 22.0 : 20.0);
-    final label = onPressed == null
+    final requiresSignIn =
+        onPressed == null &&
+        ref.watch(authenticationInitializerProvider) != null &&
+        ref.watch(authenticationSessionProvider).asData?.value == null;
+    final label = requiresSignIn
+        ? l10n.signInToSave
+        : onPressed == null
         ? l10n.favoriteUnavailable
         : selected
         ? l10n.removeFavorite
@@ -38,7 +48,9 @@ class PropertyFavoriteButton extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: IconButton(
         tooltip: label,
-        onPressed: onPressed,
+        onPressed: requiresSignIn
+            ? () => context.go(signInLocation(GoRouterState.of(context).uri))
+            : onPressed,
         isSelected: selected,
         icon: AppIcon(AppIcons.heartOutline, size: size),
         selectedIcon: const Icon(Icons.favorite_rounded),

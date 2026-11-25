@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "264176383366-tbh76cn3dscrg2a4rrtv0is8a2moqq89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.majdjabbour.realestate",
+            "certificate_hash": "59214b642edea71e4a5525a8ba1171eebb8ae2cb"
+          }
+        },
+        {
           "client_id": "264176383366-gni05butl551hka94ecfekmqc7b0quvv.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "264176383366-gni05butl551hka94ecfekmqc7b0quvv.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "264176383366-11dqigg7i3e5s439luc858f0gb23si07.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.majdjabbour.realestate"
+              }
             }
           ]
         }

@@ -531,4 +531,70 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get detailsFacilityStorage => 'مساحة تخزين';
+
+  @override
+  String get splashBrand => 'ريل سكاوت';
+
+  @override
+  String get splashTagline => 'نقرّبك من منزلك المثالي.';
+
+  @override
+  String get restoringSession => 'جارٍ استعادة جلستك';
+
+  @override
+  String get startupError =>
+      'تعذّرت استعادة جلستك في ريل سكاوت. يرجى المحاولة مجددًا.';
+
+  @override
+  String get authWelcome => 'مرحبًا بك في ريل سكاوت';
+
+  @override
+  String authHeading(String emphasis) {
+    return 'لنقرّبك من $emphasis';
+  }
+
+  @override
+  String get authHeadingEmphasis => 'منزلك المثالي';
+
+  @override
+  String get authDescription => 'سجّل الدخول إلى ريل سكاوت باستخدام Google';
+
+  @override
+  String get googleSignIn => 'تسجيل الدخول باستخدام Google';
+
+  @override
+  String get signingIn => 'جارٍ تسجيل الدخول…';
+
+  @override
+  String get continueAsGuest => 'المتابعة كضيف';
+
+  @override
+  String get signInConfigurationError =>
+      'تسجيل الدخول باستخدام Google غير متاح في هذا الإصدار. يمكنك المتابعة كضيف.';
+
+  @override
+  String get authenticationError =>
+      'تعذّر إكمال طلب المصادقة. يرجى المحاولة مجددًا.';
+
+  @override
+  String get signedIn => 'تم تسجيل الدخول';
+
+  @override
+  String get signOut => 'تسجيل الخروج';
+
+  @override
+  String get signingOut => 'جارٍ تسجيل الخروج…';
+
+  @override
+  String get verifyingProfile => 'جارٍ التحقّق من ملفك الشخصي…';
+
+  @override
+  String get verifiedProfile => 'ملف شخصي موثّق';
+
+  @override
+  String get profileUnauthorized =>
+      'تعذّر التحقّق من جلستك. حاول مجددًا أو سجّل الخروج ثم سجّل الدخول مرة أخرى.';
+
+  @override
+  String get signInToSave => 'سجّل الدخول لحفظ العقارات';
 }

@@ -2,7 +2,7 @@
 
 A Flutter recruitment assessment for Android and iOS. The intended app browses fictional rental properties from a REST API and supports English and Arabic.
 
-The app opens Home in the Blue theme and loads fictional rental listings from the deployed API. Use the temporary Profile destination to switch between English and Arabic. The selected language is restored at launch.
+Real Scout launches in the Blue theme, restores the saved language and Firebase session, then opens Home for a returning account or offers Google sign-in and guest browsing. Home and Explore load fictional rental listings from the deployed API. The temporary Profile destination exposes language, account state, and backend profile verification.
 
 ## Setup and verification
 
@@ -25,7 +25,7 @@ git diff --check
 flutter run
 ```
 
-[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, repository behavior, Explore search, pagination, filters and navigation, and Details request lifecycles, media and layout. Network tests use fake Dio adapters and Riverpod overrides. Phase 6 passed all 226 tests with 91.5% overall line coverage. Production smoke checks are separate. [Phase 6 verification](AI_USAGE.md#phase-6--property-details)
+[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, repository behavior, Explore search, pagination, filters and navigation, and Details request lifecycles, media and layout. Network tests use fake Dio adapters and Riverpod overrides. Phase 7.2 passed all 256 tests with 90.7% overall line coverage. The suite also covers Firebase repository behavior, profile authorization and session races, startup redirects, both languages, and Auth at compact and enlarged widths. Production smoke checks are separate. [Phase 7.2 verification](AI_USAGE.md#phase-72--firebase-authentication-and-session)
 
 ## Design system preview
 
@@ -35,7 +35,7 @@ Flutter's Widget Previewer exposes standard, narrow with enlarged text, and land
 
 Scroll to **Adaptive layout** to see the local viewport size, side padding, capped content width, grid columns, and tile width. The placeholder tiles wrap with the available width and system text size. [Responsive layout policy](lib/core/layout/responsive_layout.dart) · [Design system width strategy](DESIGN_SYSTEM.md#implemented-width-strategy)
 
-## Dependencies and planned architecture
+## Dependencies and architecture
 
 | Packages | Role |
 | --- | --- |
@@ -60,7 +60,7 @@ Add or update translations in `lib/l10n/app_en.arb` and `app_ar.arb`, then run `
 
 The default base is [`https://real-estate-api-gray.vercel.app/api/v1/`](https://real-estate-api-gray.vercel.app/api/v1/). `AppConfig` reads `API_BASE_URL`, retains the configured path, normalizes the trailing slash, and rejects malformed URLs, credentials, queries, and fragments. Use `flutter run --dart-define=API_BASE_URL=https://example.test/api/v1` to select a different HTTPS server. Non-release builds also permit HTTP for loopback and private development addresses. The target platform's cleartext policy still applies.
 
-Dio uses 15-second connect and send timeouts and a 20-second receive timeout. It accepts and decodes JSON, applies the current `Accept-Language` per request, and rejects in-flight results from a prior language revision as cancellation. `requestApi` accepts a `CancelToken`, a typed decoder, and an explicit public or protected access policy. Public calls strip authorization. Protected calls use an injected token source, require the configured scheme, authority, and API path, and disable automatic redirects. The default token source returns no token until Firebase is introduced.
+Dio uses 15-second connect and send timeouts and a 20-second receive timeout. It accepts and decodes JSON, applies the current `Accept-Language` per request, and rejects in-flight results from a prior language revision as cancellation. `requestApi` accepts a `CancelToken`, a typed decoder, and an explicit public or protected access policy. Public calls strip authorization. Protected calls use an injected token source, require the configured scheme, authority, and API path, and disable automatic redirects. Production bootstrap injects the current Firebase user’s ID-token source. Public and preview test entry points can supply fakes or use the default empty source.
 
 The response parser validates the success envelope and optional pagination before returning a typed payload. HTTP and transport failures preserve status codes and safe backend error codes where available. User messages come from a separate localization mapper. Cancellation has no display message, and raw headers, payloads, and server diagnostics are excluded from failure text and application logging.
 
@@ -92,7 +92,7 @@ The Phase 3 test and coverage runs both passed all 146 tests. [Verification log]
 
 ## Production navigation and Home
 
-`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore handles Home intents and displays paginated property results. Details loads the selected property from the API on that root route. Profile provides a language switch while sign-in and profile data are pending.
+`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore handles Home intents and displays paginated property results. Details loads the selected property from the API on that root route. Profile provides a language switch, Google sign-in for guests, and verified account information and sign-out for authenticated users.
 
 | Home action | Destination |
 | --- | --- |
@@ -149,9 +149,22 @@ Real Scout is the proposed mobile display name, taken from the design reference'
 
 The Android debug variant uses the standard Gradle debug signing configuration with the local `AndroidDebugKey` certificate. The scaffold also uses debug signing for its release variant. Run `cd android && ./gradlew :app:signingReport` to obtain the fingerprints for your local debug certificate. Phase 7.0 cross-checked its report against the signed APK. [Local verification fingerprints](AI_USAGE.md#phase-70--native-platform-preparation)
 
-### Firebase setup pending approval
+### Firebase setup
 
-1. Register both `com.majdjabbour.realestate` apps in the existing Firebase project used by the backend. Confirm the Google provider is enabled and use FlutterFire CLI to generate the Android and iOS client options. [FlutterFire setup](https://firebase.google.com/docs/flutter/setup) · [Firebase Google Sign-In](https://firebase.google.com/docs/auth/flutter/federated-auth#google)
-2. On Android, register the debug SHA-1 and SHA-256 and the fingerprints of any distribution certificates used for sign-in. Use the refreshed `google-services.json` with the Google Services Gradle plugin and a web OAuth client entry, or pass the web OAuth client ID as `serverClientId` for Google Sign-In. [Android Google setup](https://firebase.google.com/docs/auth/android/google-signin) · [Google Sign-In Android plugin](https://pub.dev/packages/google_sign_in_android/versions/7.2.19)
-3. On iOS, obtain Runner's Apple client configuration. Set `GIDClientID` or pass `clientId` during Google Sign-In initialization. Add `REVERSED_CLIENT_ID` as a URL scheme under `CFBundleURLTypes` in Runner. Use the existing SwiftPM integration. [Google Sign-In iOS plugin](https://pub.dev/packages/google_sign_in_ios/versions/6.4.0)
-4. In the authentication implementation phase, initialize Firebase and call `GoogleSignIn.instance.initialize()` before `authenticate()` with the locked `google_sign_in` 7.2.0. Use the signed-in Firebase user's ID token for protected API requests and verify live sign-in and `/auth/me` on both platforms. Firebase Admin credentials stay on the backend. [Firebase Google Sign-In](https://firebase.google.com/docs/auth/flutter/federated-auth#google)
+The checkout uses the existing Firebase project `real-estate-app-91394` and the registered Android and iOS apps for `com.majdjabbour.realestate`. The generated `lib/firebase_options.dart`, `android/app/google-services.json` and `ios/Runner/GoogleService-Info.plist` contain client configuration. Firebase Admin credentials are configured in the backend deployment. [FlutterFire setup](https://firebase.google.com/docs/flutter/setup)
+
+- **Android.** The Google Services Gradle plugin supplies the web OAuth client as `default_web_client_id` for Google Sign-In. The refreshed config also contains the matching Android OAuth client. Firebase's read-only SHA listing confirmed both fingerprints for the local debug certificate. For another developer or distribution signing key, register the certificate fingerprints for the existing Firebase Android app and refresh its client file as needed. [Android plugin setup](https://pub.dev/packages/google_sign_in_android/versions/7.2.19)
+- **iOS.** Runner bundles `GoogleService-Info.plist` as a target resource via the existing Xcode project. Runner's `Info.plist` copies its Apple OAuth client to `GIDClientID` and its reversed client ID to `CFBundleURLTypes`. Flutter registers the native plugins through its generated Swift package. Firebase Auth exchanges the Google ID token on the client, so an iOS `GIDServerClientID` is unnecessary for this flow. [iOS plugin setup](https://pub.dev/packages/google_sign_in_ios/versions/6.4.0)
+
+### Session and profile
+
+- The OS shows its existing native launch screen while Flutter starts. Flutter's `/splash` reflects Firebase setup and the first Firebase session event. A startup failure offers a retry. A stable GoRouter updates from those events, preserves valid public deep links, and keeps Home, Explore, and Profile in the existing indexed shell.
+- The auth repository calls `GoogleSignIn.instance.initialize()` once, uses `authenticate()`, and exchanges the Google ID token for a Firebase credential. Firebase owns session persistence. A separate action provider handles in-flight requests and cancellation. Home shows the Firebase account's available name and avatar with fallbacks.
+- On the temporary Profile destination, `GET /auth/me` uses the same Dio client with protected access and maps `id`, `email`, `name`, and `avatar`. UID changes or logout cancel obsolete profile requests. Backend outages leave the Firebase session active and offer retry. A 401 shows a verification failure with retry or reauthentication. This phase relies on Firebase SDK token renewal and performs zero automatic HTTP replays.
+- Guests can browse, search, filter, view details and change language. Property hearts can open sign-in and return to the same public destination. Saving properties remains unavailable until Phase 8. Sign-out clears the Firebase session first and then attempts Google session cleanup. The guest stays on the current public destination and retains language preferences.
+
+### Live account verification
+
+Confirm the Google provider is enabled for the Firebase project and the OAuth consent configuration permits the test account. On the Android emulator or iOS simulator, select **Sign in with Google** and complete Google's prompts in the emulator or simulator. Open **Profile** and confirm the verified name/email and successful `GET /auth/me` in a debugger with authorization headers redacted. Quit and relaunch the app to confirm the account restores and Profile can verify again. Use **Sign out**, confirm the guest state and the loss of private profile access, then confirm Home, Explore and property details still work. Repeat on the other platform.
+
+On November 25, 2026, the deployed health and listings routes returned HTTP 200. Repeated credential-free calls to `/auth/me` returned an empty HTTP 500 where the API contract specifies 401. Check the Vercel deployment logs for this route before relying on live profile verification. Interactive account verification remains pending. See the Phase 7.2 log for build and smoke-test results, the Figma comparison and screenshots. [Phase 7.2 verification](AI_USAGE.md#phase-72--firebase-authentication-and-session)
