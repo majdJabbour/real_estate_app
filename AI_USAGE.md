@@ -356,3 +356,7 @@ Codex used Git to clone GitHub main at `b547946ed8df941b5890a976586836a3ef71b0f7
 ## Phase 9.3.2 — Submission documentation and screenshots
 
 The developer supplied 21 simulator captures and specified the gallery order. Codex used Git and shell inspection, an AppKit contact sheet for visual review, and SHA-256 checks to curate 11 unchanged PNGs into an ignored local gallery. Ten excluded originals remain in a separate local folder. The supplied Profile views show personal account details, the Home views show a signed-in name and avatar, and the Auth capture includes the rights-restricted collage. The set has no dedicated My Favorites capture. The README records those limitations and summarizes the earlier clean-clone Android result and coverage. Documentation validation used a link check and `git diff --check`.
+
+### Phase 9.3.2 gallery follow-up
+
+The developer requested repository-embedded screenshots with privacy and redistribution checks. Codex reviewed the capture inventory, asset notes and Pexels license, and moved six unchanged Explore, Filters, and Details PNGs into the English and Arabic README gallery. The five Home, theme, and Auth originals remain in the ignored gallery. Profile and My Favorites still need suitable captures.

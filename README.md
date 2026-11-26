@@ -74,14 +74,27 @@ English and Original Blue are the fresh-install defaults. Profile lets users swi
 
 ## Screenshot gallery
 
-The simulator gallery is available for local review at `.local-asset-review/final-screenshots/gallery/README.md`. Screenshots remain outside the submission while artwork redistribution permission is unresolved.
+### Main Experience
 
-| Section | Coverage |
-| --- | --- |
-| Main Experience | Home, Explore, Filters, Details |
-| Authentication & Profile | Google sign-in captured. My Favorites needs a dedicated capture, and Profile needs a privacy-safe capture. |
-| Arabic & RTL | Home, Explore, Filters, Details |
-| Theme Variants | Blue, Purple, and Orange on the same Arabic Home view |
+| Explore | Filters | Details |
+| --- | --- | --- |
+| <img src="docs/screenshots/en/explore-grid-blue.png" alt="Explore property grid in English" width="220"> | <img src="docs/screenshots/en/advanced-filters-blue.png" alt="Advanced filters in English" width="220"> | <img src="docs/screenshots/en/property-details-blue.png" alt="Property details in English" width="220"> |
+
+### Authentication & Profile
+
+Google sign-in is awaiting clearance for the supplied collage. Profile needs a privacy-safe capture, and My Favorites needs a dedicated capture.
+
+### Arabic & RTL
+
+| Explore | Filters | Details |
+| --- | --- | --- |
+| <img src="docs/screenshots/ar/explore-list-blue-rtl.png" alt="Explore property list in Arabic with right-to-left layout" width="220"> | <img src="docs/screenshots/ar/advanced-filters-blue-rtl.png" alt="Advanced filters in Arabic with right-to-left layout" width="220"> | <img src="docs/screenshots/ar/property-details-blue-rtl.png" alt="Property details in Arabic with right-to-left layout" width="220"> |
+
+### Theme Variants
+
+Home and the Blue, Purple, and Orange comparisons need guest-mode or demo-account captures.
+
+Property photography in the gallery comes from the demo API. [Asset licenses and attribution](assets/ASSET_LICENSES.md)
 
 ## Testing and verification
 
