@@ -87,3 +87,11 @@ The assessment is primarily Flutter and suggests 12–14 working hours. Complete
 ## Phase 9.2 — Engineering audit and stabilization
 
 The developer approved the current visuals on a physical device. The audit retained the one-project static asset architecture and tightened the protected API endpoint and method checks. Formatting and analysis passed, with 294 passing tests and 90.55% line coverage. Routine runtime verification remains Android-only. The public checkout is blocked until artwork rights or replacements are approved and the four missing static assets are reproducibly available. Stop for developer review before Phase 9.3. [Engineering audit](docs/ENGINEERING_AUDIT.md)
+
+## Phase 9.3.1 — Final verification
+
+GitHub main at `b547946ed8df941b5890a976586836a3ef71b0f7` passed clean-clone dependency resolution, analysis, 294 tests with 90.52% line coverage, and an Android debug build with all 35 declared Flutter assets verified in the APK. ENG-01 is closed. ENG-02 remains open pending artwork clearance or approved licensed replacements. The original assessment brief was unavailable in the checked repositories. Screenshots or a short demo remain pending. Phase 9.3.1 ends at developer review. [Verification results](docs/ENGINEERING_AUDIT.md#phase-931-final-verification)
+
+## Phase 9.3.2 — Submission documentation
+
+The submission README is ready for developer review. Eleven of the supplied simulator captures form a local gallery. The remaining captures are archived locally. Gallery publication still requires artwork clearance, privacy-safe Home and Profile captures, and a dedicated My Favorites capture to complete the requested set. [Submission gallery status](README.md#screenshot-gallery)

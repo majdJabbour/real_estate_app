@@ -348,3 +348,11 @@ The final lockfile removes `cupertino_icons` and retains `flutter_hooks` transit
 The developer subsequently approved moving the manual native icon renderer into the same private archive. Shell and Git inspection found no references in build configuration, application code, or tests. The tracked Android and iOS resources were unchanged, and no rebuild was run.
 
 The developer approved consolidating icon documentation. Codex moved source and attribution records to the asset licensing document and kept intentional substitutions in the Design System. The original inventory was verified against its private archive copy before removal. No assets, license notices, or application code changed.
+
+## Phase 9.3.1 — Final verification
+
+Codex used Git to clone GitHub main at `b547946ed8df941b5890a976586836a3ef71b0f7` and inspect its tracked assets, Firebase client configuration, generated Dart and native resources. Flutter dependency resolution and analysis passed. The coverage run passed 294 tests and recorded 4,238 of 4,682 lines (90.52%). The Android debug build passed. Python ZIP inspection matched all 35 declared Flutter assets byte for byte, and Android's `aapt2` confirmed the compiled launcher, launch, splash and Firebase app ID resources. Codex removed the temporary checkout and APK, and updated the three verification documents. Android runtime and iOS build and runtime checks remain historical. [Verification results](docs/ENGINEERING_AUDIT.md#phase-931-final-verification)
+
+## Phase 9.3.2 — Submission documentation and screenshots
+
+The developer supplied 21 simulator captures and specified the gallery order. Codex used Git and shell inspection, an AppKit contact sheet for visual review, and SHA-256 checks to curate 11 unchanged PNGs into an ignored local gallery. Ten excluded originals remain in a separate local folder. The supplied Profile views show personal account details, the Home views show a signed-in name and avatar, and the Auth capture includes the rights-restricted collage. The set has no dedicated My Favorites capture. The README records those limitations and summarizes the earlier clean-clone Android result and coverage. Documentation validation used a link check and `git diff --check`.

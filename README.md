@@ -1,227 +1,110 @@
-# Real Estate App
+# Real Scout
 
-A Flutter recruitment assessment for Android and iOS. Real Scout browses fictional rental properties from a REST API in English and Arabic.
+Real Scout is a bilingual Flutter recruitment assessment for Android and iOS. It lets users explore fictional rental properties from a deployed REST API and save listings to a Google-backed account.
 
-Real Scout restores the saved language, appearance and Firebase session at startup. A fresh installation uses English and Original Blue. Home and Explore load fictional rental listings from the deployed API. Profile shows the active account and provides access to My Favorites, Language, Appearance and Logout.
+## Main features
 
-## Setup and verification
+- **Home and Explore** feature rental recommendations, searchable grid and list views, and server-side filtering and pagination. Advanced Filters uses the API’s price histogram and ranges.
+- **Property Details** includes a swipeable photo gallery with zoom, property facts, facilities, reviews, a live OpenStreetMap preview and an external map action.
+- **Authentication and Profile** support guest browsing, Google sign-in, session restoration, My Favorites, language and appearance settings, and logout. Favorite changes update across screens and recover if a save fails.
+- **Responsive layouts** adapt to narrower phones, larger system text, and both text directions.
 
-Use Flutter **3.50.1 stable**, which includes Dart **3.14.0**. The manifest specifies Dart `^3.14.0`. Use [pubspec.lock](pubspec.lock) to reproduce the baseline package versions.
+## Technology stack
 
-On Android, install Android SDK Platform 36 and NDK 28.2.13676358 and configure a compatible JDK for the project's Gradle toolchain. The project uses Gradle 9.5.0, Android Gradle Plugin 9.3.1, and Java/Kotlin target 17. On iOS, use macOS with Xcode and an iOS simulator or a signed device. Runner is wired to Flutter's generated Swift package and this checkout has no Podfile. Use `flutter doctor -v` to check the local toolchain and `flutter devices` to find a run target.
+| Technology | Role |
+| --- | --- |
+| Flutter 3.50.1 stable, Dart 3.14.0, `material_ui` | Mobile UI and shared design components |
+| Riverpod and `riverpod_generator`, `go_router` | State, dependency injection, and persistent tab navigation |
+| Dio, Freezed, `json_serializable`, `build_runner` | REST transport, immutable models, and generated JSON decoding |
+| Firebase Auth and Google Sign-In | Google authentication and Firebase session management |
+| Flutter `gen_l10n`, `intl`, `shared_preferences` | Translations, locale-aware formatting, and persistent preferences |
+| `cached_network_image`, `flutter_svg`, `skeletonizer` | Cached media, vector assets, and loading states |
+| Flutter Map, `latlong2`, `url_launcher` | Embedded maps, geographic coordinates, and external map handoff |
+| `flutter_test`, Mocktail, `flutter_lints` | Automated tests, test doubles, and static analysis |
+
+## Architecture and project structure
+
+The app is organized by feature. Presentation reads Riverpod application state. Application logic depends on domain contracts, and data adapters implement those contracts through Dio and Firebase. The indexed navigation shell retains the Home, Explore, and Profile tabs. Details and My Favorites open as dedicated routes.
+
+| Path | Contents |
+| --- | --- |
+| [lib/app](lib/app) | Root app, navigation, and tab shell |
+| [lib/core](lib/core) | Network policy, configuration, errors, responsive layout, and design system |
+| [lib/features](lib/features) | Properties, authentication, favorites, and profile |
+| [lib/l10n](lib/l10n) | English and Arabic translations |
+| [android](android) and [ios](ios) | Native runners and client configuration |
+| [test](test) | Unit, provider, and widget tests |
+
+## Setup
+
+Use Flutter **3.50.1 stable** with Dart **3.14.0** and the checked-in [package lockfile](pubspec.lock). For Android, install SDK Platform 36 and NDK 28.2.13676358, and use a JDK compatible with Gradle 9.5.0. Use a Google Play emulator image or a device with Google Play services for Google sign-in. For iOS, use macOS with Xcode and an iOS 15 or later target. The runner uses Flutter’s Swift Package Manager integration.
+
+From the repository root, with a mobile target running or connected:
 
 ```sh
-flutter --version
+flutter doctor -v
 flutter pub get
-flutter gen-l10n
-dart run build_runner build
+flutter devices
+flutter run
+```
+
+Generated Dart sources are checked in. After editing translations, run `flutter gen-l10n`. After changing generated providers or models, run `dart run build_runner build`.
+
+## Production API
+
+The default base URL is `https://real-estate-api-gray.vercel.app/api/v1`. Public property reads work in guest mode. Localized requests send `Accept-Language`, while profile and favorites use Firebase ID tokens. To target another compatible HTTPS backend, use `flutter run --dart-define=API_BASE_URL=https://example.test/api/v1`. [API contract](API_CONTRACT.md)
+
+## Firebase authentication
+
+The checkout includes the Flutter, Android, and iOS client configuration for the existing Firebase project. The Android application ID and iOS bundle ID are both `com.majdjabbour.realestate`. Firebase Admin credentials stay on the backend.
+
+For a different Android signing key, run `cd android && ./gradlew :app:signingReport`, register the SHA-1 and SHA-256 fingerprints in Firebase, and refresh `google-services.json` as needed. On iOS, keep the Google OAuth client and reversed-client callback scheme aligned with the Firebase configuration. A separate Firebase project requires a backend configured to accept its tokens. [FlutterFire setup](https://firebase.google.com/docs/flutter/setup)
+
+### Live account verification
+
+Open Profile, sign in with Google and confirm the backend-verified identity. Cold-relaunch the app to check session restoration. Sign out, confirm private data clears, then verify public browsing and account switching.
+
+### Live favorites verification
+
+With an authorized test account, save a property and confirm its heart state across Details, Home and Explore. Reopen My Favorites after a cold relaunch to confirm persistence. Remove the property and verify the list and hearts update. Restore the test account’s original favorites afterward.
+
+## Localization and themes
+
+English and Original Blue are the fresh-install defaults. Profile lets users switch between English and Arabic and choose Original Blue, New Purple, or New Orange. Changes apply immediately and persist across launches. Arabic mirrors the layout and loads Arabic property content from the API.
+
+## Screenshot gallery
+
+The simulator gallery is available for local review at `.local-asset-review/final-screenshots/gallery/README.md`. Screenshots remain outside the submission while artwork redistribution permission is unresolved.
+
+| Section | Coverage |
+| --- | --- |
+| Main Experience | Home, Explore, Filters, Details |
+| Authentication & Profile | Google sign-in captured. My Favorites needs a dedicated capture, and Profile needs a privacy-safe capture. |
+| Arabic & RTL | Home, Explore, Filters, Details |
+| Theme Variants | Blue, Purple, and Orange on the same Arabic Home view |
+
+## Testing and verification
+
+```sh
 dart format --output=none --set-exit-if-changed lib test
 flutter analyze
 flutter test
 flutter test --coverage
 flutter build apk --debug
-flutter build ios --simulator
-git diff --check
-flutter run
 ```
 
-[analysis_options.yaml](analysis_options.yaml) uses `flutter_lints` and excludes build output and platform directories. The test suite covers appearance, responsive layouts, locale startup and persistence, URL validation, request policy, property DTOs, query encoding, repository behavior, Explore search, pagination, filters and navigation, and Details request lifecycles, media and layout. Network tests use fake Dio adapters and Riverpod overrides. Phase 7.2 passed all 256 tests with 90.7% overall line coverage. The suite also covers Firebase repository behavior, profile authorization and session races, startup redirects, both languages, and Auth at compact and enlarged widths. Production smoke checks are separate. [Phase 7.2 verification](AI_USAGE.md#phase-72--firebase-authentication-and-session)
+A clean clone of revision `b547946` passed dependency resolution and analysis, **294 tests**, and the **Android debug build**. Line coverage was **90.52%** (4,238 of 4,682 instrumented lines). All 35 declared Flutter assets matched the packaged APK. Automated tests use controlled dependencies and cover API parsing, localization, layouts, filters, pagination, and session-scoped favorites. [Verification evidence](docs/ENGINEERING_AUDIT.md#phase-931-final-verification)
 
-## Design system preview
+## Assumptions and limitations
 
-Flutter's Widget Previewer exposes standard, narrow with enlarged text, and landscape views through `flutter widget-preview start`. The preview lives in [lib/preview](lib/preview). The shared theme and components live in [lib/core/design_system](lib/core/design_system). [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records the measurements, accessible color roles, and pinned, locally bundled Rubik fonts.
+- Listings, locations and prices are fictional. Rent is monthly in USD and area is in square meters. Photos and live map tiles depend on external services. The map displays OpenStreetMap attribution.
+- Booking, payments, messaging, notifications, and other inactive Profile actions are outside the assessment scope.
+- Live Google sign-in and backend profile verification were confirmed by the developer. Platform-by-platform confirmation of session restoration, logout, account switching and authenticated favorites persistence remains open.
+- The supplied brand marks and sign-in collage have unresolved redistribution rights. Public distribution of the repository or builds containing those assets requires permission or licensed replacements. Captures showing account information also require a privacy-safe replacement before sharing. [Asset licenses and attribution](assets/ASSET_LICENSES.md)
 
-Scroll to **Adaptive layout** to see the local viewport size, side padding, capped content width, grid columns, and tile width. The placeholder tiles wrap with the available width and system text size. [Responsive layout policy](lib/core/layout/responsive_layout.dart) · [Design system width strategy](DESIGN_SYSTEM.md#implemented-width-strategy)
+## Documentation
 
-## Dependencies and architecture
-
-| Packages | Role |
-| --- | --- |
-| `material_ui` | Material theme and controls for the app and preview |
-| `hooks_riverpod`, `riverpod_annotation`, `riverpod_generator` | Generated providers for dependency injection and application state |
-| `dio`, `go_router` | REST transport and declarative navigation |
-| `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner` | Immutable models, JSON DTOs, and their generation workflow |
-| `flutter_localizations`, `intl`, `shared_preferences` | English and Arabic ARB strings via Flutter's localization generator, locale-aware formatting, and persisted language and theme selections |
-| `firebase_core`, `firebase_auth`, `google_sign_in` | Firebase initialization, user sessions, and Google account sign-in |
-| `cached_network_image`, `flutter_svg`, `skeletonizer` | Property image caching, SVG assets, and loading placeholders |
-| `flutter_test`, `mocktail`, `flutter_lints` | Flutter tests, test doubles, and static analysis rules |
-
-The app uses a feature-first structure. Presentation reads application state, application logic depends on domain contracts, and data adapters handle REST requests and DTO mapping. The properties feature groups Home, Explore, Filters, and Details. Core holds shared configuration, transport, errors, localization, and design tokens. English is the default, with Arabic layout direction and language switching at runtime. [Implementation plan](IMPLEMENTATION_PLAN.md)
-
-## Bootstrap and infrastructure
-
-`main.dart` initializes the Flutter bindings through `bootstrap.dart`, loads the saved language and theme through one `SharedPreferencesAsync` instance, and mounts the root app inside `ProviderScope`. Generated providers own app configuration, the locale controller, the token-source boundary, and one Dio client. Preference writes are serialized per setting. The root applies a locale after a successful write and applies a theme immediately. The theme uses the stable IDs `blue`, `purple`, and `orange`. Missing or unrecognized values fall back to English and Original Blue. Appearance changes reuse the existing router, providers, and palette-aware Details tint.
-
-Add or update translations in `lib/l10n/app_en.arb` and `app_ar.arb`, then run `flutter gen-l10n`. The root uses the generated app delegate with the installed `material_ui` delegates for automatic RTL and LTR. When changing provider annotations, run `dart run build_runner build`. Generated Dart files are checked into the project alongside their inputs.
-
-## API configuration and request policy
-
-The default base is [`https://real-estate-api-gray.vercel.app/api/v1/`](https://real-estate-api-gray.vercel.app/api/v1/). `AppConfig` reads `API_BASE_URL`, retains the configured path, normalizes the trailing slash, and rejects malformed URLs, credentials, queries, and fragments. Use `flutter run --dart-define=API_BASE_URL=https://example.test/api/v1` to select a different HTTPS server. Non-release builds also permit HTTP for loopback and private development addresses. The target platform's cleartext policy still applies.
-
-Dio uses 15-second connect and send timeouts and a 20-second receive timeout. It accepts and decodes JSON, applies the current `Accept-Language` per request, and rejects in-flight localized results from a prior language revision as cancellation. Favorites membership and mutation results are language independent. `requestApi` accepts a `CancelToken`, a typed decoder, and an explicit public or protected access policy. Public calls strip authorization. Protected calls use an injected token source, require the configured scheme, authority, and API path, and disable automatic redirects. Production bootstrap injects the current Firebase user’s ID-token source. Public and preview test entry points can supply fakes or use the default empty source.
-
-The response parser validates the success envelope and optional pagination before returning a typed payload. HTTP and transport failures preserve status codes and safe backend error codes where available. User messages come from a separate localization mapper. Cancellation has no display message, and raw headers, payloads, and server diagnostics are excluded from failure text and application logging.
-
-[API_CONTRACT.md](API_CONTRACT.md) is a byte-for-byte copy from the sibling `real-estate-api` checkout at revision `d92fdf0b84e76ac8977efc6c17ff67e59ab66c26`. The contract covers public listings, details and filter options, protected profile and favorite operations (including `GET /favorites/ids`), pagination, English and Arabic responses, and error envelopes. Phase 0 confirmed that the supplied deployment's health endpoint returned HTTP 200 with `data.status: "ok"`. The deployed Git revision remains unverified. [Public health endpoint](https://real-estate-api-gray.vercel.app/api/v1/health)
-
-The backend uses fictional rental data and external property images. The developer confirmed a successful live Google sign-in and verified backend profile. Authenticated favorites persistence remains a manual check.
-
-Phase 2 smoke checks returned HTTP 200 for `GET /health` and `GET /properties?limit=1` in English and Arabic. The listings returned the same property ID, localized titles, matching `Content-Language` headers, and contract-shaped pagination. On the iPhone 18 Pro Max simulator, the app switched from English/LTR to Arabic/RTL and restored Arabic after a full process restart.
-
-## Property data layer
-
-[Properties](lib/features/properties) provides a domain repository for paginated summaries, detail by ID, and global filter options. The [domain models](lib/features/properties/domain) are independent of Flutter and Dio. Freezed supplies value equality and copying where useful, and domain collections are snapshotted. Details include a summary, typed agent and reviews, and a nullable location when coordinates are unavailable. [Data adapters](lib/features/properties/data) use generated JSON decoding for response DTOs and map straightforward nested values directly to their domain types. The agent object is required and its avatar may be null. Amounts, ratings, coordinates, and histogram edges accept integer or decimal JSON numbers. Counts stay integers. Unknown property type IDs and facility keys are preserved. Unknown property types have no known enum value and cannot be selected using the current typed query. Price and area units come from the response.
-
-The default query encodes `sortBy=createdAt&sortOrder=desc&page=1&limit=20`. For example, a query with apartment and condo, a price cap, zero bedrooms, and non-featured results encodes the following decoded parameters:
-
-```text
-types=apartment,condo&maxPrice=1500.25&minBedrooms=0&featured=false&sortBy=price&sortOrder=asc&page=2&limit=10
-```
-
-The query trims search, omits blank search and empty type sets, and encodes type IDs in canonical order. Decimal bounds use plain decimal notation. The constructor and `copyWith` enforce the API's ranges, page and limit bounds, and 120-code-point search limit. Search, filtering, sorting, and pagination run on the server. Listing calls return summaries and shared pagination metadata. The filter endpoint supplies global bounds and localized type labels in server order. Null and equal bounds and empty or single-bucket histograms are supported.
-
-The generated `propertyRemoteDataSourceProvider` and `propertyRepositoryProvider` use the shared Dio client and auto-dispose when unobserved. They hold dependencies only. All three requests are public and inherit request-time language headers and typed failures. A caller can pass `RequestCancellation`, which the data source bridges to a per-request Dio token and detaches when the request finishes. Future screen providers should watch `appLocaleProvider`, cancel their request scopes on invalidation or disposal, reset locale-sensitive state, and guard writes after each await against superseded queries or request generations. The shared client already rejects responses from obsolete locale revisions. Phase 3 adds no property cache or screen controllers.
-
-### Production verification
-
-Separate English and Arabic GETs for the listing, featured listing, details for `rental-022`, and filter options returned HTTP 200 with matching `Content-Language` and `Vary: Accept-Language`. The two-item listing returned 30 total results over 15 pages, and the featured query returned 10 over five. Both locales returned the same IDs, prices, units, and histogram counts. Titles, addresses, descriptions, review comments, and type labels were localized. The detail included a required agent with a null avatar, coordinates, image and review arrays, and UTC timestamps. Filter options returned 20 buckets, including decimal edges, and counts totaling 30. Local fixtures cover empty and equal-bound shapes. Production HTTP is outside the automated suite.
-
-The Phase 3 test and coverage runs both passed all 146 tests. [Verification log](AI_USAGE.md#phase-3--property-data-layer)
-
-## Production navigation and Home
-
-`MaterialApp.router` uses a generated Riverpod `GoRouter`. Home, Explore, and Profile use an indexed tab shell, preserving Home's scroll position and category when switching tabs. Property cards push `/properties/:propertyId` on the root navigator. Explore handles Home intents and displays paginated property results. Details loads the selected property from the API on that root route. Profile provides a language switch, Google sign-in for guests, and verified account information and sign-out for authenticated users.
-
-| Home action | Destination |
-| --- | --- |
-| Search field | Explore with the search intent |
-| Filter icon | Explore with the filter-opening intent |
-| Featured See All | Explore with the Featured intent |
-| Recommendations See All | Explore with the current category ID |
-| Featured or grid card | Full-screen property route with the returned ID |
-
-Home starts three independent public requests. Featured uses `GET /properties?featured=true&limit=5`, Recommendations uses `GET /properties?limit=6`, and categories come from `GET /properties/filter-options`. Listings use the repository's page-one, newest-first defaults. Selecting a category adds its server ID to the recommendation query and leaves the other reads alone. All clears the type constraint. Language changes keep the selected type and refresh all localized data. The mounted tab retains its current section results in memory. Providers cancel obsolete requests, discard late results, and dispose when unobserved. Only the image cache persists property media.
-
-Loading placeholders reserve carousel and grid geometry. Each section can show its own empty or error state and retry independently. Pull to refresh or use the Home accessibility refresh action to rerun all three requests while keeping the current sections visible during a same-query refresh. Cancellation has no error message, and image failures show a localized placeholder without hiding the listing.
-
-Home uses a guest avatar, reusable featured and grid cards, image and rating widgets, and separate favorite controls. Favorites require sign-in and notifications are disabled. Prices use locale-aware USD monthly formatting. The layout takes its gutters and grid columns from the shared responsive policy, uses a horizontal featured carousel and category strip, and lazily builds variable-height grid rows in one vertical scroll view. The tab bar uses native safe areas and mirrors in Arabic. [Design comparison](DESIGN_SYSTEM.md#16-phase-41-icons-and-home-refinement)
-
-Home and the tab shell use the original Iconly SVG paths, including distinct active and inactive navigation variants. The shared `AppIcon` chooses the asset, inherits semantic tint, and mirrors the directional back glyphs. The Explore accent and rating gradient retain their separate paints. [Icon provenance and license](assets/ASSET_LICENSES.md)
-
-## Explore and Advanced Filters
-
-Explore owns one generated Riverpod listing controller. Its immutable state keeps the applied `PropertyQuery`, loaded summaries, server pagination, and operation-specific loading and failure states. The search field, focus, scroll, and grid/list selection live in the navigation branch. Grid is the default. Switching layout reuses the current results and page state. Both layouts open the root property route by ID.
-
-Search waits 400 ms after typing and submits immediately from the keyboard action or clear button. Search and category changes preserve applicable filters and sort order, reset to page one, and cancel outdated requests. Results are server-owned. Explore requests 20 results per page and loads another page near the scroll end or when the first page leaves space. IDs are deduplicated in server order. Pagination stops at the last page or when a page adds no new IDs. A failed next page keeps the existing cards and has an explicit retry. Same-query pull-to-refresh retains visible results during the request. Locale changes preserve stable selected IDs, search and filters while reloading titles and labels.
-
-The filter sheet shares the locale-aware filter-options provider with Home and Explore. It keeps draft types, price and area bounds, and minimum room counts until Set Filter. Reset affects the draft. Dismissing the sheet discards it. An unchanged draft produces no listing request. Applying edits preserves search, sorting and the featured flag, and encodes selected types through the existing query serializer. All and unrestricted ends of ranges omit those filters. Prices are displayed in USD per month and area in square meters. The histogram paints global API bucket boundaries and counts. It shares the native slider's direction and track insets. Null or equal bounds produce a read-only state. Reset and Apply stay reachable on compact and enlarged-text layouts.
-
-Home Search focuses Explore's search field. Featured opens a featured-only query with a visible clear control. Recommendation See All applies its category. The Home filter action opens the sheet once per intent. Returning to Explore through its tab preserves ordinary state. [Explore visual comparison](DESIGN_SYSTEM.md#17-phase-5-explore-and-advanced-filters)
-
-## Property Details
-
-Home and Explore open `/properties/:propertyId` on the root navigator. Back restores the originating branch and its scroll position. A directly opened route can return to Home. The generated auto-dispose `propertyDetailsProvider` shares one request per observed ID, watches the current locale, cancels on invalidation or disposal, and rejects results from obsolete requests. A retry explicitly reloads the same ID. Details uses the existing repository, public API request policy, and localized failure messages.
-
-The hero and thumbnails use the cached property image widget. The hero supports swiping and preserves a valid page index on language reloads. The first three photos appear in Gallery, with an optional count for the remaining photos. Tapping a photo opens the full-screen, swipeable viewer at that image. Pinch to zoom and drag to pan a zoomed photo. Missing images and agent avatars have shared fallbacks. The responsive layout caps Details content at 680 dp and wraps long English and Arabic text.
-
-Stats and USD monthly rent use localized formatting. Facilities map the 21 keys in the current API fixture to localized labels and Flutter SDK icons. Unknown keys retain a readable label and a neutral icon. Location displays the localized API address and identifies it as a fictional listing location. Reviews display each returned entry's author, rating, comment, and localized date. The current review schema supplies no avatar, so reviewers use the shared person placeholder. [Facility label and icon mapping](lib/features/properties/presentation/details/property_facilities.dart)
-
-The rounded price footer saves or removes the property via the same session-scoped favorite action as the hero heart. Guests can start contextual sign-in and return to the property. The address includes an Open in Maps action for valid API coordinates, using `url_launcher` and Google Maps URLs. The Location section also displays a live map preview for valid Web Mercator coordinates. Agent contact and sharing are omitted, and all returned reviews are displayed inline. [Design comparison](DESIGN_SYSTEM.md#18-phase-6-property-details) · [Icon design and fallbacks](DESIGN_SYSTEM.md#icon-design-and-fallbacks)
-
-Profile, authentication, and favorite persistence remain future work.
-
-## Mobile platform configuration
-
-| Setting | Value |
-| --- | --- |
-| Android application ID and namespace | `com.majdjabbour.realestate` |
-| Android minimum SDK | 24, inherited from Flutter |
-| Android compile and target SDK | 36, inherited from Flutter |
-| iOS Runner bundle identifier (Debug, Profile, Release) | `com.majdjabbour.realestate` |
-| iOS RunnerTests bundle identifier | `com.majdjabbour.realestate.RunnerTests` |
-| iOS deployment target | 15.0 |
-| Native app display name | Real Scout |
-| Dart package name | `real_estate_app` |
-
-Real Scout is the proposed mobile display name, taken from the design reference's wordmark. Phase 7.0 applies it to the Android and iOS app labels. Both builds passed, and inspection of the APK and simulator app confirmed the packaged identifiers and display name. Dependency resolution preserved the lockfile, static analysis found no issues, and all 226 tests passed. [Phase 7.0 verification](AI_USAGE.md#phase-70--native-platform-preparation)
-
-The Android debug variant uses the standard Gradle debug signing configuration with the local `AndroidDebugKey` certificate. The scaffold also uses debug signing for its release variant. Run `cd android && ./gradlew :app:signingReport` to obtain the fingerprints for your local debug certificate. Phase 7.0 cross-checked its report against the signed APK. [Local verification fingerprints](AI_USAGE.md#phase-70--native-platform-preparation)
-
-### Firebase setup
-
-The checkout uses the existing Firebase project `real-estate-app-91394` and the registered Android and iOS apps for `com.majdjabbour.realestate`. The generated `lib/firebase_options.dart`, `android/app/google-services.json` and `ios/Runner/GoogleService-Info.plist` contain client configuration. Firebase Admin credentials are configured in the backend deployment. [FlutterFire setup](https://firebase.google.com/docs/flutter/setup)
-
-- **Android.** The Google Services Gradle plugin supplies the web OAuth client as `default_web_client_id` for Google Sign-In. The refreshed config also contains the matching Android OAuth client. Firebase's read-only SHA listing confirmed both fingerprints for the local debug certificate. For another developer or distribution signing key, register the certificate fingerprints for the existing Firebase Android app and refresh its client file as needed. [Android plugin setup](https://pub.dev/packages/google_sign_in_android/versions/7.2.19)
-- **iOS.** Runner bundles `GoogleService-Info.plist` as a target resource via the existing Xcode project. Runner's `Info.plist` copies its Apple OAuth client to `GIDClientID` and its reversed client ID to `CFBundleURLTypes`. Flutter registers the native plugins through its generated Swift package. Firebase Auth exchanges the Google ID token on the client, so an iOS `GIDServerClientID` is unnecessary for this flow. [iOS plugin setup](https://pub.dev/packages/google_sign_in_ios/versions/6.4.0)
-
-### Session and profile
-
-- The OS shows its existing native launch screen while Flutter starts. Flutter's `/splash` stays visible for at least two seconds from its first frame while Firebase setup and session restoration run concurrently. A startup failure offers a retry. A stable GoRouter updates from those events, preserves valid public deep links, and keeps Home, Explore, and Profile in the existing indexed shell.
-- The auth repository calls `GoogleSignIn.instance.initialize()` once, uses `authenticate()`, and exchanges the Google ID token for a Firebase credential. Firebase owns session persistence. A separate action provider handles in-flight requests and cancellation. Home shows the Firebase account's available name and avatar with fallbacks.
-- On Profile, `GET /auth/me` uses the same Dio client with protected access and maps `id`, `email`, `name`, and `avatar`. UID changes or logout cancel obsolete profile requests. Backend outages leave the Firebase session active and offer retry. A 401 shows a verification failure with retry or reauthentication. This phase relies on Firebase SDK token renewal and performs zero automatic HTTP replays.
-- Guests can browse, search, filter and view details and can open the existing Google sign-in flow from Profile or a protected favorite action. After confirmed sign-out the app clears verified profile and private favorites state and remains on the guest Profile. Locale and theme preferences remain available.
-
-### Live account verification
-
-Confirm the Google provider is enabled for the Firebase project and the OAuth consent configuration permits the test account. On the Android emulator or iOS simulator, select **Sign in with Google** and complete Google's prompts in the emulator or simulator. Open **Profile** and confirm the verified name/email and successful `GET /auth/me` in a debugger with authorization headers redacted. Quit and relaunch the app to confirm the account restores and Profile can verify again. Use **Logout** and confirm sign-out. Verify the guest state, the loss of private profile access, and continued access to Home, Explore and property details. Repeat on the other platform.
-
-The developer confirmed live Google sign-in, the actual account name and avatar, and a verified backend profile. The developer resolved Vercel’s `ERR_REQUIRE_ESM` with `NODE_OPTIONS=--experimental-require-module`. A November 25, 2026 credential-free request to `GET /auth/me` returned HTTP 401 with `UNAUTHORIZED` and `Cache-Control: private, no-store`. Cold-start restoration, live sign-out, account switching and live sign-in on both platforms still require platform-specific confirmation. [Phase 7.2 verification](AI_USAGE.md#phase-72--firebase-authentication-and-session)
-
-## Favorites and Profile
-
-Phase 8 passes 281 tests with 90.70% overall line coverage. The tests cover the four favorites endpoints and response parsing, session isolation, optimistic updates and reconciliation, the Profile actions, and theme and locale behavior. [Verification details](AI_USAGE.md#phase-8--favorites-profile-and-preferences)
-
-My Favorites is a root destination at `/favorites`, opened from Profile. The three bottom tabs remain Home, Explore and Profile. Favorites displays the API’s localized property summaries in server order in pages of 20. Previous and Next use the actual pagination metadata and pull-to-refresh reloads the current page. Orphaned references may be present in membership and are excluded from the list by the API.
-
-The generated favorites controller loads `GET /favorites/ids` once per active session. Every heart derives its state from the same immutable ID set. The list uses its own localized `GET /favorites` request. Add and remove optimistically change the relevant heart and send one PUT or DELETE. Operations on different properties can proceed independently. A definite failure rolls back only its property. For a timeout, connection error or similarly uncertain outcome, the controller performs one bounded membership read and merges the affected ID only. If the read fails, that ID stays unknown and its retry reads the server before allowing another write. Successful changes refresh the open Favorites page. Flutter uses the existing Dio client with an account-bound Firebase ID token and cancels obsolete requests on sign-out or account changes.
-
-A guest heart opens a localized sign-in explanation and offers Google sign-in or cancellation. Sign-in opens over the current browsing destination and returns to it on success or cancellation. Tap the heart again after signing in. Profile uses the verified backend name, email and avatar where available, with Firebase fields as per-field fallbacks. It shows a placeholder when the avatar is unavailable and offers a retry for verification failures. Language saves through the existing locale controller. Appearance offers the three existing palettes. See the design notes for supported actions and intentional visual deviations. [Profile and Favorites design](DESIGN_SYSTEM.md#orange-palette-and-profile-menu-fidelity)
-
-The restored original Profile rows My Booking, Payments, Profile, Notification, Security, Help Center and Invite Friends show localized unavailable feedback. Language and Logout keep their existing actions. My Favorites and Appearance appear below the original menu.
-
-### Live favorites verification
-
-Anonymous production GET requests for `/favorites` and `/favorites/ids`, and anonymous PUT and DELETE for `/favorites/rental-022`, all returned 401 with the contract’s `UNAUTHORIZED` error. The deployed default Firestore rules release was read with authorized Firebase CLI access and matched the checked-in deny-all rules.
-
-Authenticated production verification remains with the developer. On each platform:
-
-1. Sign in with the authorized test account and confirm the account shown in Profile. In a debugger with authorization headers redacted, confirm `GET /favorites/ids` returns 200. Record whether `rental-022` is initially saved.
-2. Change the heart in Details and confirm Home and Explore reflect that change wherever the same property appears. Open Profile → My Favorites and confirm `GET /favorites` returns 200 and shows the expected list. Query the IDs again after a cold relaunch to confirm the change persisted.
-3. Exercise both add and remove. Restore `rental-022` to its original state and confirm it on a fresh read. Confirm sign-out clears Profile and Favorites, guest controls offer sign-in, and another authorized account starts with its own membership. Keep tokens and personal account information out of logs and screenshots.
-
-### Phase 8 visual verification
-
-The privately archived Android emulator captures cover English, Arabic, 320 dp Profile, populated and empty My Favorites, language and appearance settings, and all three Home palettes. The run used a synthetic account and favorites with deployed public listings.
-
-### Phase 9.1 visual verification
-
-Phase 9.1 introduced native launcher and launch marks and palette-specific Flutter Splash branding. The current app uses the supplied artwork described under Phase 9.1.1. Native launch resources are static and Flutter Splash reads the persisted palette. [Brand provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
-
-The privately archived Phase 9.1 captures used synthetic accounts and properties, with Blue and Purple in English and Orange in Arabic. They include an iOS simulator Auth capture. [Comparison and known gaps](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
-
-The address action opens a coordinate search only after a tap. The external handoff requires no API key or billing. Out-of-range coordinates leave the address visible, and a failed handoff shows a localized message. [Google Maps URLs](https://developers.google.com/maps/documentation/urls/get-started) · [url_launcher](https://pub.dev/packages/url_launcher)
-
-
-## Phase 9.1.1 — Embedded property map
-
-Details shows a 200 dp embedded map with live raster tiles, the selected palette’s pin, the API’s localized address, and visible linked © OpenStreetMap contributors attribution. The listings and their locations are fictional demo data. The preview preserves vertical scrolling, and Open in Maps hands the coordinates off for closer inspection. Tile loading or failure has its own localized status. Missing, malformed, or out-of-range coordinates leave the rest of Details accessible.
-
-Flutter Map 8.3.2 and latlong2 0.10.1 use the SDK’s existing platform support and the map library’s built-in HTTP-aware cache. The tile layer identifies the app as `com.majdjabbour.realestate` on native platforms. It uses its own HTTPS client, separate from the Firebase-authenticated API transport. Requests cover the visible area without tile prefetch or offline downloads. The default URL is `https://tile.openstreetmap.org/{z}/{x}/{y}.png`. Use `--dart-define=MAP_TILE_URL=...` with an authorized HTTPS raster endpoint and ensure its required attribution is displayed. The public OpenStreetMap service is for limited policy-compliant assessment usage and has no SLA. [OSMF tile policy](https://operations.osmfoundation.org/policies/tiles/) · [Flutter Map configuration](https://docs.fleaflet.dev/tile-servers/using-openstreetmap-direct)
-
-### Local review with supplied artwork
-
-Run the main project with `flutter pub get` and `flutter run`. The three palette logos in `assets/brand/` and `assets/auth/login_image.png` are bundled through the pubspec. Android and iOS use the pre-rendered Blue launcher and launch PNGs in their standard resource directories. Debug, Profile, and Release package the same artwork.
-
-The supplied sources and their backup are local-only. Keep the four Flutter assets, the native PNG changes, screenshots, and any builds containing the artwork out of public distribution pending permission. The four Flutter assets and original native PNG derivatives are tracked. Resolve permission or approve licensed replacements before further distribution. Fresh-checkout build verification remains pending. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
-
-### Phase 9.1.1 verification
-
-Flutter 3.50.1 and Dart 3.14.0 passed generation, formatting, analyzer and both test runs. **286 tests passed** with **90.53% line coverage** (4,113 of 4,543). Re-running localization and code generation reproduced the same generated diff. The Android debug APK and iOS simulator build both built, installed and launched. Android rendered live Lincoln Square tiles in Purple and iOS rendered Bridgeport tiles in Blue. The Android failure capture uses a temporary unreachable tile endpoint and shows the localized fallback with the address and external action. Open in Maps handed off to the platform on both targets. Google Maps presented its own permission screen on Android. Physical-device and fresh live Google sign-in checks were outside this smoke run.
-
-The earlier Android and iOS launcher, three Splash palettes, and English and Arabic iOS Auth captures are in the private historical archive.
-
-- Embedded map · [Blue on iOS](docs/screenshots/phase-9.1.1/ios-map-blue.png) · [Purple and Arabic on Android](docs/screenshots/phase-9.1.1/android-map-purple-ar.png) · [Arabic tile failure on Android](docs/screenshots/phase-9.1.1/android-map-fallback-ar.png)
-
-## Phase 9.2 engineering audit
-
-The developer approved the current visuals on a physical device. Phase 9.2 retained the design and tightened the protected API route boundary. Formatting and analysis passed, and 294 tests passed with 90.55% line coverage. Routine runtime verification uses the existing Android emulator. iOS build and runtime verification are deferred to Phase 9.3. The required static assets are now tracked. A clean-checkout build remains unverified and public distribution is blocked by unresolved artwork rights. [Engineering audit](docs/ENGINEERING_AUDIT.md)
+- [Design system](DESIGN_SYSTEM.md)
+- [API contract](API_CONTRACT.md)
+- [Engineering verification](docs/ENGINEERING_AUDIT.md)
+- [AI usage](AI_USAGE.md)

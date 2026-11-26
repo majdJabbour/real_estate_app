@@ -27,8 +27,8 @@ No confirmed P0 in the reviewed scope.
 
 ### P1
 
-- **ENG-01 · Required Flutter assets restored in Git · Fresh-checkout build pending.** At the audited revision, the pubspec registered asset directories that had no tracked files and the ignore rules excluded the original exports and four local app assets. The audited revision removed the tracked fallback collage and logo. At that revision, a fresh checkout lacked the files needed to reproduce the approved app. The four exact missing paths are `assets/auth/login_image.png`, `assets/brand/logo_blue.svg`, `assets/brand/logo_purple.svg`, and `assets/brand/logo_orange.svg`. Confirm redistribution rights and approve tracking the cleared files, or approve licensed replacements at the standard paths. Commit `6d1cea1` restored all four assets at their registered paths. They are tracked and present during cleanup. A fresh-checkout build was not performed. Redistribution is tracked separately under ENG-02.
-- **ENG-02 · Original-art publication rights unresolved · Open delivery blocker.** [Asset provenance](../assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports) records unverified grants for the original marks and a Freepik watermark in the Auth collage. HEAD and the local origin/main ref at `17d983f` already contain derivatives in Android `mipmap-*` (launcher, foreground, launch and splash PNGs) and iOS `AppIcon.appiconset` and `LaunchImage.imageset`. Ignore rules do not affect these tracked paths. Approve clearance or replacement for the native derivatives and review affected screenshots and any already published copies. Keep the local working artwork and source backup intact pending that decision. No assets were changed or distributed during this audit.
+- **ENG-01 · Clean-checkout reproducibility · Resolved in Phase 9.3.1.** Commit `6d1cea1` restored the Auth collage and three theme logos at their registered paths. The clean GitHub main clone passed dependency resolution, analysis, tests and the Android debug build. APK inspection verified all four restored assets. Redistribution remains open under ENG-02.
+- **ENG-02 · Original-art redistribution rights unresolved · Open delivery blocker.** The Auth collage carries a Freepik watermark, and redistribution grants for the supplied marks remain unverified. The verified GitHub revision includes the collage, theme logos and native derivatives in Android `mipmap-*` and the iOS `AppIcon.appiconset` and `LaunchImage.imageset` catalogs. Obtain clearance or approve licensed replacements before distributing builds or captures. Review any copies already shared. [Asset provenance](../assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
 
 ### P2
 
@@ -71,4 +71,17 @@ Localized public responses returned `Vary: Accept-Language` and `Cache-Control: 
 
 The standard static asset pipeline and native configuration are intact. Physical-device visual approval remains the design reference. Intentional contrast constraints include white on Purple at 4.11:1 and white on Orange at 2.52:1, with certain Orange indicators below 3:1. Unsupported Detail contact and Profile actions retain localized unavailable feedback. Properties are fictional. Debug signing and the use of public tile infrastructure limit distribution. Full iOS verification is deferred.
 
-**Blocked by confirmed issues requiring resolution.** Choose an artwork clearance or licensed replacement path and verify a clean public checkout before packaging. No staging, commits, pushes or delivery artifacts were produced.
+**Public delivery remains blocked by ENG-02.** Obtain redistribution permission or approve licensed replacements before packaging for distribution.
+
+## Phase 9.3.1 final verification
+
+GitHub main was cloned into a temporary checkout at `b547946ed8df941b5890a976586836a3ef71b0f7`. The clone contained the declared Flutter assets, Firebase client configuration, generated Dart sources, Dart and Swift package lockfiles, and Android and iOS native resources.
+
+| Check | Result |
+| --- | --- |
+| `flutter pub get` | Passed with the tracked lockfiles unchanged |
+| `flutter analyze` | Passed with no issues |
+| `flutter test --coverage` | 294 passed, 4,238 of 4,682 instrumented lines covered (90.52%) |
+| `flutter build apk --debug` | Passed. All 35 declared Flutter assets matched the APK byte for byte. The compiled APK also contained native launcher, launch and splash resources and the Firebase app ID resource |
+
+The temporary checkout and APK were removed. iOS verification for this phase was limited to tracked files. Prior Android runtime and iOS results remain historical. The original assessment brief was unavailable in the checked repositories. Delivery screenshots or a short demo remain pending under the implementation plan.
