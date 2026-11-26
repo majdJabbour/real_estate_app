@@ -362,3 +362,7 @@ The developer supplied 21 simulator captures and specified the gallery order. Co
 The developer requested repository-embedded screenshots with privacy and redistribution checks. Codex reviewed the capture inventory, asset notes and Pexels license, and moved six unchanged Explore, Filters, and Details PNGs into the English and Arabic README gallery. The five Home, theme, and Auth originals remain in the ignored gallery. Profile and My Favorites still need suitable captures.
 
 The developer subsequently approved displaying their own account information. Codex moved 11 more unchanged PNGs into the repository gallery, including the Home, Profile, preferences, and theme captures. The README embeds 17 originals and includes linked OpenStreetMap attribution beside the map. Four launch, splash, and sign-in originals remain private under the existing artwork restrictions. The supplied set has no dedicated My Favorites capture.
+
+## Application entry point cleanup
+
+The developer requested moving initialization into `main.dart` while preserving startup order, deferred Firebase initialization, authentication repository caching, retry behavior, and the two-second Splash minimum. Codex moved the initializer, removed `bootstrap.dart`, and updated startup terminology in the locale diagnostic and Splash test description. Dart formatting, Flutter analysis, all 35 focused startup and authentication tests, and `git diff --check` passed. A reference search found no imports or calls to the removed entry point. No Android debug session was available for a hot restart.

@@ -17,7 +17,7 @@ enum AppLanguage {
 
 @Riverpod(keepAlive: true)
 LocalePreferences localePreferences(Ref ref) =>
-    throw StateError('Locale preferences must be initialized at bootstrap.');
+    throw StateError('Locale preferences must be initialized at startup.');
 
 @Riverpod(keepAlive: true)
 class AppLocale extends _$AppLocale {

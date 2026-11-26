@@ -232,7 +232,7 @@ void main() {
     expect(find.byType(HomeScreen), findsOneWidget);
   });
 
-  testWidgets('Splash reports a bootstrap failure and recovers on retry', (
+  testWidgets('Splash reports a startup failure and recovers on retry', (
     tester,
   ) async {
     final user = FakeAuthentication(user: firstUser);
