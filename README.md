@@ -74,25 +74,67 @@ English and Original Blue are the fresh-install defaults. Profile lets users swi
 
 ## Screenshot gallery
 
-### Main Experience
+### Splash & Authentication
 
-| Explore | Filters | Details |
+The native launch, in-app splash, and both Google sign-in captures remain private pending clearance for the supplied brand mark and collage.
+
+### Home
+
+| Featured rentals and recommendations |
+| --- |
+| <img src="docs/screenshots/en/home-blue.png" alt="Featured rentals and recommendations" width="220"> |
+
+### Explore Grid & List
+
+| Explore in grid view | Explore in list view |
+| --- | --- |
+| <img src="docs/screenshots/en/explore-grid-blue.png" alt="Explore in grid view" width="220"> | <img src="docs/screenshots/en/explore-list-blue.png" alt="Explore in list view" width="220"> |
+
+### Advanced Filters
+
+| Price histogram, property types, rooms, and area |
+| --- |
+| <img src="docs/screenshots/en/advanced-filters-blue.png" alt="Price histogram, property types, rooms, and area" width="220"> |
+
+### Property Details
+
+| Property overview and agent |
+| --- |
+| <img src="docs/screenshots/en/property-details-blue.png" alt="Property overview and agent" width="220"> |
+
+### Gallery & Maps
+
+| Facilities, photos, and map loading | Photo gallery, live map, and reviews |
+| --- | --- |
+| <img src="docs/screenshots/en/property-details-map-loading.png" alt="Facilities, photos, and map loading" width="220"> | <img src="docs/screenshots/en/property-details-map-and-reviews.png" alt="Photo gallery, live map, and reviews" width="220"> |
+
+Map data © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright).
+
+### My Favorites
+
+My Favorites is available from Profile. The capture set has no dedicated My Favorites screen.
+
+### Profile & Preferences
+
+| Signed-in profile | Profile menu and My Favorites entry | Language selection |
 | --- | --- | --- |
-| <img src="docs/screenshots/en/explore-grid-blue.png" alt="Explore property grid in English" width="220"> | <img src="docs/screenshots/en/advanced-filters-blue.png" alt="Advanced filters in English" width="220"> | <img src="docs/screenshots/en/property-details-blue.png" alt="Property details in English" width="220"> |
+| <img src="docs/screenshots/en/profile-identity.png" alt="Signed-in profile" width="220"> | <img src="docs/screenshots/en/profile-menu.png" alt="Profile menu and My Favorites entry" width="220"> | <img src="docs/screenshots/en/profile-language-dialog.png" alt="Language selection" width="220"> |
 
-### Authentication & Profile
-
-Google sign-in is awaiting clearance for the supplied collage. Profile needs a privacy-safe capture, and My Favorites needs a dedicated capture.
+| Appearance selection |
+| --- |
+| <img src="docs/screenshots/en/profile-appearance-dialog.png" alt="Appearance selection" width="220"> |
 
 ### Arabic & RTL
 
-| Explore | Filters | Details |
+| Arabic Explore list | Arabic advanced filters | Arabic property details |
 | --- | --- | --- |
-| <img src="docs/screenshots/ar/explore-list-blue-rtl.png" alt="Explore property list in Arabic with right-to-left layout" width="220"> | <img src="docs/screenshots/ar/advanced-filters-blue-rtl.png" alt="Advanced filters in Arabic with right-to-left layout" width="220"> | <img src="docs/screenshots/ar/property-details-blue-rtl.png" alt="Property details in Arabic with right-to-left layout" width="220"> |
+| <img src="docs/screenshots/ar/explore-list-blue-rtl.png" alt="Arabic Explore list" width="220"> | <img src="docs/screenshots/ar/advanced-filters-blue-rtl.png" alt="Arabic advanced filters" width="220"> | <img src="docs/screenshots/ar/property-details-blue-rtl.png" alt="Arabic property details" width="220"> |
 
-### Theme Variants
+### Blue, Purple & Orange Themes
 
-Home and the Blue, Purple, and Orange comparisons need guest-mode or demo-account captures.
+| Arabic Home in Original Blue | Arabic Home in New Purple | Arabic Home in New Orange |
+| --- | --- | --- |
+| <img src="docs/screenshots/themes/home-blue-rtl.png" alt="Arabic Home in Original Blue" width="220"> | <img src="docs/screenshots/themes/home-purple-rtl.png" alt="Arabic Home in New Purple" width="220"> | <img src="docs/screenshots/themes/home-orange-rtl.png" alt="Arabic Home in New Orange" width="220"> |
 
 Property photography in the gallery comes from the demo API. [Asset licenses and attribution](assets/ASSET_LICENSES.md)
 
@@ -113,7 +155,7 @@ A clean clone of revision `b547946` passed dependency resolution and analysis, *
 - Listings, locations and prices are fictional. Rent is monthly in USD and area is in square meters. Photos and live map tiles depend on external services. The map displays OpenStreetMap attribution.
 - Booking, payments, messaging, notifications, and other inactive Profile actions are outside the assessment scope.
 - Live Google sign-in and backend profile verification were confirmed by the developer. Platform-by-platform confirmation of session restoration, logout, account switching and authenticated favorites persistence remains open.
-- The supplied brand marks and sign-in collage have unresolved redistribution rights. Public distribution of the repository or builds containing those assets requires permission or licensed replacements. Captures showing account information also require a privacy-safe replacement before sharing. [Asset licenses and attribution](assets/ASSET_LICENSES.md)
+- The supplied brand marks and sign-in collage have unresolved redistribution rights. Public distribution of the repository or builds containing those assets requires permission or licensed replacements. [Asset licenses and attribution](assets/ASSET_LICENSES.md)
 
 ## Documentation
 

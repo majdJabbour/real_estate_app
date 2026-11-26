@@ -94,4 +94,4 @@ GitHub main at `b547946ed8df941b5890a976586836a3ef71b0f7` passed clean-clone dep
 
 ## Phase 9.3.2 — Submission documentation
 
-The submission README is ready for developer review. Eleven of the supplied simulator captures form a local gallery. The remaining captures are archived locally. Gallery publication still requires artwork clearance, privacy-safe Home and Profile captures, and a dedicated My Favorites capture to complete the requested set. [Submission gallery status](README.md#screenshot-gallery)
+The submission README embeds 17 of the 21 supplied simulator captures. The developer approved display of their own account information. Four Splash and Auth captures remain private pending artwork clearance. The supplied set contains no dedicated My Favorites capture. [Submission gallery status](README.md#screenshot-gallery)

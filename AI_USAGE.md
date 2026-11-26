@@ -360,3 +360,5 @@ The developer supplied 21 simulator captures and specified the gallery order. Co
 ### Phase 9.3.2 gallery follow-up
 
 The developer requested repository-embedded screenshots with privacy and redistribution checks. Codex reviewed the capture inventory, asset notes and Pexels license, and moved six unchanged Explore, Filters, and Details PNGs into the English and Arabic README gallery. The five Home, theme, and Auth originals remain in the ignored gallery. Profile and My Favorites still need suitable captures.
+
+The developer subsequently approved displaying their own account information. Codex moved 11 more unchanged PNGs into the repository gallery, including the Home, Profile, preferences, and theme captures. The README embeds 17 originals and includes linked OpenStreetMap attribution beside the map. Four launch, splash, and sign-in originals remain private under the existing artwork restrictions. The supplied set has no dedicated My Favorites capture.
