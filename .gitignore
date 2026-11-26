@@ -51,8 +51,4 @@ app.*.map.json
 /original_figma_assets/
 /.local-asset-review/
 
-# Supplied local-review Flutter artwork pending redistribution permission
-/assets/auth/login_image.png
-/assets/brand/logo_blue.svg
-/assets/brand/logo_purple.svg
-/assets/brand/logo_orange.svg
+
