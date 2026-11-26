@@ -19,8 +19,9 @@ import 'package:real_estate_app/features/properties/domain/property_type.dart';
 import 'package:real_estate_app/features/properties/presentation/details/property_details_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/explore/explore_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/filters/property_filter_sheet.dart';
-import 'package:real_estate_app/features/properties/presentation/filters/property_range_control.dart';
-import 'package:real_estate_app/features/properties/presentation/widgets/property_cards.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/filters/property_range_control.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/shared/property_grid_card.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/shared/property_list_card.dart';
 
 import '../../support/memory_locale_preferences.dart';
 import 'home_fakes.dart';

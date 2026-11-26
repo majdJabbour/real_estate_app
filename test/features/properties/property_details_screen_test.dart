@@ -13,8 +13,9 @@ import 'package:real_estate_app/core/errors/app_failure.dart';
 import 'package:real_estate_app/core/localization/app_locale.dart';
 import 'package:real_estate_app/features/properties/application/property_providers.dart';
 import 'package:real_estate_app/features/properties/domain/property.dart';
-import 'package:real_estate_app/features/properties/presentation/details/property_gallery.dart';
-import 'package:real_estate_app/features/properties/presentation/widgets/property_favorite_button.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/details/property_gallery.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/details/property_hero.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/shared/property_favorite_button.dart';
 
 import '../../support/memory_locale_preferences.dart';
 import 'home_fakes.dart';

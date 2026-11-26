@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../app/navigation/explore_intent.dart';
-import '../../../../core/design_system/app_icon.dart';
 import '../../../../core/design_system/design_controls.dart';
 import '../../../../core/design_system/design_tokens.dart';
 import '../../../../core/errors/app_failure.dart';
@@ -18,11 +15,16 @@ import '../../../../l10n/app_localizations.dart';
 import '../../application/explore_controller.dart';
 import '../../application/home_providers.dart';
 import '../../domain/property.dart';
-import '../../domain/property_filter_options.dart';
 import '../../domain/property_query.dart';
 import '../../domain/property_type.dart';
 import '../filters/property_filter_sheet.dart';
-import '../widgets/property_cards.dart';
+import '../widgets/explore/explore_categories.dart';
+import '../widgets/explore/explore_header.dart';
+import '../widgets/explore/explore_loading_card.dart';
+import '../widgets/explore/explore_results_message.dart';
+import '../widgets/shared/property_card_rows.dart';
+import '../widgets/shared/property_grid_card.dart';
+import '../widgets/shared/property_list_card.dart';
 
 class ExploreScreen extends ConsumerStatefulWidget {
   const ExploreScreen({required this.intent, super.key});
@@ -209,7 +211,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 4),
-                      const _ExploreHeader(),
+                      const ExploreHeader(),
                       const SizedBox(height: 24),
                       AppSearchField(
                         hintText: l10n.searchProperties,
@@ -243,7 +245,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                   ),
                 ),
                 SliverToBoxAdapter(
-                  child: _ExploreCategories(
+                  child: ExploreCategories(
                     options: options,
                     query: query,
                     insets: insets,
@@ -282,18 +284,24 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                   ),
                 ),
                 if (!current || value.loading == ExploreLoad.initial)
-                  _rows(
-                    insets,
-                    _list ? 1 : grid.columns,
-                    _list ? 3 : grid.columns * 2,
-                    (_) => _LoadingCard(list: _list),
+                  PropertyCardRows(
+                    insets: insets,
+                    columns: _list ? 1 : grid.columns,
+                    count: _list ? 3 : grid.columns * 2,
+                    rowSpacing: _list
+                        ? DesignSpacing.medium
+                        : ResponsiveLayout.mainAxisSpacing,
+                    item: (_) => ExploreLoadingCard(list: _list),
                   )
                 else if (value.items.isNotEmpty) ...[
-                  _rows(
-                    insets,
-                    _list ? 1 : grid.columns,
-                    value.items.length,
-                    (index) => _card(value.items[index]),
+                  PropertyCardRows(
+                    insets: insets,
+                    columns: _list ? 1 : grid.columns,
+                    count: value.items.length,
+                    rowSpacing: _list
+                        ? DesignSpacing.medium
+                        : ResponsiveLayout.mainAxisSpacing,
+                    item: (index) => _card(value.items[index]),
                   ),
                   if (value.loading == ExploreLoad.next)
                     _box(
@@ -310,7 +318,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                   if (value.failure case final failure?)
                     _box(
                       insets,
-                      _ResultsMessage(
+                      ExploreResultsMessage(
                         message: _message(l10n, failure.error),
                         action: failure.operation == ExploreLoad.next
                             ? l10n.retryMoreProperties
@@ -321,7 +329,7 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
                 ] else
                   _box(
                     insets,
-                    _ResultsMessage(
+                    ExploreResultsMessage(
                       message: value.failure == null
                           ? l10n.emptyResults
                           : _message(l10n, value.failure!.error),
@@ -361,192 +369,5 @@ class _ExploreScreenState extends ConsumerState<ExploreScreen> {
   static Widget _box(EdgeInsetsGeometry padding, Widget child) => SliverPadding(
     padding: padding,
     sliver: SliverToBoxAdapter(child: child),
-  );
-
-  Widget _rows(
-    EdgeInsetsGeometry insets,
-    int columns,
-    int count,
-    Widget Function(int) item,
-  ) => SliverPadding(
-    padding: insets,
-    sliver: SliverList.builder(
-      itemCount: (count + columns - 1) ~/ columns,
-      itemBuilder: (context, row) => Padding(
-        padding: EdgeInsets.only(
-          bottom: _list
-              ? DesignSpacing.medium
-              : ResponsiveLayout.mainAxisSpacing,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: ResponsiveLayout.crossAxisSpacing,
-          children: [
-            for (var column = 0; column < columns; column++)
-              Expanded(
-                child: row * columns + column < count
-                    ? item(row * columns + column)
-                    : const SizedBox.shrink(),
-              ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-class _ExploreHeader extends StatelessWidget {
-  const _ExploreHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    return Row(
-      spacing: 8,
-      children: [
-        AppIconButton(
-          label: l10n.backToHome,
-          icon: const AppIcon(AppIcons.back, size: 22),
-          onPressed: () => context.go('/home'),
-        ),
-        Expanded(
-          child: Text(
-            l10n.exploreTitle,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.labelLarge?.copyWith(
-              color: theme.colorScheme.onSurface,
-            ),
-          ),
-        ),
-        IconButton(
-          tooltip: l10n.notificationsUnavailable,
-          onPressed: null,
-          icon: const AppIcon(AppIcons.notification, size: 22),
-          style: IconButton.styleFrom(
-            minimumSize: const Size.square(DesignSize.tapTarget),
-            disabledForegroundColor: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ExploreCategories extends ConsumerWidget {
-  const _ExploreCategories({
-    required this.options,
-    required this.query,
-    required this.insets,
-    required this.onSelect,
-  });
-
-  final AsyncValue<PropertyFilterOptions> options;
-  final PropertyQuery query;
-  final EdgeInsetsGeometry insets;
-  final ValueChanged<PropertyType?> onSelect;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final types = options.isReloading ? null : options.value?.types;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SingleChildScrollView(
-          key: const PageStorageKey('explore-categories'),
-          scrollDirection: Axis.horizontal,
-          padding: insets,
-          child: Row(
-            spacing: DesignSpacing.chipGap,
-            children: [
-              AppChoiceChip(
-                label: l10n.all,
-                selected: query.types.isEmpty,
-                onSelected: (_) => onSelect(null),
-              ),
-              for (final type in types ?? const <PropertyTypeOption>[])
-                if (type.type case final id?)
-                  AppChoiceChip(
-                    label: type.label,
-                    selected: query.types.contains(id),
-                    onSelected: (_) => onSelect(id),
-                  ),
-            ],
-          ),
-        ),
-        if (query.featured == true)
-          Padding(
-            padding: insets,
-            child: Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: InputChip(
-                label: Text(l10n.featuredOnly),
-                deleteButtonTooltipMessage: l10n.clearFeaturedFilter,
-                onDeleted: () => unawaited(
-                  ref
-                      .read(exploreControllerProvider.notifier)
-                      .setQuery(query.copyWith(featured: null)),
-                ),
-              ),
-            ),
-          ),
-        if (!options.isLoading && options.hasError)
-          Padding(
-            padding: insets,
-            child: _ResultsMessage(
-              message: l10n.categoriesUnavailable,
-              action: l10n.retry,
-              retry: () => ref.invalidate(propertyFilterOptionsProvider),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _ResultsMessage extends StatelessWidget {
-  const _ResultsMessage({
-    required this.message,
-    required this.action,
-    required this.retry,
-  });
-
-  final String? message;
-  final String? action;
-  final VoidCallback retry;
-
-  @override
-  Widget build(BuildContext context) {
-    if (message == null) return const SizedBox.shrink();
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Semantics(liveRegion: true, child: Text(message!)),
-          if (action case final label?)
-            TextButton(onPressed: retry, child: Text(label)),
-        ],
-      ),
-    );
-  }
-}
-
-class _LoadingCard extends StatelessWidget {
-  const _LoadingCard({required this.list});
-
-  final bool list;
-
-  @override
-  Widget build(BuildContext context) => Skeletonizer.zone(
-    child: LayoutBuilder(
-      builder: (context, constraints) => list
-          ? const Bone(height: 128, uniRadius: 28)
-          : Bone(
-              height: math.max(140, constraints.maxWidth * 1.38),
-              uniRadius: 12,
-            ),
-    ),
   );
 }

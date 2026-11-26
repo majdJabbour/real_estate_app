@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../l10n/app_localizations.dart';
-import '../../domain/property.dart';
+import '../../../../../l10n/app_localizations.dart';
+import '../../../domain/property.dart';
 
 String propertyPriceLabel(
   BuildContext context,

@@ -2,9 +2,9 @@ import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/design_system/app_theme.dart';
-import '../../../../core/design_system/design_tokens.dart';
-import '../../../../l10n/app_localizations.dart';
+import '../../../../../core/design_system/app_theme.dart';
+import '../../../../../core/design_system/design_tokens.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 class PropertyFacilities extends StatelessWidget {
   const PropertyFacilities({required this.facilities, super.key});

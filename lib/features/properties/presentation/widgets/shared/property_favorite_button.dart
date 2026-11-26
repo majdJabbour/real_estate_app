@@ -1,16 +1,16 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/design_system/app_icon.dart';
-import '../../../../core/design_system/app_theme.dart';
-import '../../../../core/design_system/design_tokens.dart';
-import '../../../../core/design_system/design_controls.dart';
-import '../../../../core/errors/app_failure.dart';
-import '../../../../core/localization/failure_message.dart';
-import '../../../../l10n/app_localizations.dart';
-import '../../../authentication/application/authentication_providers.dart';
-import '../../../authentication/presentation/account_sign_in.dart';
-import '../../../favorites/application/favorites_providers.dart';
+import '../../../../../core/design_system/app_icon.dart';
+import '../../../../../core/design_system/app_theme.dart';
+import '../../../../../core/design_system/design_controls.dart';
+import '../../../../../core/design_system/design_tokens.dart';
+import '../../../../../core/errors/app_failure.dart';
+import '../../../../../core/localization/failure_message.dart';
+import '../../../../../l10n/app_localizations.dart';
+import '../../../../authentication/application/authentication_providers.dart';
+import '../../../../authentication/presentation/account_sign_in.dart';
+import '../../../../favorites/application/favorites_providers.dart';
 
 class PropertyFavoriteButton extends ConsumerWidget {
   const PropertyFavoriteButton({

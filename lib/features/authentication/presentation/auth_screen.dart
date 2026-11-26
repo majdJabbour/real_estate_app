@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
@@ -11,6 +9,7 @@ import '../../../core/layout/responsive_layout.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/authentication_providers.dart';
 import 'auth_feedback.dart';
+import 'widgets/auth_property_collage.dart';
 
 const _googleButtonShape = RoundedRectangleBorder(
   borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -52,7 +51,7 @@ class AuthScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _PropertyCollage(maxHeight: constraints.maxHeight * .59),
+                    AuthPropertyCollage(maxHeight: constraints.maxHeight * .59),
                     const SizedBox(height: DesignSpacing.medium),
                     Semantics(
                       header: true,
@@ -190,68 +189,6 @@ class AuthScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _PropertyCollage extends StatelessWidget {
-  const _PropertyCollage({required this.maxHeight});
-
-  final double maxHeight;
-
-  @override
-  Widget build(BuildContext context) {
-    const aspectRatio = 798 / 1104;
-    return LayoutBuilder(
-      builder: (context, constraints) => Center(
-        child: SizedBox(
-          width: math.min(
-            math.max(0.0, constraints.maxWidth - 16),
-            maxHeight * aspectRatio,
-          ),
-          child: AspectRatio(
-            aspectRatio: aspectRatio,
-            child: ExcludeSemantics(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    'assets/auth/login_image.png',
-                    fit: BoxFit.contain,
-                  ),
-                  FractionallySizedBox(
-                    // Figma centers the 376 dp fade on the 399 dp image.
-                    widthFactor: 376 / 399,
-                    child: const DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          // Project the paint stops through Figma's transform
-                          // into the rectangle's top-to-bottom coordinates.
-                          stops: [
-                            .5653724670410156 / 1.0550363063812256,
-                            .9277468323707581 / 1.0550363063812256,
-                          ],
-                          colors: [
-                            Color.from(
-                              alpha: .1,
-                              red: 251 / 255,
-                              green: 251 / 255,
-                              blue: 251 / 255,
-                            ),
-                            DesignColors.authBackground,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
           ),

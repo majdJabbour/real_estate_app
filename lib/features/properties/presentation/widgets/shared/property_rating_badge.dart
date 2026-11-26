@@ -1,9 +1,9 @@
 import 'package:intl/intl.dart' show NumberFormat;
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/design_system/app_icon.dart';
-import '../../../../core/design_system/design_tokens.dart';
-import '../../../../l10n/app_localizations.dart';
+import '../../../../../core/design_system/app_icon.dart';
+import '../../../../../core/design_system/design_tokens.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 class PropertyRatingBadge extends StatelessWidget {
   const PropertyRatingBadge({

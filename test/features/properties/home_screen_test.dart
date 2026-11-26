@@ -8,11 +8,11 @@ import 'package:real_estate_app/app/app.dart';
 import 'package:real_estate_app/app/navigation/app_router.dart';
 import 'package:real_estate_app/app/navigation/app_tab_shell.dart';
 import 'package:real_estate_app/app/navigation/explore_intent.dart';
-import 'package:real_estate_app/features/profile/presentation/profile_screen.dart';
 import 'package:real_estate_app/core/design_system/app_icon.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/errors/app_failure.dart';
 import 'package:real_estate_app/core/localization/app_locale.dart';
+import 'package:real_estate_app/features/profile/presentation/profile_screen.dart';
 import 'package:real_estate_app/features/properties/application/property_providers.dart';
 import 'package:real_estate_app/features/properties/domain/property.dart';
 import 'package:real_estate_app/features/properties/domain/property_repository.dart';
@@ -21,8 +21,8 @@ import 'package:real_estate_app/features/properties/presentation/details/propert
 import 'package:real_estate_app/features/properties/presentation/explore/explore_screen.dart';
 import 'package:real_estate_app/features/properties/presentation/filters/property_filter_sheet.dart';
 import 'package:real_estate_app/features/properties/presentation/home/home_screen.dart';
-import 'package:real_estate_app/features/properties/presentation/widgets/property_cards.dart';
-import 'package:real_estate_app/features/properties/presentation/widgets/property_image.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/home/featured_property_card.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/shared/property_image.dart';
 
 import '../../support/memory_locale_preferences.dart';
 import 'home_fakes.dart';

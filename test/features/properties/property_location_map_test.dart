@@ -4,7 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:real_estate_app/app/app.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
-import 'package:real_estate_app/features/properties/presentation/details/property_location_map.dart';
+import 'package:real_estate_app/features/properties/presentation/widgets/details/property_location_map.dart';
 import 'package:real_estate_app/l10n/app_localizations.dart';
 
 class _UnavailableTileProvider extends TileProvider {

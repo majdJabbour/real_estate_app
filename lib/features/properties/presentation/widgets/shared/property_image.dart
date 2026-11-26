@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/design_system/app_theme.dart';
-import '../../../../l10n/app_localizations.dart';
+import '../../../../../core/design_system/app_theme.dart';
+import '../../../../../l10n/app_localizations.dart';
 
 class PropertyImage extends StatelessWidget {
   const PropertyImage({
