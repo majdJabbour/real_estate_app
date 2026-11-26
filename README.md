@@ -2,6 +2,18 @@
 
 Real Scout is a bilingual Flutter recruitment assessment for Android and iOS. It lets users explore fictional rental properties from a deployed REST API and save listings to a Google-backed account.
 
+## Development approach
+
+I directed and reviewed the AI-assisted development of Real Scout, retaining ownership of the architecture, technical decisions, scope, quality standards, and final acceptance. ChatGPT supported planning and technical review, and Codex implemented and verified changes under my direction. [AI usage and developer decisions](AI_USAGE.md)
+
+## Backend strategy
+
+The assessment suggested a public mock API such as DummyJSON. I evaluated that option and chose to build a dedicated backend to support bilingual real estate data, property-specific queries, and account-scoped favorites.
+
+The backend uses Next.js and TypeScript on Vercel. It serves bilingual property details and reviews, performs search, filtering, sorting, and pagination on the server, and exposes dynamic filter options and a price histogram. Firebase Admin SDK verifies Firebase ID tokens, and Firestore persists favorites per account. The API uses consistent response envelopes and error handling. [Backend repository](https://github.com/majdJabbour/real_estate_api)
+
+The previously verified backend baseline was **288 passing tests** and **99.4% line coverage**.
+
 ## Main features
 
 - **Home and Explore** feature rental recommendations, searchable grid and list views, and server-side filtering and pagination. Advanced Filters uses the API’s price histogram and ranges.
@@ -26,8 +38,11 @@ Real Scout is a bilingual Flutter recruitment assessment for Android and iOS. It
 
 The app is organized by feature. Presentation reads Riverpod application state. Application logic depends on domain contracts, and data adapters implement those contracts through Dio and Firebase. The indexed navigation shell retains the Home, Explore, and Profile tabs. Details and My Favorites open as dedicated routes.
 
+At my direction, startup initialization was consolidated into `lib/main.dart` to remove an unnecessary layer of indirection. It loads saved locale preferences before mounting the app and supplies a deferred Firebase initialization callback. Startup order, authentication repository caching, retry behavior, and the two-second minimum cold splash were preserved.
+
 | Path | Contents |
 | --- | --- |
+| [lib/main.dart](lib/main.dart) | App entry point, locale preference loading, and deferred Firebase initialization |
 | [lib/app](lib/app) | Root app, navigation, and tab shell |
 | [lib/core](lib/core) | Network policy, configuration, errors, responsive layout, and design system |
 | [lib/features](lib/features) | Properties, authentication, favorites, and profile |
@@ -148,7 +163,9 @@ flutter test --coverage
 flutter build apk --debug
 ```
 
-A clean clone of revision `b547946` passed dependency resolution and analysis, **294 tests**, and the **Android debug build**. Line coverage was **90.52%** (4,238 of 4,682 instrumented lines). All 35 declared Flutter assets matched the packaged APK. Automated tests use controlled dependencies and cover API parsing, localization, layouts, filters, pagination, and session-scoped favorites. [Verification evidence](docs/ENGINEERING_AUDIT.md#phase-931-final-verification)
+The historical full-suite baseline comes from a clean GitHub clone of revision `b547946`. Dependency resolution, static analysis, **294 tests**, and the **Android debug build** passed. Line coverage was **90.52%** (4,238 of 4,682 instrumented lines). All 35 declared Flutter assets matched the packaged APK. [Verification evidence](docs/ENGINEERING_AUDIT.md#phase-931-final-verification)
+
+After the startup consolidation, **35 focused startup and authentication tests** passed, along with Dart formatting and Flutter analysis. No runtime verification was performed after that change. Earlier Android runtime and iOS build and runtime checks are historical. The developer separately performed manual functional checks and approved the visuals on a physical device. [Verification history](AI_USAGE.md#verification-summary)
 
 ## Assumptions and limitations
 

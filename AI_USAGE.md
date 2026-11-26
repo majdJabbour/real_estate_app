@@ -1,5 +1,60 @@
 # AI usage
 
+## Executive summary
+
+Real Scout is a Senior Flutter Developer recruitment assessment. The developer directed the work and retained responsibility for technical decisions and final acceptance.
+
+| Contributor | Role |
+| --- | --- |
+| Developer | Set scope, selected the architecture and stack, reviewed implementation, and approved delivery decisions. |
+| ChatGPT | Served as an engineering advisor for planning, technical alternatives, and review. |
+| OpenAI Codex | Implemented approved changes, inspected the workspace, and ran the automated checks recorded below. |
+| Figma MCP | Provided design measurements, frame renders, and asset exports for implementation and visual review. |
+| Development and verification tools | Git and shell tools supported repository and artifact checks. Dart and Flutter tooling provided formatting, analysis, tests, coverage, builds, and device debugging. |
+
+## Developer ownership
+
+I analyzed the assessment, chose the backend strategy and technologies, defined the architecture and implementation phases, prioritized features, and set coding and quality standards. I reviewed Codex reports, approved or rejected recommendations, identified visual discrepancies, and directed design corrections.
+
+I configured the development environment, participated in Firebase setup and deployment, performed manual functional checks, reviewed and approved the visuals on a physical device, managed Git, and made the final delivery decisions. AI accelerated implementation and verification under my direction.
+
+## ChatGPT usage
+
+I used ChatGPT to discuss architecture, technical alternatives, backend strategy, technology choices, and implementation phases. It helped prepare prompts, review Codex reports, evaluate engineering recommendations, plan security and performance audits, and guide the Figma fidelity review. It also supported repository cleanup decisions and delivery preparation. Codex handled implementation and workspace verification, and I made the final decisions.
+
+## Engineering decisions
+
+| Area | Developer direction or approval |
+| --- | --- |
+| Backend | Chose a dedicated real estate API after evaluating the assessment’s suggested public mock API. |
+| Branding and repositories | Rejected complex custom branding pipelines and multiple active app checkouts. Approved standard static asset management. |
+| Colors and icons | Required the original Figma primary colors and white primary button foregrounds, rejected arbitrary darker Orange and Purple substitutes, and preferred the original Figma SVG icons where available. |
+| Property Details | Required a real embedded property map and directed visual corrections to the details screen. |
+| Profile | Required restoring the original menu options with clear feedback for unavailable actions. |
+| Splash and sign-in | Required a minimum two-second cold Splash and directed visual corrections to Google Sign-In. |
+| Search | Directed the Search Bar border correction. |
+| Flutter structure | Directed extraction of custom widgets from screen files and consolidation of startup initialization into `lib/main.dart` to remove unnecessary indirection. |
+| Repository cleanup | Directed removal of unsupported platform targets, unnecessary dependencies, and obsolete artifacts. |
+| Visual acceptance | Reviewed the app on a physical device and approved the visuals. |
+
+## Verification summary
+
+| Evidence | Result |
+| --- | --- |
+| Historical Flutter full-suite baseline | Codex verified a clean GitHub checkout at `b547946`. Dependency resolution and static analysis passed, all 294 automated tests passed, and line coverage was 90.52% (4,238 of 4,682 lines). The Android debug build passed and all 35 declared Flutter assets matched the APK contents. |
+| Startup consolidation | All 35 focused startup and authentication tests passed. Dart formatting and Flutter analysis passed. No runtime verification was performed after the consolidation. |
+| Historical backend baseline | 288 automated tests passed with 99.4% line coverage. |
+| Developer manual checks | The developer confirmed live Google sign-in and backend profile verification and approved the visuals on a physical device. |
+| Earlier platform checks | Android runtime checks and iOS build and runtime checks were performed in earlier phases. |
+
+[Clean-clone verification evidence](docs/ENGINEERING_AUDIT.md#phase-931-final-verification)
+
+## Final documentation update
+
+Codex used Git and workspace inspection to review the startup entry point, existing verification records, and sibling backend documentation. The GitHub connector confirmed access to the backend README. Codex updated the README and this log with developer ownership, AI tool roles, engineering decisions, and the scope of the recorded checks. Verification for this documentation update was limited to reviewing the diff and running `git diff --check`.
+
+## Historical development log
+
 ## Phase 0 — Baseline and documentation
 
 The developer asked Codex to inspect the Flutter scaffold, platform settings, and installed dependencies, copy the current backend contract with its source revision, document the baseline, and run the requested checks. The developer limited the task to Phase 0 and reserved implementation, Firebase setup, and Git commits for later approval.
@@ -62,7 +117,7 @@ The simulator run compiled the app for verification. Standalone platform builds 
 
 ## Phase 2 — Core infrastructure
 
-The developer approved Phase 1.3 and requested the bootstrap, configurable API client, token-source boundary, typed contract handling, and persisted English/Arabic localization. Codex used the localization, pattern matching, unit testing, widget testing, and static analysis skills, verified the installed APIs, and implemented the infrastructure and tests. The app-level theme moved to the root, and the preview uses generated translations and the app locale controller.
+The developer approved Phase 1.3 and requested startup initialization, a configurable API client, a token-source boundary, typed contract handling, and persisted English/Arabic localization. Codex used the localization, pattern matching, unit testing, widget testing, and static analysis skills, verified the installed APIs, and implemented the infrastructure and tests. The app-level theme moved to the root, and the preview uses generated translations and the app locale controller.
 
 | Check | Result |
 | --- | --- |
@@ -365,4 +420,4 @@ The developer subsequently approved displaying their own account information. Co
 
 ## Application entry point cleanup
 
-The developer requested moving initialization into `main.dart` while preserving startup order, deferred Firebase initialization, authentication repository caching, retry behavior, and the two-second Splash minimum. Codex moved the initializer, removed `bootstrap.dart`, and updated startup terminology in the locale diagnostic and Splash test description. Dart formatting, Flutter analysis, all 35 focused startup and authentication tests, and `git diff --check` passed. A reference search found no imports or calls to the removed entry point. No Android debug session was available for a hot restart.
+The developer directed Codex to consolidate initialization into `main.dart` to remove unnecessary architectural indirection. The change preserved startup order, deferred Firebase initialization, authentication repository caching, retry behavior, and the two-second Splash minimum. Codex also updated startup terminology in the locale diagnostic and Splash test description. All 35 focused startup and authentication tests, Dart formatting, Flutter analysis, and `git diff --check` passed. No runtime verification was performed after the change.
