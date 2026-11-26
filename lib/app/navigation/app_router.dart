@@ -23,6 +23,7 @@ GoRouter appRouter(Ref ref) {
   final authenticationEnabled =
       ref.read(authenticationInitializerProvider) != null;
   final refresh = ValueNotifier(0);
+  var minimumSplashElapsed = !authenticationEnabled;
   if (authenticationEnabled) {
     ref.listen(authenticationSessionProvider, (_, _) => refresh.value++);
   }
@@ -36,7 +37,7 @@ GoRouter appRouter(Ref ref) {
       final session = ref.read(authenticationSessionProvider);
       final returnTo = publicDestination(uri.queryParameters['returnTo']);
 
-      if (session.isLoading || session.hasError) {
+      if (!minimumSplashElapsed || session.isLoading || session.hasError) {
         if (uri.path == splashPath) return null;
         final destination = uri.path == signInPath
             ? returnTo
@@ -62,7 +63,14 @@ GoRouter appRouter(Ref ref) {
       GoRoute(path: '/', redirect: (context, state) => '/home'),
       GoRoute(
         path: splashPath,
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) => SplashScreen(
+          onMinimumElapsed: minimumSplashElapsed
+              ? null
+              : () {
+                  minimumSplashElapsed = true;
+                  refresh.value++;
+                },
+        ),
       ),
       GoRoute(
         path: signInPath,

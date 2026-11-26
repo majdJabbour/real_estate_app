@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_ui/material_ui.dart';
 import 'package:real_estate_app/app/app.dart';
 import 'package:real_estate_app/app/navigation/app_router.dart';
+import 'package:real_estate_app/core/design_system/app_icon.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
 import 'package:real_estate_app/core/errors/app_failure.dart';
 import 'package:real_estate_app/core/localization/app_locale.dart';
@@ -115,8 +116,31 @@ void main() {
 
     await _reveal(tester, find.text('Olivia Perez'));
     expect(find.byIcon(Icons.person_outline), findsWidgets);
-    expect(find.byTooltip('Call'), findsNothing);
-    expect(find.byTooltip('Chat'), findsNothing);
+    for (final (label, icon) in [
+      ('Message agent', AppIcons.detailsChat),
+      ('Call agent', AppIcons.detailsCall),
+    ]) {
+      final action = find.byTooltip(label);
+      expect(
+        find.descendant(
+          of: action,
+          matching: find.byWidgetPredicate(
+            (widget) => widget is AppIcon && widget.icon == icon,
+          ),
+        ),
+        findsOneWidget,
+      );
+      await tester.tap(action);
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Agent contact is currently unavailable.'),
+        findsOneWidget,
+      );
+      tester
+          .state<ScaffoldMessengerState>(find.byType(ScaffoldMessenger))
+          .clearSnackBars();
+      await tester.pumpAndSettle();
+    }
     await _reveal(tester, find.text('future amenity'));
     expect(find.byIcon(Icons.category_outlined), findsOneWidget);
     expect(find.text('Gym'), findsOneWidget);

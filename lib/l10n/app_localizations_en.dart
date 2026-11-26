@@ -355,6 +355,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearFeaturedFilter => 'Clear featured filter';
 
   @override
+  String get detailsMessageAgent => 'Message agent';
+
+  @override
+  String get detailsCallAgent => 'Call agent';
+
+  @override
+  String get detailsContactUnavailable =>
+      'Agent contact is currently unavailable.';
+
+  @override
   String get detailsAgent => 'Agent';
 
   @override
@@ -641,6 +651,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nextFavoritesPage => 'Next page';
+
+  @override
+  String get profileBooking => 'My Booking';
+
+  @override
+  String get profilePayments => 'Payments';
+
+  @override
+  String get profileAccount => 'Profile';
+
+  @override
+  String get profileNotifications => 'Notification';
+
+  @override
+  String get profileSecurity => 'Security';
+
+  @override
+  String get profileHelp => 'Help Center';
+
+  @override
+  String get profileInvite => 'Invite Friends';
+
+  @override
+  String get profileLogout => 'Logout';
+
+  @override
+  String get profileFeatureUnavailable =>
+      'This feature is currently unavailable.';
 
   @override
   String get profileLanguage => 'Language';

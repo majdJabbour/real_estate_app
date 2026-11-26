@@ -45,7 +45,12 @@ class PropertyFacilities extends StatelessWidget {
                           foregroundColor: colors.secondary,
                           child: Icon(icon, size: 28),
                         ),
-                        Text(label, textAlign: TextAlign.center),
+                        Text(
+                          label,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: colors.onSurface, height: 1.4),
+                        ),
                       ],
                     );
                   },

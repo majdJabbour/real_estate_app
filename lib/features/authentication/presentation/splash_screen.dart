@@ -1,17 +1,47 @@
-import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../../core/design_system/app_branding.dart';
 import '../../../core/design_system/design_tokens.dart';
 import '../../../core/layout/responsive_layout.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/authentication_providers.dart';
 
-class SplashScreen extends ConsumerWidget {
-  const SplashScreen({super.key});
+class SplashScreen extends ConsumerStatefulWidget {
+  const SplashScreen({super.key, this.onMinimumElapsed});
+
+  final VoidCallback? onMinimumElapsed;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends ConsumerState<SplashScreen> {
+  Timer? _minimumTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.onMinimumElapsed == null) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _minimumTimer = Timer(
+        const Duration(seconds: 2),
+        () => widget.onMinimumElapsed?.call(),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _minimumTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
     final failed = ref.watch(authenticationSessionProvider).hasError;
@@ -25,13 +55,7 @@ class SplashScreen extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 spacing: DesignSpacing.small,
                 children: [
-                  SvgPicture.asset(
-                    'assets/brand/real-scout.svg',
-                    width: 122,
-                    height: 122,
-                    colorMapper: _BrandGradient(scheme.primary),
-                    excludeFromSemantics: true,
-                  ),
+                  const SplashBrandMark(),
                   Text(
                     l10n.splashBrand,
                     textAlign: TextAlign.center,
@@ -76,29 +100,4 @@ class SplashScreen extends ConsumerWidget {
       ),
     );
   }
-}
-
-final class _BrandGradient extends ColorMapper {
-  const _BrandGradient(this.primary);
-
-  final Color primary;
-
-  @override
-  Color substitute(
-    String? id,
-    String elementName,
-    String attributeName,
-    Color color,
-  ) => switch (color) {
-    const Color(0xFF0061FF) => primary,
-    const Color(0xFF0041C4) => Color.lerp(primary, Colors.black, 0.25)!,
-    _ => color,
-  };
-
-  @override
-  bool operator ==(Object other) =>
-      other is _BrandGradient && other.primary == primary;
-
-  @override
-  int get hashCode => primary.hashCode;
 }

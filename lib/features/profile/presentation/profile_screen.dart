@@ -17,6 +17,10 @@ import '../../authentication/presentation/account_sign_in.dart';
 import '../../authentication/presentation/auth_feedback.dart';
 import '../../favorites/presentation/favorites_screen.dart';
 
+// The 52 dp touch rows center the 28 dp artwork. Keep 24 dp from
+// a divider's center to the visible artwork on either side.
+const _menuDividerInset = 11.5;
+
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -35,6 +39,7 @@ class ProfileScreen extends ConsumerWidget {
     final name = _present(verified?.name) ?? _present(user?.name);
     final avatar = _present(verified?.avatar) ?? _present(user?.avatar);
     final language = ref.watch(appLocaleProvider);
+    final unavailable = l10n.profileFeatureUnavailable;
     final variant = ref.watch(appThemePreferenceProvider);
 
     return SafeArea(
@@ -111,36 +116,55 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 const SizedBox(height: DesignSpacing.large),
                 const _ProfileDivider(),
-                const SizedBox(height: DesignSpacing.chipGap),
-                _ProfileRow(
-                  icon: const AppIcon(AppIcons.heartOutline, size: 28),
-                  label: l10n.myFavorites,
-                  onTap: () => context.push(FavoritesScreen.path),
-                ),
+                const SizedBox(height: _menuDividerInset),
+                for (final (icon, label) in [
+                  (AppIcons.profileBooking, l10n.profileBooking),
+                  (AppIcons.profilePayments, l10n.profilePayments),
+                ])
+                  _UnavailableProfileRow(
+                    icon: icon,
+                    label: label,
+                    message: unavailable,
+                  ),
+                const SizedBox(height: _menuDividerInset),
+                const _ProfileDivider(),
+                const SizedBox(height: _menuDividerInset),
+                for (final (icon, label) in [
+                  (AppIcons.profileAccount, l10n.profileAccount),
+                  (AppIcons.profileNotifications, l10n.profileNotifications),
+                  (AppIcons.profileSecurity, l10n.profileSecurity),
+                ])
+                  _UnavailableProfileRow(
+                    icon: icon,
+                    label: label,
+                    message: unavailable,
+                  ),
                 _ProfileRow(
                   icon: const AppIcon(AppIcons.profileLanguage, size: 28),
                   label: l10n.profileLanguage,
-                  subtitle: _languageName(l10n, language),
                   onTap: () => _selectLanguage(context, ref, language),
                 ),
-                _ProfileRow(
-                  icon: const Icon(Icons.palette_outlined, size: 28),
-                  label: l10n.appearance,
-                  subtitle: _themeName(l10n, variant),
-                  onTap: () => _selectTheme(context, ref, variant),
+                _UnavailableProfileRow(
+                  icon: AppIcons.profileHelp,
+                  label: l10n.profileHelp,
+                  message: unavailable,
+                ),
+                _UnavailableProfileRow(
+                  icon: AppIcons.profileInvite,
+                  label: l10n.profileInvite,
+                  message: unavailable,
                 ),
                 if (user != null) ...[
-                  const SizedBox(height: DesignSpacing.chipGap),
-                  const _ProfileDivider(),
-                  const SizedBox(height: DesignSpacing.chipGap),
                   _ProfileRow(
-                    icon: AppIcon(
+                    icon: const AppIcon(
                       AppIcons.profileLogout,
                       size: 28,
-                      color: scheme.error,
+                      color: DesignColors.logoutReference,
                     ),
-                    label: action.isLoading ? l10n.signingOut : l10n.signOut,
-                    labelColor: scheme.error,
+                    label: action.isLoading
+                        ? l10n.signingOut
+                        : l10n.profileLogout,
+                    labelColor: DesignColors.logoutReference,
                     showChevron: false,
                     onTap: action.isLoading
                         ? null
@@ -149,6 +173,20 @@ class ProfileScreen extends ConsumerWidget {
                   if (action.error case final error?)
                     _ProfileStatus(authenticationErrorMessage(l10n, error)),
                 ],
+                const SizedBox(height: _menuDividerInset),
+                const _ProfileDivider(),
+                const SizedBox(height: _menuDividerInset),
+                _ProfileRow(
+                  icon: const AppIcon(AppIcons.heartOutline, size: 28),
+                  label: l10n.myFavorites,
+                  onTap: () => context.push(FavoritesScreen.path),
+                ),
+                _ProfileRow(
+                  icon: const Icon(Icons.palette_outlined, size: 28),
+                  label: l10n.appearance,
+                  subtitle: _themeName(l10n, variant),
+                  onTap: () => _selectTheme(context, ref, variant),
+                ),
               ],
             ),
           ),
@@ -282,6 +320,32 @@ class _ProfileAvatar extends StatelessWidget {
   }
 }
 
+class _UnavailableProfileRow extends StatelessWidget {
+  const _UnavailableProfileRow({
+    required this.icon,
+    required this.label,
+    required this.message,
+  });
+
+  final AppIcons icon;
+  final String label;
+  final String message;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    hint: message,
+    child: _ProfileRow(
+      icon: AppIcon(icon, size: 28),
+      label: label,
+      onTap: () {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(message)));
+      },
+    ),
+  );
+}
+
 class _ProfileRow extends StatelessWidget {
   const _ProfileRow({
     required this.icon,
@@ -331,8 +395,11 @@ class _ProfileDivider extends StatelessWidget {
   const _ProfileDivider();
 
   @override
-  Widget build(BuildContext context) =>
-      Divider(height: 1, color: Theme.of(context).colorScheme.outlineVariant);
+  Widget build(BuildContext context) => Divider(
+    height: 1,
+    thickness: 1,
+    color: Theme.of(context).colorScheme.outlineVariant,
+  );
 }
 
 class _ProfileStatus extends StatelessWidget {

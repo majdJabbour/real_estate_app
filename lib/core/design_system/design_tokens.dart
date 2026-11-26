@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 
 abstract final class DesignColors {
   static const surface = Color(0xFFFFFFFF);
+  static const authBackground = Color(0xFFFCFCFC);
   static const searchSurface = Color(0xFFFBFBFD);
   static const text = Color(0xFF191D31);
   static const secondaryText = Color(0xFF666876);

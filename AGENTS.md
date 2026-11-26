@@ -34,7 +34,20 @@ Read DESIGN_SYSTEM.md once extracted. Use selected Figma frame and verified colo
 Use go_router and a stateful shell only where actual Figma tabs require persistent state. Keep routes typed/centralized as appropriate. Preserve back behavior, selected locale, list scroll state and filter state. Do not create tabs or features absent from approved screens. Avoid auth redirect loops; allow public browsing if scope permits. Test navigation and session changes.
 
 ## Tests and quality gates
-Write focused unit tests for DTO/envelope parsing, error mapping, filters/query serialization and session races; provider tests for pagination, debounce, favorites rollback and locale changes; widget tests for loading/error/empty states, Arabic/English, directional layout, responsive widths and critical actions. Use fake repositories and SDK abstractions; normal tests must not depend on real accounts or network. Use Flutter integration_test SDK only if approved/needed. Run `dart format` on changed Dart files, `flutter analyze`, `flutter test`, and code generation/localization generation when relevant. Verify Android and iOS builds and run real-device/simulator smoke tests before delivery; report platform limitations. Do not claim visual parity from automated tests alone: compare screenshots to Figma. Do not chase arbitrary coverage percentages.
+Write focused unit tests for DTO/envelope parsing, error mapping, filters/query serialization and session races; provider tests for pagination, debounce, favorites rollback and locale changes; widget tests for loading/error/empty states, Arabic/English, directional layout, responsive widths and critical actions. Use fake repositories and SDK abstractions; normal tests must not depend on real accounts or network. Use Flutter integration_test SDK only if approved/needed. Compare screenshots to Figma before claiming visual parity. Do not chase arbitrary coverage percentages.
+
+### Platform verification
+
+Use the existing Android emulator for routine development, runtime verification, and screenshots. Prefer Android hot reload or hot restart when sufficient. Perform a full Android rebuild only when native configuration, dependencies, or bundled resources require it.
+
+Run only the relevant routine verification commands:
+
+- `dart format --output=none --set-exit-if-changed lib test`
+- `flutter analyze`
+- `flutter test`
+- `git diff --check`
+
+Preserve iOS compatibility and avoid unnecessary changes to iOS configuration. Defer the iOS Simulator, `flutter build ios`, Xcode builds, and iOS runtime verification to the final assessment delivery phase. Apply this policy to every subsequent phase unless the developer explicitly requests otherwise.
 
 ## Git and documentation
 Use small, truthful Conventional Commits after each approved cohesive change. Review git diff and staged files; include pubspec.lock. Never fabricate history, rewrite existing commits, or automatically push/commit without explicit developer approval. Report suggested commit message and files. Update AI_USAGE.md with actual tools, prompts or summaries, affected components, verification and real developer modifications/rejections. Do not invent rejected suggestions. README must cover setup, SDK, packages and reasons, architecture, API URL, Firebase setup, language and testing, screenshots or demo, assumptions and limitations. Never include tokens, service-account files or private keys. Verify Firebase client config is intentionally shareable and document setup; Admin credentials remain backend-only.

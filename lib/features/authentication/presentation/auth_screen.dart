@@ -12,6 +12,10 @@ import '../../../l10n/app_localizations.dart';
 import '../application/authentication_providers.dart';
 import 'auth_feedback.dart';
 
+const _googleButtonShape = RoundedRectangleBorder(
+  borderRadius: BorderRadius.all(Radius.circular(30)),
+);
+
 class AuthScreen extends ConsumerWidget {
   const AuthScreen({required this.guestDestination, this.onDismiss, super.key});
 
@@ -31,11 +35,11 @@ class AuthScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final action = ref.watch(authenticationActionProvider);
     final scheme = Theme.of(context).colorScheme;
-    final isIos = Theme.of(context).platform == TargetPlatform.iOS;
     final heading = l10n.authHeading(l10n.authHeadingEmphasis);
     final emphasisStart = heading.indexOf(l10n.authHeadingEmphasis);
     final emphasisEnd = emphasisStart + l10n.authHeadingEmphasis.length;
     return Scaffold(
+      backgroundColor: DesignColors.authBackground,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) => SingleChildScrollView(
@@ -91,51 +95,65 @@ class AuthScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: DesignSpacing.large),
-                    OutlinedButton(
-                      onPressed: action.isLoading
-                          ? null
-                          : ref
-                                .read(authenticationActionProvider.notifier)
-                                .signIn,
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(0, 59),
-                        backgroundColor: Colors.white,
-                        disabledBackgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF1F1F1F),
-                        side: const BorderSide(color: Color(0xFF747775)),
-                        shape: const StadiumBorder(),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: isIos ? 16 : 12,
-                          vertical: DesignSpacing.small,
-                        ),
-                        textStyle: const TextStyle(
-                          fontSize: 14,
-                          height: 20 / 14,
-                          fontFamily: 'Google Sans',
-                          fontFamilyFallback: [DesignTypography.fontFamily],
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        spacing: isIos ? 12 : 10,
-                        children: [
-                          if (action.isLoading)
-                            const SizedBox.square(
-                              dimension: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          else
-                            const AppIcon(AppIcons.google, size: 20),
-                          Flexible(
-                            child: Text(
-                              action.isLoading
-                                  ? l10n.signingIn
-                                  : l10n.googleSignIn,
-                              textAlign: TextAlign.center,
-                            ),
+                    DecoratedBox(
+                      decoration: const ShapeDecoration(
+                        shape: _googleButtonShape,
+                        shadows: [
+                          BoxShadow(
+                            color: Color(0x33000000),
+                            offset: Offset(0, 4),
+                            blurRadius: 120,
                           ),
                         ],
+                      ),
+                      child: OutlinedButton(
+                        onPressed: action.isLoading
+                            ? null
+                            : ref
+                                  .read(authenticationActionProvider.notifier)
+                                  .signIn,
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size(0, 59),
+                          backgroundColor: DesignColors.surface,
+                          disabledBackgroundColor: DesignColors.surface,
+                          foregroundColor: DesignColors.text,
+                          disabledForegroundColor: DesignColors.text,
+                          side: BorderSide.none,
+                          shape: _googleButtonShape,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: DesignSpacing.medium,
+                            vertical: 18,
+                          ),
+                          textStyle: const TextStyle(
+                            fontFamily: DesignTypography.fontFamily,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            height: 1.3,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 10,
+                          children: [
+                            if (action.isLoading)
+                              const SizedBox.square(
+                                dimension: 22,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            else
+                              const AppIcon(AppIcons.google, size: 22),
+                            Flexible(
+                              child: Text(
+                                action.isLoading
+                                    ? l10n.signingIn
+                                    : l10n.googleSignIn,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     if (action.hasError)
@@ -187,38 +205,58 @@ class _PropertyCollage extends StatelessWidget {
   final double maxHeight;
 
   @override
-  Widget build(BuildContext context) => LayoutBuilder(
-    builder: (context, constraints) => Center(
-      child: SizedBox(
-        width: math.min(
-          math.max(0.0, constraints.maxWidth - 16),
-          maxHeight * .8,
-        ),
-        child: AspectRatio(
-          aspectRatio: .8,
-          child: ExcludeSemantics(
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.asset(
-                  'assets/auth/property-collage.jpg',
-                  fit: BoxFit.cover,
-                ),
-                const DecoratedBox(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: [.565, .965],
-                      colors: [Color(0x00FFFFFF), Color(0xFFFFFFFF)],
+  Widget build(BuildContext context) {
+    const aspectRatio = 798 / 1104;
+    return LayoutBuilder(
+      builder: (context, constraints) => Center(
+        child: SizedBox(
+          width: math.min(
+            math.max(0.0, constraints.maxWidth - 16),
+            maxHeight * aspectRatio,
+          ),
+          child: AspectRatio(
+            aspectRatio: aspectRatio,
+            child: ExcludeSemantics(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    'assets/auth/login_image.png',
+                    fit: BoxFit.contain,
+                  ),
+                  FractionallySizedBox(
+                    // Figma centers the 376 dp fade on the 399 dp image.
+                    widthFactor: 376 / 399,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          // Project the paint stops through Figma's transform
+                          // into the rectangle's top-to-bottom coordinates.
+                          stops: [
+                            .5653724670410156 / 1.0550363063812256,
+                            .9277468323707581 / 1.0550363063812256,
+                          ],
+                          colors: [
+                            Color.from(
+                              alpha: .1,
+                              red: 251 / 255,
+                              green: 251 / 255,
+                              blue: 251 / 255,
+                            ),
+                            DesignColors.authBackground,
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

@@ -210,3 +210,28 @@ My Favorites reuses the licensed Light-Outline Heart. Appearance and the avatar 
 ## Phase 9.1 review
 
 Checked the Original Blue Details heart (`1:4270`), stat wrappers (`1:4284`, `1:4293`, `1:4298`), facilities block (`1:4316`), location artwork (`1:4385`), Explore filter (`1:4078`), filter counter (`1:4033`) and Profile language (`1:3843`). The heart is Iconly Light-Outline. The references do not show a filled property-favorite state, and a matching licensed filled source could not be verified. The shared Material heart and semantic favorite ink therefore remain. The featured selected state adds a solid white backing to keep the ink legible over arbitrary photos. Hero and other backed heart surfaces already have a solid background. The language, logout, back and location continue using the licensed originals through AppIcon. The counter and stat artwork still has unresolved provenance. The fallback table above records facility glyphs and additional controls for which there is no source frame. Phase 9.1 adds only the original project brand SVG described in the asset notices. [Asset notices](ASSET_LICENSES.md#phase-91--splash-and-native-brand-mark)
+
+## Restored Profile menu
+
+The seven new files in `icons/actions/` are direct 28 × 28 SVG exports of the visible Blue Iconly Curved instances. The Purple and Orange frames use the same geometry and neutral stroke. The exports preserve SVG strokes and fills under the existing Piqo Studio attribution.
+
+| Row | Iconly glyph | Blue | Purple | Orange | Bundled SVG |
+| --- | --- | --- | --- | --- | --- |
+| My Booking | Calendar | `1:3822` | `1:3024` | `1:2225` | `profile-booking.svg` |
+| Payments | Wallet | `1:3826` | `1:3028` | `1:2229` | `profile-payments.svg` |
+| Profile | Profile | `1:3831` | `1:3033` | `1:2234` | `profile-account.svg` |
+| Notification | Notification | `1:3835` | `1:3037` | `1:2238` | `profile-notifications.svg` |
+| Security | Shield Done | `1:3839` | `1:3041` | `1:2242` | `profile-security.svg` |
+| Language | More Circle | `1:3843` | `1:3045` | `1:2246` | Existing `profile-language.svg` |
+| Help Center | Info Square | `1:3847` | `1:3049` | `1:2250` | `profile-help.svg` |
+| Invite Friends | 3 User | `1:3851` | `1:3053` | `1:2254` | `profile-invite.svg` |
+| Logout | Logout | `1:3855` | `1:3057` | `1:2258` | Existing `profile-logout.svg` |
+
+All original menu rows use the registered `AppIcons` through `AppIcon`. The existing `profile-chevron.svg` supplies directional chevrons on the eight original disclosure rows. My Favorites reuses `heart-outline.svg`. The extra Appearance row, language selection check and unavailable-avatar placeholder retain Material SDK glyphs. [Iconly attribution](ASSET_LICENSES.md#home-and-navigation-svgs)
+
+
+## Search and Details fidelity follow-up
+
+Details reuses the registered `details-back.svg`, `heart-outline.svg`, `rating-star.svg`, and `location.svg`. Agent actions add the exact 28 × 28 Iconly Light exports `actions/details-chat.svg` and `actions/details-call.svg` from `I1:4310;929:29137` and `I1:4310;929:29138`. Geometry is identical across palettes. AppIcon supplies the palette paint, and the two glyphs keep their original orientation in RTL.
+
+The fallback table still applies to the selected heart, stat vectors, all mapped facilities, missing portraits and the full-screen gallery Close control. The live map uses the Material location pin in place of the illustrated photo pin. The shared search-filter asset remains Iconly for all layouts. The Figma-only share and review-like glyphs have no rendered control. [Asset notices](ASSET_LICENSES.md#details-agent-contact-svgs)

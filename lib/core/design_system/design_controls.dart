@@ -155,6 +155,7 @@ class AppSearchField extends StatelessWidget {
         ),
         decoration: InputDecoration(
           hintText: hintText,
+          // border: OutlineInputBorder(borderSide: BorderSide()),
           prefixIcon: const Center(
             widthFactor: 1,
             heightFactor: 1,

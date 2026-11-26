@@ -707,6 +707,24 @@ abstract class AppLocalizations {
   /// **'Clear featured filter'**
   String get clearFeaturedFilter;
 
+  /// No description provided for @detailsMessageAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Message agent'**
+  String get detailsMessageAgent;
+
+  /// No description provided for @detailsCallAgent.
+  ///
+  /// In en, this message translates to:
+  /// **'Call agent'**
+  String get detailsCallAgent;
+
+  /// No description provided for @detailsContactUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent contact is currently unavailable.'**
+  String get detailsContactUnavailable;
+
   /// No description provided for @detailsAgent.
   ///
   /// In en, this message translates to:
@@ -1150,6 +1168,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next page'**
   String get nextFavoritesPage;
+
+  /// No description provided for @profileBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'My Booking'**
+  String get profileBooking;
+
+  /// No description provided for @profilePayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get profilePayments;
+
+  /// No description provided for @profileAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileAccount;
+
+  /// No description provided for @profileNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get profileNotifications;
+
+  /// No description provided for @profileSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get profileSecurity;
+
+  /// No description provided for @profileHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get profileHelp;
+
+  /// No description provided for @profileInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Friends'**
+  String get profileInvite;
+
+  /// No description provided for @profileLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get profileLogout;
+
+  /// No description provided for @profileFeatureUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is currently unavailable.'**
+  String get profileFeatureUnavailable;
 
   /// No description provided for @profileLanguage.
   ///

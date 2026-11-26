@@ -133,7 +133,7 @@ class _DetailsStatus extends StatelessWidget {
   }
 }
 
-class _DetailsContent extends StatelessWidget {
+class _DetailsContent extends StatefulWidget {
   const _DetailsContent({
     required this.details,
     required this.initialImageIndex,
@@ -146,13 +146,29 @@ class _DetailsContent extends StatelessWidget {
   final ValueChanged<int> onImageChanged;
 
   @override
+  State<_DetailsContent> createState() => _DetailsContentState();
+}
+
+class _DetailsContentState extends State<_DetailsContent> {
+  final _scroll = ScrollController();
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final details = widget.details;
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    final statusBarHeight = MediaQuery.paddingOf(context).top;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: SafeArea(
+          top: false,
           bottom: false,
           child: LayoutBuilder(
             builder: (context, constraints) {
@@ -163,103 +179,133 @@ class _DetailsContent extends StatelessWidget {
                 constraints,
                 maxContentWidth: cap,
               );
-              return CustomScrollView(
-                slivers: [
-                  SliverPadding(
-                    padding: EdgeInsets.symmetric(horizontal: imageInset),
-                    sliver: SliverToBoxAdapter(
-                      child: PropertyHero(
-                        key: ValueKey(Object.hashAll(details.images)),
-                        images: details.images,
-                        initialIndex: initialImageIndex,
-                        onPageChanged: onImageChanged,
-                        actions: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                            14,
-                            8,
-                            14,
-                            0,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Material(
-                                color: theme.colorScheme.surface,
-                                shape: const CircleBorder(),
-                                child: const _DetailsBackButton(),
+              return Stack(
+                children: [
+                  CustomScrollView(
+                    controller: _scroll,
+                    slivers: [
+                      SliverPadding(
+                        padding: EdgeInsets.symmetric(horizontal: imageInset),
+                        sliver: SliverToBoxAdapter(
+                          child: PropertyHero(
+                            key: ValueKey(Object.hashAll(details.images)),
+                            images: details.images,
+                            initialIndex: widget.initialImageIndex,
+                            onPageChanged: widget.onImageChanged,
+                            actions: Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                14,
+                                statusBarHeight + 16,
+                                14,
+                                0,
                               ),
-                              Material(
-                                color: theme.colorScheme.surface,
-                                shape: const CircleBorder(),
-                                child: PropertyFavoriteButton(
-                                  propertyId: details.summary.id,
-                                  iconSize: 28,
-                                ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Material(
+                                    color: theme.colorScheme.surface,
+                                    shape: const CircleBorder(),
+                                    child: const _DetailsBackButton(),
+                                  ),
+                                  Material(
+                                    color: theme.colorScheme.surface,
+                                    shape: const CircleBorder(),
+                                    child: PropertyFavoriteButton(
+                                      propertyId: details.summary.id,
+                                      iconSize: 28,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SliverPadding(
-                    padding: layout.centeredInsets.add(
-                      const EdgeInsets.only(
-                        top: DesignSpacing.large,
-                        bottom: _sectionGap,
-                      ),
-                    ),
-                    sliver: SliverList.list(
-                      children: [
-                        _PropertySummary(details: details),
-                        const SizedBox(height: _sectionGap),
-                        const Divider(height: 1),
-                        const SizedBox(height: _sectionGap),
-                        _DetailsSection(
-                          title: l10n.detailsAgent,
-                          gap: DesignSpacing.medium,
-                          child: _NamedPerson(
-                            name: details.agent.name,
-                            avatarUrl: details.agent.avatar,
-                            size: 60,
-                          ),
-                        ),
-                        const SizedBox(height: _sectionGap),
-                        _DetailsSection(
-                          title: l10n.detailsOverview,
-                          gap: DesignSpacing.chipGap,
-                          child: Text(
-                            details.description,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ),
-                        const SizedBox(height: _sectionGap),
-                        _DetailsSection(
-                          title: l10n.detailsFacilities,
-                          child: PropertyFacilities(
-                            facilities: details.facilities,
+                      ),
+                      SliverPadding(
+                        padding: layout.centeredInsets.add(
+                          const EdgeInsets.only(
+                            top: DesignSpacing.large,
+                            bottom: _sectionGap,
                           ),
                         ),
-                        const SizedBox(height: _sectionGap),
-                        _DetailsSection(
-                          title: l10n.detailsGallery,
-                          child: PropertyGallery(images: details.images),
+                        sliver: SliverList.list(
+                          children: [
+                            _PropertySummary(details: details),
+                            const SizedBox(height: _sectionGap),
+                            const Divider(height: 1),
+                            const SizedBox(height: _sectionGap),
+                            _DetailsSection(
+                              title: l10n.detailsAgent,
+                              gap: DesignSpacing.medium,
+                              child: _NamedPerson(
+                                name: details.agent.name,
+                                avatarUrl: details.agent.avatar,
+                                size: 60,
+                                trailing: const _AgentContactActions(),
+                              ),
+                            ),
+                            const SizedBox(height: _sectionGap),
+                            _DetailsSection(
+                              title: l10n.detailsOverview,
+                              gap: DesignSpacing.chipGap,
+                              child: Text(
+                                details.description,
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: _sectionGap),
+                            _DetailsSection(
+                              title: l10n.detailsFacilities,
+                              child: PropertyFacilities(
+                                facilities: details.facilities,
+                              ),
+                            ),
+                            const SizedBox(height: _sectionGap),
+                            _DetailsSection(
+                              title: l10n.detailsGallery,
+                              child: PropertyGallery(images: details.images),
+                            ),
+                            const SizedBox(height: _sectionGap),
+                            _DetailsSection(
+                              title: l10n.detailsLocation,
+                              child: _Location(details: details),
+                            ),
+                            const SizedBox(height: _sectionGap),
+                            _DetailsSection(
+                              title: l10n.detailsReviews,
+                              gap: DesignSpacing.large,
+                              child: _Reviews(reviews: details.reviews),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: _sectionGap),
-                        _DetailsSection(
-                          title: l10n.detailsLocation,
-                          child: _Location(details: details),
-                        ),
-                        const SizedBox(height: _sectionGap),
-                        _DetailsSection(
-                          title: l10n.detailsReviews,
-                          child: _Reviews(reviews: details.reviews),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                  if (statusBarHeight > 0)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: statusBarHeight,
+                      child: IgnorePointer(
+                        child: ListenableBuilder(
+                          listenable: _scroll,
+                          builder: (context, _) => ColoredBox(
+                            color: theme.colorScheme.surface.withValues(
+                              alpha: _scroll.hasClients
+                                  ? (_scroll.offset / statusBarHeight).clamp(
+                                      0.0,
+                                      1.0,
+                                    )
+                                  : 0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                 ],
               );
             },
@@ -353,7 +399,7 @@ class _PropertySummary extends StatelessWidget {
           ],
         ),
         Wrap(
-          spacing: DesignSpacing.medium,
+          spacing: DesignSpacing.large,
           runSpacing: DesignSpacing.small,
           children: [
             _Stat(Icons.bed_outlined, l10n.detailsBedrooms(details.bedrooms)),
@@ -392,7 +438,13 @@ class _Rating extends StatelessWidget {
         spacing: 6,
         children: [
           AppIcon(AppIcons.ratingStar, size: size),
-          Flexible(child: Text(value)),
+          Flexible(
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w500),
+            ),
+          ),
         ],
       ),
     );
@@ -433,15 +485,21 @@ class _Stat extends StatelessWidget {
 }
 
 class _NamedPerson extends StatelessWidget {
-  const _NamedPerson({required this.name, required this.size, this.avatarUrl});
+  const _NamedPerson({
+    required this.name,
+    required this.size,
+    this.avatarUrl,
+    this.trailing,
+  });
 
   final String name;
   final double size;
   final String? avatarUrl;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) => Row(
-    spacing: size == 60 ? DesignSpacing.page : DesignSpacing.small,
+    spacing: DesignSpacing.small,
     children: [
       ExcludeSemantics(
         child: ClipOval(
@@ -454,11 +512,48 @@ class _NamedPerson extends StatelessWidget {
           ),
         ),
       ),
+      if (size == 60) const SizedBox(width: 4),
       Expanded(
-        child: Text(name, style: Theme.of(context).textTheme.labelLarge),
+        child: Text(
+          name,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+            fontSize: size == 60 ? 18 : 16,
+            height: 1.2,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
+      ?trailing,
     ],
   );
+}
+
+class _AgentContactActions extends StatelessWidget {
+  const _AgentContactActions();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final color = Theme.of(context).colorScheme.primary;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (final (icon, label) in [
+          (AppIcons.detailsChat, l10n.detailsMessageAgent),
+          (AppIcons.detailsCall, l10n.detailsCallAgent),
+        ])
+          IconButton(
+            tooltip: label,
+            icon: AppIcon(icon, size: 28, color: color),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.detailsContactUnavailable)),
+              );
+            },
+          ),
+      ],
+    );
+  }
 }
 
 class _Location extends StatelessWidget {
@@ -482,7 +577,7 @@ class _Location extends StatelessWidget {
         longitude.abs() <= 180;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: DesignSpacing.medium,
+      spacing: DesignSpacing.page,
       children: [
         Row(
           spacing: DesignSpacing.small,
@@ -503,7 +598,6 @@ class _Location extends StatelessWidget {
             ),
           ],
         ),
-        Text(l10n.detailsDemoLocation, style: theme.textTheme.bodySmall),
         if (valid && latitude.abs() <= 85.05112878)
           PropertyLocationMap(
             key: ValueKey((latitude, longitude)),
@@ -511,6 +605,7 @@ class _Location extends StatelessWidget {
           )
         else
           Text(l10n.detailsMapUnavailable, style: theme.textTheme.bodySmall),
+        Text(l10n.detailsDemoLocation, style: theme.textTheme.bodySmall),
         if (valid)
           Align(
             alignment: AlignmentDirectional.centerStart,
@@ -608,7 +703,12 @@ class _PriceFooter extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
-        border: Border.all(color: AppThemeColors.of(context).detailsTint),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(
+            alpha: DesignColors.strongTintOpacity,
+          ),
+          strokeAlign: BorderSide.strokeAlignOutside,
+        ),
         borderRadius: const BorderRadius.vertical(
           top: Radius.circular(DesignShape.footerRadius),
         ),
@@ -618,7 +718,7 @@ class _PriceFooter extends StatelessWidget {
         child: AdaptiveContent(
           maxContentWidth: ResponsiveLayout.detailsMaxWidth,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: DesignSpacing.medium),
+            padding: const EdgeInsets.fromLTRB(4, 24, 4, 12),
             child: LayoutBuilder(
               builder: (context, constraints) => Wrap(
                 alignment: WrapAlignment.spaceBetween,
@@ -629,10 +729,12 @@ class _PriceFooter extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
+                    spacing: 6,
                     children: [
                       Text(
                         l10n.detailsMonthlyRent,
                         style: theme.textTheme.labelSmall?.copyWith(
+                          fontSize: 12,
                           letterSpacing: 2,
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
@@ -640,7 +742,7 @@ class _PriceFooter extends StatelessWidget {
                       Text(
                         price,
                         style: theme.textTheme.headlineMedium?.copyWith(
-                          color: theme.colorScheme.secondary,
+                          color: theme.colorScheme.primary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -648,10 +750,29 @@ class _PriceFooter extends StatelessWidget {
                   ),
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                      minWidth: constraints.maxWidth * 0.58,
+                      minWidth: constraints.maxWidth * (236 / 380),
                     ),
-                    child: PropertyFavoriteButton.filled(
-                      propertyId: property.id,
+                    child: FilledButtonTheme(
+                      data: FilledButtonThemeData(
+                        style: theme.filledButtonTheme.style?.copyWith(
+                          minimumSize: const WidgetStatePropertyAll(
+                            Size(DesignSize.tapTarget, 50),
+                          ),
+                          padding: const WidgetStatePropertyAll(
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          ),
+                          textStyle: WidgetStatePropertyAll(
+                            theme.textTheme.labelLarge?.copyWith(
+                              fontSize: 16,
+                              height: 22 / 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      child: PropertyFavoriteButton.filled(
+                        propertyId: property.id,
+                      ),
                     ),
                   ),
                 ],

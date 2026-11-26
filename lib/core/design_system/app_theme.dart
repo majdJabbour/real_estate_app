@@ -7,20 +7,16 @@ enum AppThemeVariant { blue, purple, orange }
 
 @immutable
 final class _Palette {
-  const _Palette({
-    required this.brand,
-    required this.brandInk,
-    required this.detailsTintOpacity,
-  });
+  const _Palette({required this.brand, required this.detailsTintOpacity});
 
   final Color brand;
-  final Color brandInk;
   final double detailsTintOpacity;
 }
 
 @immutable
 final class AppThemeColors extends ThemeExtension<AppThemeColors> {
   const AppThemeColors({
+    required this.variant,
     required this.detailsTint,
     required this.success,
     required this.successSurface,
@@ -30,6 +26,7 @@ final class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.placeholderInk,
   });
 
+  final AppThemeVariant variant;
   final Color detailsTint;
   final Color success;
   final Color successSurface;
@@ -51,6 +48,7 @@ final class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? placeholderSurface,
     Color? placeholderInk,
   }) => AppThemeColors(
+    variant: variant,
     detailsTint: detailsTint ?? this.detailsTint,
     success: success ?? this.success,
     successSurface: successSurface ?? this.successSurface,
@@ -65,6 +63,7 @@ final class AppThemeColors extends ThemeExtension<AppThemeColors> {
     if (other == null) return this;
 
     return AppThemeColors(
+      variant: t < .5 ? variant : other.variant,
       detailsTint: Color.lerp(detailsTint, other.detailsTint, t)!,
       success: Color.lerp(success, other.success, t)!,
       successSurface: Color.lerp(successSurface, other.successSurface, t)!,
@@ -91,17 +90,14 @@ abstract final class AppTheme {
     final palette = switch (variant) {
       AppThemeVariant.blue => const _Palette(
         brand: Color(0xFF0061FF),
-        brandInk: Color(0xFF0061FF),
         detailsTintOpacity: DesignColors.subtleTintOpacity,
       ),
       AppThemeVariant.purple => const _Palette(
         brand: Color(0xFF8B5DFF),
-        brandInk: Color(0xFF6338C6),
         detailsTintOpacity: DesignColors.strongTintOpacity,
       ),
       AppThemeVariant.orange => const _Palette(
         brand: Color(0xFFFF8000),
-        brandInk: Color(0xFF9A4500),
         detailsTintOpacity: DesignColors.strongTintOpacity,
       ),
     };
@@ -116,7 +112,7 @@ abstract final class AppTheme {
       onPrimary: Colors.white,
       primaryContainer: Color.alphaBlend(strongTint, DesignColors.surface),
       onPrimaryContainer: DesignColors.text,
-      secondary: palette.brandInk,
+      secondary: palette.brand,
       onSecondary: DesignColors.surface,
       surface: DesignColors.surface,
       onSurface: DesignColors.text,
@@ -138,6 +134,7 @@ abstract final class AppTheme {
       materialTapTargetSize: MaterialTapTargetSize.padded,
       extensions: [
         AppThemeColors(
+          variant: variant,
           detailsTint: palette.brand.withValues(
             alpha: palette.detailsTintOpacity,
           ),
@@ -265,10 +262,15 @@ abstract final class AppTheme {
         ),
         prefixIconColor: scheme.onSurfaceVariant,
         suffixIconColor: scheme.onSurfaceVariant,
-        border: _searchBorder(scheme.outline),
-        enabledBorder: _searchBorder(scheme.outline),
+        border: _searchBorder(subtleTint),
+        enabledBorder: _searchBorder(subtleTint),
         disabledBorder: _searchBorder(subtleTint),
-        focusedBorder: _searchBorder(scheme.secondary, DesignShape.focusBorder),
+        focusedBorder: _searchBorder(
+          variant == AppThemeVariant.orange
+              ? DesignColors.text
+              : scheme.primary,
+          DesignShape.focusBorder,
+        ),
       ),
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: scheme.secondary,

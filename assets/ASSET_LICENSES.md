@@ -44,7 +44,7 @@ Both SVGs are credited to Piqo Studio under the recorded Iconly CC BY 4.0 grant.
 
 ## Authentication assets
 
-- `auth/property-collage.jpg` is original ImageGen output created for Phase 7.2 from a description of the three-column property composition. It depicts illustrative buildings, with no source photo or Figma render embedded. The local JPEG is shared across themes and available offline. The original Figma photos and Real Scout illustration remain reference-only because their redistribution rights could not be confirmed.
+- The previous fallback Auth collage was original ImageGen output created for Phase 7.2 from a description of the three-column property composition. It depicts illustrative buildings, with no source photo or Figma render embedded. The supplied Auth collage replaces it for local review.
 - `icons/auth/google.png` is the unretouched center crop of the Google mark in the official 4× light icon-mode pill PNG for Android and Web. The 80 × 80 crop renders at 20 dp without recoloring, stretching or mirroring and appears only in the white Google sign-in control. The Google mark remains subject to Google's brand terms. [Google branding guidelines and asset bundle](https://developers.google.com/identity/branding-guidelines#download_pre-approved_brand_icons)
 - `fonts/google-sans/GoogleSans-Medium.ttf` is an upright static Medium instance of the upstream Google Sans variable font, subset to Latin and the ellipsis to keep the app asset small. Arabic glyphs use the existing Rubik font. The SIL Open Font License 1.1 and copyright are bundled next to the font. [Google Sans upstream](https://github.com/googlefonts/googlesans) · [Google Fonts distribution](https://github.com/google/fonts/tree/main/ofl/googlesans)
 
@@ -62,11 +62,23 @@ The existing Outline Heart is reused. The selected heart, appearance and avatar 
 
 ## Phase 9.1 — Splash and native brand mark
 
-[real-scout.svg](brand/real-scout.svg) is original project artwork made for this phase. The angular house silhouette and its native PNG derivatives were generated from the same polygon. The mark uses an Original Blue gradient in the Android and iOS launcher and native launch screen. The Flutter splash reuses the SVG and adapts its gradient to the runtime palette. The original Real Scout logo remains reference-only because its creator and redistribution permission could not be established. The Android adaptive icon uses a transparent foreground and an opaque white background. Legacy Android and iOS icons use platform-sized opaque PNGs. Native launch resources remain static until Flutter restores the saved palette.
+Earlier fallback branding used an angular house silhouette and native PNG derivatives. The local review build now uses the supplied branding below.
 
 
 ## Phase 9.1.1 — Supplied Figma exports
 
-The developer supplied seven files under `original_figma_assets/`. The three SVGs (`app_icon.svg`, `app_icon_purpel.svg`, `app_icon_orange.svg`) have 134 × 113 viewBoxes and correspond to the Blue, Purple and Orange Figma mark artwork. The three matching PNGs are transparent 134 × 113 references. No author grant or original publication license was supplied for the marks. The 798 × 1104 `login_image.png` shows a Freepik watermark on the third center-column photograph. Neither the original licensed download nor grants covering the other source photos were established. The supplied files are outside the app asset manifest and native catalogs. Keep them out of delivery commits pending evidence. The current native icons, native launch resources, Flutter Splash mark and three-column Auth alternative retain their prior provenance above. The regenerated iOS icons and launch images are scaled derivatives of the existing Blue fallback masters. [Freepik stock downloads and license documentation](https://www.freepik.com/ai/docs/how-to-download-freepik-images)
+The developer supplied seven files under `original_figma_assets/`. The three SVGs (`app_icon.svg`, `app_icon_purpel.svg`, `app_icon_orange.svg`) have 134 × 113 viewBoxes and correspond to the Blue, Purple and Orange Figma mark artwork. The three matching PNGs are transparent 134 × 113 references. No author grant or original publication license was supplied for the marks. The 798 × 1104 `login_image.png` shows a Freepik watermark on the third center-column photograph. Neither the original licensed download nor grants covering the other source photos were established. Keep these exports and their derivatives out of delivery commits pending permission. [Freepik stock downloads and license documentation](https://www.freepik.com/ai/docs/how-to-download-freepik-images)
 
 The property map displays runtime OpenStreetMap tiles with linked attribution. Tiles are fetched under the public tile service policy and cached by Flutter Map. No tiles are bundled. [OpenStreetMap copyright and ODbL attribution](https://www.openstreetmap.org/copyright) · [OSMF tile policy](https://operations.osmfoundation.org/policies/tiles/)
+
+
+The main project bundles the original SVGs at `brand/logo_blue.svg`, `brand/logo_purple.svg`, and `brand/logo_orange.svg`, plus the unmodified `auth/login_image.png`. The launcher and launch PNG changes under Android `mipmap-*` and iOS `AppIcon.appiconset` and `LaunchImage.imageset` derive from a one-time render of the supplied Blue SVG. Keep these assets, screenshots and binaries local while redistribution permission remains unresolved.
+
+### Restored Profile menu icons
+
+The Calendar, Wallet, Profile, Notification, Shield Done, Info Square and 3 User SVGs are unmodified exports of the supplied Iconly Curved instances from the Blue Profile frame. Attribution remains with Piqo Studio under the recorded Iconly 2.3 CC BY 4.0 grant. Runtime tint and directional layout follow the shared icon registry. [Source nodes and SVG inventory](FIGMA_ICON_INVENTORY.md#restored-profile-menu) · [Iconly source and license](#home-and-navigation-svgs)
+
+
+## Details agent contact SVGs
+
+`actions/details-chat.svg` and `actions/details-call.svg` are unchanged Iconly Light Chat and Call exports from `I1:4310;929:29137` and `I1:4310;929:29138`. Piqo Studio's Iconly 2.3 CC BY 4.0 attribution applies. Flutter tints the original vectors with each palette's primary. [Iconly source and license](#home-and-navigation-svgs)

@@ -5,7 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:real_estate_app/app/app.dart';
 import 'package:real_estate_app/app/navigation/app_router.dart';
+import 'package:real_estate_app/core/design_system/app_icon.dart';
 import 'package:real_estate_app/core/design_system/app_theme.dart';
+import 'package:real_estate_app/core/design_system/app_theme_preference.dart';
 import 'package:real_estate_app/core/localization/app_locale.dart';
 import 'package:real_estate_app/core/models/request_cancellation.dart';
 import 'package:real_estate_app/features/authentication/application/authentication_providers.dart';
@@ -36,7 +38,7 @@ Future<ProviderContainer> _pumpApp(
   WidgetTester tester,
   Future<AuthenticationRepository> Function() initialize, {
   String language = 'en',
-  AppThemeVariant variant = AppThemeVariant.blue,
+  AppThemeVariant? variant,
   Size size = const Size(430, 932),
   double textScale = 1,
 }) async {
@@ -72,6 +74,140 @@ Future<ProviderContainer> _pumpApp(
 }
 
 void main() {
+  testWidgets(
+    'fast restoration waits two seconds from the first Splash frame',
+    (tester) async {
+      final user = FakeAuthentication();
+      addTearDown(user.close);
+      final pending = Completer<AuthenticationRepository>();
+      final container = await _pumpApp(tester, () => pending.future);
+      final router = container.read(appRouterProvider);
+
+      await tester.pump(const Duration(milliseconds: 300));
+      pending.complete(user);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 1699));
+      expect(find.byType(SplashScreen), findsOneWidget);
+      expect(find.byType(AuthScreen), findsNothing);
+
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pump();
+      expect(router.routerDelegate.currentConfiguration.uri.path, '/auth');
+      await tester.pumpAndSettle();
+      expect(find.byType(AuthScreen), findsOneWidget);
+    },
+  );
+
+  testWidgets('slow restoration leaves Splash without an additional delay', (
+    tester,
+  ) async {
+    final user = FakeAuthentication();
+    addTearDown(user.close);
+    final pending = Completer<AuthenticationRepository>();
+    final container = await _pumpApp(tester, () => pending.future);
+    final router = container.read(appRouterProvider);
+
+    await tester.pump(const Duration(seconds: 3));
+    expect(find.byType(SplashScreen), findsOneWidget);
+    pending.complete(user);
+    await tester.pump();
+    await tester.pump();
+    expect(router.routerDelegate.currentConfiguration.uri.path, '/auth');
+  });
+
+  testWidgets(
+    'startup failure appears immediately and retry uses the same timer',
+    (tester) async {
+      final user = FakeAuthentication();
+      addTearDown(user.close);
+      final pending = Completer<AuthenticationRepository>();
+      var attempts = 0;
+      final container = await _pumpApp(
+        tester,
+        () => attempts++ == 0 ? pending.future : Future.value(user),
+      );
+      final router = container.read(appRouterProvider);
+      await tester.pump(const Duration(milliseconds: 300));
+      pending.completeError(StateError('startup failed'));
+      await tester.pump();
+      expect(find.text('Retry'), findsOneWidget);
+
+      await tester.pump(const Duration(milliseconds: 700));
+      await tester.tap(find.text('Retry'));
+      await tester.pump();
+      expect(attempts, 2);
+      expect(find.byType(SplashScreen), findsOneWidget);
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pump();
+      expect(router.routerDelegate.currentConfiguration.uri.path, '/auth');
+      await tester.pumpAndSettle();
+      expect(find.byType(AuthScreen), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'startup redirects once across rebuilds, session changes and resume',
+    (tester) async {
+      final user = FakeAuthentication();
+      addTearDown(user.close);
+      final container = await _pumpApp(tester, () async => user);
+      expect(find.byType(SplashScreen), findsOneWidget);
+      final router = container.read(appRouterProvider);
+      final departures = <String>[];
+      void recordDeparture() {
+        final path = router.routerDelegate.currentConfiguration.uri.path;
+        if (path != '/splash') departures.add(path);
+      }
+
+      router.routerDelegate.addListener(recordDeparture);
+      addTearDown(() => router.routerDelegate.removeListener(recordDeparture));
+
+      await tester.pump(const Duration(seconds: 1));
+      await container
+          .read(appLocaleProvider.notifier)
+          .select(AppLanguage.arabic);
+      await container
+          .read(appThemePreferenceProvider.notifier)
+          .select(AppThemeVariant.purple);
+      await tester.pump();
+      user.change(firstUser);
+      await tester.pump();
+      expect(departures, isEmpty);
+
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pump();
+      expect(departures, ['/home']);
+      await tester.pumpAndSettle();
+      for (final state in [
+        AppLifecycleState.inactive,
+        AppLifecycleState.hidden,
+        AppLifecycleState.paused,
+        AppLifecycleState.hidden,
+        AppLifecycleState.inactive,
+        AppLifecycleState.resumed,
+      ]) {
+        tester.binding.handleAppLifecycleStateChanged(state);
+      }
+      user.change(null);
+      await tester.pumpAndSettle();
+      expect(departures, ['/home']);
+      expect(find.byType(SplashScreen), findsNothing);
+    },
+  );
+
+  testWidgets('disposing Splash cancels its pending minimum timer', (
+    tester,
+  ) async {
+    final pending = Completer<AuthenticationRepository>();
+    final container = await _pumpApp(tester, () => pending.future);
+    expect(find.byType(SplashScreen), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 250));
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    container.dispose();
+    // The test binding fails if a timer is still pending at teardown.
+  });
+
   testWidgets('Splash routes to Auth, then guest Home, with a stable router', (
     tester,
   ) async {
@@ -125,10 +261,68 @@ void main() {
     final container = await _pumpApp(tester, () async => user);
     await tester.pumpAndSettle();
     final button = find.text('Sign in with Google');
+    final googleButton = find.ancestor(
+      of: button,
+      matching: find.byType(OutlinedButton),
+    );
+    final style = tester.widget<OutlinedButton>(googleButton).style!;
+    expect(style.side!.resolve({}), BorderSide.none);
+    expect(style.side!.resolve({WidgetState.disabled}), BorderSide.none);
+    expect(style.backgroundColor!.resolve({}), Colors.white);
+    expect(style.foregroundColor!.resolve({}), const Color(0xFF191D31));
+    expect(style.minimumSize!.resolve({}), const Size(0, 59));
+    expect(
+      style.shape!.resolve({}),
+      const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+      ),
+    );
+    final textStyle = style.textStyle!.resolve({})!;
+    expect(textStyle.fontFamily, 'Rubik');
+    expect(textStyle.fontSize, 18);
+    expect(textStyle.fontWeight, FontWeight.w500);
+    final googleControl = tester.widget<OutlinedButton>(googleButton);
+    final row = googleControl.child! as Row;
+    expect(row.spacing, 10);
+    expect((row.children.first as AppIcon).size, 22);
+    final shadow = find.ancestor(
+      of: googleButton,
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is DecoratedBox && identical(widget.child, googleControl),
+      ),
+    );
+    final decoration = tester.widget<DecoratedBox>(shadow).decoration;
+    expect((decoration as ShapeDecoration).shadows, const [
+      BoxShadow(
+        color: Color(0x33000000),
+        offset: Offset(0, 4),
+        blurRadius: 120,
+      ),
+    ]);
+    final authScaffold = find.descendant(
+      of: find.byType(AuthScreen),
+      matching: find.byType(Scaffold),
+    );
+    expect(
+      tester.widget<Scaffold>(authScaffold).backgroundColor,
+      const Color(0xFFFCFCFC),
+    );
     await tester.ensureVisible(button);
     await tester.tap(button);
     await tester.pump();
     expect(find.text('Signing in…'), findsOneWidget);
+    expect(
+      tester
+          .widget<OutlinedButton>(
+            find.ancestor(
+              of: find.text('Signing in…'),
+              matching: find.byType(OutlinedButton),
+            ),
+          )
+          .onPressed,
+      isNull,
+    );
     attempt.completeError(AuthenticationFailure.connection);
     await tester.pumpAndSettle();
     final l10n = AppLocalizations.of(tester.element(find.byType(AuthScreen)));
@@ -190,7 +384,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Verified fixture'), findsOneWidget);
     expect(find.text('fixture@example.test'), findsOneWidget);
-    await tester.tap(find.text('Sign out'));
+    await tester.ensureVisible(find.text('Logout'));
+    await tester.tap(find.text('Logout'));
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(TextButton, 'Sign out'));
     await tester.pumpAndSettle();

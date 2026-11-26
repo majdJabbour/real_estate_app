@@ -71,7 +71,15 @@ Updated the Details footer to share favorites state with the hero heart, and rep
 
 ### 9.1.1 — Original Figma assets and embedded map
 
-Implemented the actual Details map and localized degraded states. The external handoff remains available for valid coordinates. The map libraries resolved without upgrades to existing lockfile entries. Reviewed original logo and Auth exports against the Figma references. New originals remain deferred pending rights for the logo and photos, with the existing shipping artwork retained. Stop for developer review before Phase 9.2. [Design and licensing status](DESIGN_SYSTEM.md#phase-911--embedded-map-and-original-asset-review)
+Implemented the actual Details map and localized degraded states. The external handoff remains available for valid coordinates. The map libraries resolved without upgrades to existing lockfile entries. Reviewed original logo and Auth exports against the Figma references. Redistribution remains deferred pending rights for the logo and photos. Stop for developer review before Phase 9.2. [Design and licensing status](DESIGN_SYSTEM.md#phase-911--embedded-map-and-original-asset-review)
+
+#### Static branding packaging
+
+The main project packages the original exports and one-time Blue native renders at standard Flutter, Android and iOS paths for local review. The Auth fade, Splash timing and embedded map remain in the existing widgets. The packaging change remains subject to developer review before Phase 9.2.
+
+### 9.1 — Orange palette and Profile fidelity follow-up
+
+The theme uses the three exact Figma primaries for shared brand roles. Profile restores the original menu and keeps the existing identity, favorites, preferences and session behavior. Unsupported rows provide localized unavailable feedback. The correction is ready for developer visual review before Phase 9.2. [Figma measurements and scope](DESIGN_SYSTEM.md#orange-palette-and-profile-menu-fidelity)
 
 ## Priority and scope guard
 The assessment is primarily Flutter and suggests 12–14 working hours. Complete approved public screens and required bilingual/API behavior before expanding optional auth/profile features if time is constrained. Firebase configuration can be performed earlier as a separate setup task with developer approval, but must not block public UI work. Do not claim completion for untested features or silently change the contract. No artificial commits or arbitrary test-count goals.

@@ -250,7 +250,7 @@ The four primitives are `AppPrimaryButton`, `AppIconButton`, `AppSearchField`, a
 | --- | --- | --- | --- |
 | Original brand fill | `#0061FF` | `#8B5DFF` | `#FF8000` |
 | Button and selected chip foreground | `#FFFFFF` · 5.06:1 | `#FFFFFF` · 4.11:1 | `#FFFFFF` · 2.52:1 |
-| Brand text and focus on light surfaces | `#0061FF` · 5.06:1 on white | `#6338C6` · 7.21:1 on white | `#9A4500` · 6.51:1 on white |
+| Brand text and focus on white | `#0061FF` · 5.06:1 | `#8B5DFF` · 4.11:1 | `#FF8000` · 2.52:1 |
 
 | Shared semantic role | Foreground and surface | Contrast |
 | --- | --- | --- |
@@ -258,10 +258,10 @@ The four primitives are `AppPrimaryButton`, `AppIconButton`, `AppSearchField`, a
 | Success | `#17643A` on `#E7F4EA` | 6.34:1 |
 | Disabled | `#666876` on `#E8E9ED` | 4.55:1 |
 | Image placeholder | `#666876` on `#F1F2F5` | 4.93:1 |
-| Search placeholder and boundary | `#666876` placeholder and `#8C8E98` stroke on `#FBFBFD` | 5.34:1 text, 3.16:1 stroke |
+| Search placeholder and boundary | `#666876` placeholder and a 4% primary stroke on `#FBFBFD` | 5.34:1 text. The reference resting boundary is subtle. |
 | Favorite | `#A52650` filled, `#666876` outline | Tested at ≥3:1 on each preview icon tint |
 
-Primary filled buttons and selected chips use white foregrounds and the original palette fills. Purple (4.11:1) and Orange (2.52:1) intentionally fall below the WCAG AA minimum of 4.5:1 for normal text. Selected tab labels also use the corresponding brand color on white and have the same contrast ratios. Orange uses a dark keyboard-focus ring to preserve a visible focus indicator. Search uses a stronger neutral stroke in its enabled state and a 2 dp focus stroke. The source 4% tint is retained for the disabled search stroke and the unselected chip fill. Small secondary text and active search hints use `#666876`. A contrasting 2 dp ring indicates keyboard focus inside filled actions. Hover, focus and press overlays are calculated against the resting foreground. Tests assert the exact foreground and fill, the intentional contrast limits, and contrast for focus and other semantic roles. Review the future rating pill with real imagery because the original 90% background makes contrast depend on the photo. [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+Primary filled buttons and selected chips use white foregrounds and the original palette fills. Purple (4.11:1) and Orange (2.52:1) intentionally fall below the WCAG AA minimum of 4.5:1 for normal text. Brand-colored text on white, including prices, text actions and selected tab labels, has the same ratios. Orange also falls below 3:1 for pure brand non-text indicators on white, including the selected navigation glyph. Tint and photo backgrounds can further affect contrast. Orange uses a dark keyboard-focus ring to preserve a visible focus indicator. Search uses the source 4% tint at rest and when disabled. The focus outline is 2 dp and uses primary in Blue and Purple and `#191D31` in Orange. Small secondary text and active search hints use `#666876`. A contrasting 2 dp ring indicates keyboard focus inside filled actions. Hover, focus and press overlays are calculated against the resting foreground. Tests assert the exact foreground and fill, the intentional contrast limits, and contrast for focus and other semantic roles. Review the future rating pill with real imagery because the original 90% background makes contrast depend on the photo. [WCAG contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
 
 ### Bundled type and preview
 
@@ -381,4 +381,66 @@ The [Phase 9.1 captures](docs/screenshots/phase-9.1/) show the production Flutte
 
 Figma MCP confirmed all nine requested Splash, Auth and Details frames. The Details map sample is a rounded 388 × 200 slot with a palette-colored pin near its center. The app uses a 200 dp high preview with 20 dp rounded corners and adapts to the existing Details gutters. The pin tip marks the API coordinate at neighborhood zoom 15. Real tiles retain their original colors. The localized demo notice and the external action are retained. Visible attribution and localized tile status add UI absent from the illustration. [Original map slot](https://www.figma.com/design/YKHgRiNXTErazshNFTD1Fz/?node-id=1-4385)
 
-The supplied 134 × 113 mark exports contain the Figma vector artwork and palette gradients. The 798 × 1104 transparent Auth PNG has three offset columns, rounded tiles, and a visible Freepik watermark. The Auth reference places the fade in a separate layer. The Figma logo, original photos and exact native branding remain pending redistribution evidence. Flutter Splash continues to use the restored palette with the existing gradient mark, while the native launcher and native launch screens use the existing static Blue alternative. The stale iOS launcher sizes were regenerated from the opaque 1024 px master and the empty iOS launch images were populated from the existing 576 px transparent Blue Android launch mark. Android round launchers use the current adaptive or legacy resource. Auth continues to use the existing three-column alternative with one fade. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
+The main project uses the supplied 134 × 113 SVGs directly in Flutter Splash, with the restored theme selecting Blue, Purple or Orange. It retains the centered wordmark, localized tagline and startup progress. Pre-rendered Blue PNGs use the standard Android resource folders and iOS asset catalog. Auth displays the full 798 × 1104 PNG with its original alpha, column offsets and rounded tiles. The Auth collage uses one foreground fade shared by Blue, Purple and Orange. It is centered at (27, 83) in the 430 × 932 reference and measures 376 × 552 over a 399 × 552 image group starting at (15.5, 83). The layer and fill are at 100% opacity. Its top-to-bottom paint uses #FBFBFB at 10% opacity and #FCFCFC at 100% opacity, with authored stops at 56.537% and 92.775%. The gradient transform maps these to 53.588% and 87.935% of the rectangle height. The PNG and its watermark are unchanged. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
+
+### Final background and Google control review
+
+Figma MCP read the 24 screen-frame fills listed in section 1. Splash, Auth, Home, Details, Explore List, Explore Grid, Filters and Profile are all `#FFFFFF` at 100% in Blue, Purple and Orange. No full-page off-white paint was found. The Flutter scaffold and `ColorScheme.surface` continue to resolve to `DesignColors.surface` (`#FFFFFF`).
+
+| Surface | Figma paint in all three variants | Flutter treatment |
+| --- | --- | --- |
+| Property grid and list cards | `#FFFFFF` at 100% | Shared surface |
+| Search fields | `#FBFBFD` at 100% | `DesignColors.searchSurface` |
+| Bottom navigation | White paint hidden, with the white frame visible through it | Shared surface, including the bottom inset |
+| Filters panel | `#FFFFFF` at 100%, with a separate `#000000` scrim at 30% | Shared surface and separate scrim |
+| Details footer | `#FFFFFF` at 100% | Shared surface |
+| Profile dialogs | No matching dialog in the supplied frames | Existing Material dialog styling |
+| Auth backdrop | Frame `#FFFFFF` at 100%. The fade ends at `#FCFCFC` at 100%. | Auth scaffold changes from `#FFFFFF` to `DesignColors.authBackground` (`#FCFCFC`), shared with the fade endpoint to avoid a seam. |
+
+The Google button nodes `1:4547`, `1:3749`, and `1:2950` each have a white fill at 100%, 390 × 59 bounds, radius 30, 18 top and bottom padding, and authored horizontal padding of 123. The centered 206 × 23 content group starts at (92, 18). Its 22 × 22 mark starts at (0, 0.5) with a 10 gap before the label. The label uses `#191D31`, Rubik Medium 500 at 18, 130% line height and zero letter spacing. Each node has a centered 1 px primary stroke at 4% opacity and a black 20% drop shadow with offset (0, 4), radius 120 and spread 0.
+
+The developer requested a borderless app control. Flutter uses the white fill, 59 dp minimum height, 30 dp corners, 18 dp vertical padding and a responsive content width. The centered 22 dp Google mark sits 10 dp from the localized label, which uses Rubik Medium 500 at 18 dp, 130% line height and `#191D31`. The shape carries the source's 20% black shadow with offset (0, 4), blur radius 120 and zero spread. The Material button retains focus, pressed and disabled feedback. The Auth backdrop, PNG and gradient geometry, stops and paints carry forward.
+
+### Orange palette and Profile menu fidelity
+
+`AppTheme.light` now maps both `ColorScheme.primary` and `secondary` to the original brand: Blue `#0061FF`, Purple `#8B5DFF` and Orange `#FF8000`. The former secondary paints `#9A4500` and `#6338C6` supplied the darker prices, text actions, filter accents, search focus and selection, and Details glyphs and map marker. Shared white foregrounds, opacity-based tints, rating gradient, semantic colors, neutral text and supplied artwork keep their existing values. The orange rating gradient is independently authored as `#FB9400` to `#FFAB38`. See the palette table for contrast limits.
+
+Figma MCP inspected the three 430 × 975 Profile frames. They have a Profile title in 20 dp Rubik Semibold with 130% line height and no menu section headings. A 20 dp horizontal inset yields a 390 dp column. The 140 dp circular avatar sits 16 dp below the header and 14 dp above the 24 dp semibold name. The menu visual rows are 28 dp high, with 28 dp icon slots, 12 dp gaps beside the flexible label and 20 dp chevrons on all rows except Logout. Their 24 dp gaps yield a 52 dp pitch. The unboxed menu has square rows, `#191D31` labels in 18 dp Rubik Medium at 140% line height, and Logout in `#F75555` (3.29:1 on white, below AA for normal text). The original 1 dp rules sit below the identity block and after Payments, at 10% primary opacity. [Blue](https://www.figma.com/design/YKHgRiNXTErazshNFTD1Fz/?node-id=1-3786) · [Purple](https://www.figma.com/design/YKHgRiNXTErazshNFTD1Fz/?node-id=1-2988) · [Orange](https://www.figma.com/design/YKHgRiNXTErazshNFTD1Fz/?node-id=1-2189)
+
+| Original order | Row | App behavior |
+| --- | --- | --- |
+| 1 | My Booking | Localized unavailable feedback |
+| 2 | Payments | Localized unavailable feedback |
+| 3 | Profile | Localized unavailable feedback |
+| 4 | Notification | Localized unavailable feedback |
+| 5 | Security | Localized unavailable feedback |
+| 6 | Language | Opens and saves the language preference |
+| 7 | Help Center | Localized unavailable feedback |
+| 8 | Invite Friends | Localized unavailable feedback |
+| 9 | Logout | Confirms and signs out the active account |
+
+My Favorites and Appearance form an added group below the original menu. The account block uses live identity, with email and verification states where applicable. Guests retain Google sign-in and omit Logout. The sample portrait, header notification dot/control and avatar edit badge stay outside the restored menu scope. Controls grow with text scaling and scroll within the native safe area. RTL mirrors the row layout and directional glyphs. The unavailable rows use the original affordance and announce an availability hint. [Profile icon inventory](assets/FIGMA_ICON_INVENTORY.md#restored-profile-menu)
+
+
+## Search and Property Details fidelity follow-up
+
+| Search measurement | Figma reference across Blue, Purple and Orange |
+| --- | --- |
+| Surface and bounds | `#FBFBFD` at 100%, 390 × 52, radius 6 |
+| Resting stroke | Centered 1 px stroke at 4% of `#0061FF`, `#8B5DFF` or `#FF8000`, respectively |
+| Content | Search group at (14, 16), filter at (356, 16), both glyph slots 20 × 20. The search glyph-to-label gap is 16 in Home and Explore List and 15 in Explore Grid. |
+| Placeholder | Rubik Regular 400 at 14, 130% line height, `#8C8E98` |
+| Runtime states | The shared input theme restores the subtle enabled outline in both screens. Flutter retains the darker placeholder for legibility, the shared licensed filter glyph, and existing press and active-filter feedback. Explore List shows a populated field and caret with the same stroke. Flutter supplies a distinct 2 dp focus outline in every palette. |
+
+The search measurement comes from Home `1:4458 / 1:3660 / 1:2861`, Explore List `1:4142 / 1:3344 / 1:2545`, and Explore Grid `1:4077 / 1:3279 / 1:2480`.
+
+| Details section | Verified correction and retained behavior |
+| --- | --- |
+| Hero | The square-corner photo now starts under the native status area. A surface backing fades in behind the status bar on scroll to keep system icons separate from content. Action placement uses the top system inset plus 16 dp. The 28 dp back and heart glyphs retain their accessible photo backings. Indicators use the measured 32 × 8 and 8 × 8 shapes with a 6 dp gap and sit 16 dp above the photo edge. Large photo sets still use a count. |
+| Header and statistics | Inline score uses medium secondary text. Stat groups use the measured 24 dp horizontal gap and wrap when space is constrained. Titles, rating, type and statistics remain API-derived. Location remains in its separate reference section. |
+| Agent and overview | Agent names use the measured 18 dp semibold style. The two 28 dp contact glyphs are original SVGs with 48 dp targets and localized unavailable feedback. Agent roles and contacts are absent from the API. The overview retains the reference 12 dp heading-to-copy gap and uses the API description. |
+| Facilities and gallery | Labels use the reference 14 dp / 140% type and main text color. Facility labels can wrap. Gallery uses up to three 118 dp square previews with the measured 10 dp corners and distributes them across the reference width. The original darkened third photo uses image exposure. Flutter uses a scrim and shows an overflow count only when real additional photos exist. |
+| Location and reviews | Location uses 20 dp grouping and shows the map directly after the address. The demo notice and external action follow the map. The live 200 dp tile preview retains the SDK pin, attribution, cache and localized status. Reviews use a 24 dp heading gap and 16 dp semibold names. Each review keeps its actual rating, date and text. The reference aggregate count, likes and separate review action have no equivalent contract data or destination. |
+| Footer | The rounded white surface uses a 1 dp outside stroke at 10% primary in all palettes. The responsive price and Save action use the reference spacing, 12 dp tracked label, 24 dp semibold price and a 50 dp minimum-height pill with white 16 dp semibold text. The existing authored-color button shadow and native bottom inset remain. Longer button or price text can increase height or wrap across rows. |
+
+The content uses actual API data and omits Figma sample photos, identities, roles and unsupported review statistics. The [icon inventory](assets/FIGMA_ICON_INVENTORY.md#search-and-details-fidelity-follow-up) records the remaining substitutions.

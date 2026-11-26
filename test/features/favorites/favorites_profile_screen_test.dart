@@ -129,6 +129,7 @@ void main() {
       expect(find.text('Verified fixture'), findsOneWidget);
       expect(find.text('fixture@example.test'), findsOneWidget);
       expect(find.byIcon(Icons.person_outline_rounded), findsOneWidget);
+      await tester.ensureVisible(find.text('My Favorites'));
       await tester.tap(find.text('My Favorites'));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 600));
@@ -394,6 +395,80 @@ void main() {
         expect(find.text(l10n.profileUnauthorized), findsOneWidget);
         await _tap(tester, find.text(l10n.appearance));
         expect(find.text(l10n.newOrange), findsWidgets);
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  for (final (locale, labels, message) in [
+    (
+      'en',
+      [
+        'My Booking',
+        'Payments',
+        'Profile',
+        'Notification',
+        'Security',
+        'Language',
+        'Help Center',
+        'Invite Friends',
+        'Logout',
+      ],
+      'This feature is currently unavailable.',
+    ),
+    (
+      'ar',
+      [
+        'حجوزاتي',
+        'المدفوعات',
+        'الملف الشخصي',
+        'الإشعارات',
+        'الأمان',
+        'اللغة',
+        'مركز المساعدة',
+        'دعوة الأصدقاء',
+        'تسجيل الخروج',
+      ],
+      'هذه الميزة غير متاحة حالياً.',
+    ),
+  ]) {
+    testWidgets(
+      'Profile keeps the original menu order and feedback in $locale',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(320, 560));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final container = await _AppFixture(language: locale).pump(tester);
+        final router = container.read(appRouterProvider);
+        router.go('/profile');
+        await tester.pumpAndSettle();
+
+        final rows = find.descendant(
+          of: find.byType(ProfileScreen),
+          matching: find.byType(ListTile),
+        );
+        expect(
+          tester
+              .widgetList<ListTile>(rows)
+              .take(9)
+              .map((row) => (row.title! as Text).data),
+          labels,
+        );
+        final invite = find.widgetWithText(ListTile, labels[7]);
+        expect(invite.hitTestable(), findsNothing);
+        await _tap(tester, invite);
+        final row = tester.widget<ListTile>(invite);
+        final leadingX = tester.getCenter(find.byWidget(row.leading!)).dx;
+        final trailingX = tester
+            .getCenter(
+              find.descendant(
+                of: invite,
+                matching: find.byWidget(row.trailing!),
+              ),
+            )
+            .dx;
+        expect(leadingX < trailingX, locale == 'en');
+        expect(find.text(message), findsOneWidget);
+        expect(router.routerDelegate.currentConfiguration.uri.path, '/profile');
         expect(tester.takeException(), isNull);
       },
     );

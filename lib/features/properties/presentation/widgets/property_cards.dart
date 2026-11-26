@@ -204,7 +204,7 @@ class _PropertyText extends StatelessWidget {
       children: [
         Text(
           property.title,
-          maxLines: 2,
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: featured
               ? _featuredTitle
@@ -217,7 +217,7 @@ class _PropertyText extends StatelessWidget {
         ),
         Text(
           property.address,
-          maxLines: 2,
+          maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: featured
               ? _featuredAddress

@@ -353,6 +353,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get clearFeaturedFilter => 'إلغاء تصفية العقارات المميزة';
 
   @override
+  String get detailsMessageAgent => 'مراسلة الوكيل';
+
+  @override
+  String get detailsCallAgent => 'الاتصال بالوكيل';
+
+  @override
+  String get detailsContactUnavailable => 'التواصل مع الوكيل غير متاح حاليًا.';
+
+  @override
   String get detailsAgent => 'الوكيل';
 
   @override
@@ -621,6 +630,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get nextFavoritesPage => 'الصفحة التالية';
+
+  @override
+  String get profileBooking => 'حجوزاتي';
+
+  @override
+  String get profilePayments => 'المدفوعات';
+
+  @override
+  String get profileAccount => 'الملف الشخصي';
+
+  @override
+  String get profileNotifications => 'الإشعارات';
+
+  @override
+  String get profileSecurity => 'الأمان';
+
+  @override
+  String get profileHelp => 'مركز المساعدة';
+
+  @override
+  String get profileInvite => 'دعوة الأصدقاء';
+
+  @override
+  String get profileLogout => 'تسجيل الخروج';
+
+  @override
+  String get profileFeatureUnavailable => 'هذه الميزة غير متاحة حالياً.';
 
   @override
   String get profileLanguage => 'اللغة';

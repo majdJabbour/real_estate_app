@@ -32,6 +32,7 @@ void main() {
         final theme = AppTheme.light(variant);
         final scheme = theme.colorScheme;
         expect(scheme.primary, brand);
+        expect(scheme.secondary, brand);
         final detailsTint = theme.extension<AppThemeColors>()!.detailsTint;
         expect(detailsTint.withValues(alpha: 1), brand);
         expect(detailsTint.a, closeTo(detailsOpacity, 0.001));
@@ -82,7 +83,7 @@ void main() {
         final linkInk = theme.textButtonTheme.style!.foregroundColor!.resolve(
           {},
         )!;
-        expect(_contrast(linkInk, scheme.surface), greaterThanOrEqualTo(4.5));
+        expect(linkInk, brand);
         expect(
           _contrast(
             button.foregroundColor!.resolve(disabled)!,
@@ -123,12 +124,21 @@ void main() {
           );
         }
 
+        final rest = input.enabledBorder! as OutlineInputBorder;
         expect(
-          _contrast(input.enabledBorder!.borderSide.color, input.fillColor!),
-          greaterThanOrEqualTo(3),
+          rest.borderSide,
+          BorderSide(color: brand.withValues(alpha: 0.04)),
+        );
+        expect(rest.borderRadius, BorderRadius.circular(6));
+        expect(input.fillColor, const Color(0xFFFBFBFD));
+        expect(input.focusedBorder!.borderSide.width, 2);
+        final focusColor = input.focusedBorder!.borderSide.color;
+        expect(
+          focusColor,
+          variant == AppThemeVariant.orange ? scheme.onSurface : brand,
         );
         expect(
-          _contrast(input.focusedBorder!.borderSide.color, input.fillColor!),
+          _contrast(focusColor, input.fillColor!),
           greaterThanOrEqualTo(3),
         );
         expect(

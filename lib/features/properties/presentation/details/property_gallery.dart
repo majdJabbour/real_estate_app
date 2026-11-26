@@ -92,7 +92,7 @@ class _PropertyHeroState extends State<PropertyHero> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 12),
                     child: Semantics(
                       label: l10n.detailsPhotoPosition(
                         _index + 1,
@@ -100,9 +100,11 @@ class _PropertyHeroState extends State<PropertyHero> {
                       ),
                       liveRegion: true,
                       child: DecoratedBox(
-                        decoration: const BoxDecoration(
-                          color: Colors.black54,
-                          borderRadius: BorderRadius.all(Radius.circular(100)),
+                        decoration: BoxDecoration(
+                          color: images.length > 12 ? Colors.black54 : null,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(100),
+                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
@@ -169,11 +171,11 @@ class PropertyGallery extends StatelessWidget {
     final remaining = images.length - count;
     return LayoutBuilder(
       builder: (context, constraints) {
-        const gap = DesignSpacing.medium;
         final size = math.min(
           118.0,
-          (constraints.maxWidth - gap * 2) / visibleCount,
+          (constraints.maxWidth - DesignSpacing.chipGap * 2) / visibleCount,
         );
+        final gap = (constraints.maxWidth - size * visibleCount) / 2;
         return Wrap(
           spacing: gap,
           children: [
@@ -193,14 +195,17 @@ class PropertyGallery extends StatelessWidget {
                         PropertyImage(url: images[i]),
                         if (i == count - 1 && remaining > 0)
                           ColoredBox(
-                            color: Colors.black54,
+                            color: DesignColors.scrim,
                             child: Center(
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Text(
                                   l10n.detailsMorePhotos(remaining),
                                   style: Theme.of(context).textTheme.titleLarge
-                                      ?.copyWith(color: Colors.white),
+                                      ?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                 ),
                               ),
                             ),

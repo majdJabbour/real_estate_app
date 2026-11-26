@@ -2,7 +2,7 @@
 
 A Flutter recruitment assessment for Android and iOS. The intended app browses fictional rental properties from a REST API and supports English and Arabic.
 
-Real Scout restores the saved language, appearance and Firebase session at startup. A fresh installation uses English and Original Blue. Home and Explore load fictional rental listings from the deployed API. Profile shows the active account and provides access to My Favorites, Language, Appearance and Sign out.
+Real Scout restores the saved language, appearance and Firebase session at startup. A fresh installation uses English and Original Blue. Home and Explore load fictional rental listings from the deployed API. Profile shows the active account and provides access to My Favorites, Language, Appearance and Logout.
 
 ## Setup and verification
 
@@ -158,14 +158,14 @@ The checkout uses the existing Firebase project `real-estate-app-91394` and the 
 
 ### Session and profile
 
-- The OS shows its existing native launch screen while Flutter starts. Flutter's `/splash` reflects Firebase setup and the first Firebase session event. A startup failure offers a retry. A stable GoRouter updates from those events, preserves valid public deep links, and keeps Home, Explore, and Profile in the existing indexed shell.
+- The OS shows its existing native launch screen while Flutter starts. Flutter's `/splash` stays visible for at least two seconds from its first frame while Firebase setup and session restoration run concurrently. A startup failure offers a retry. A stable GoRouter updates from those events, preserves valid public deep links, and keeps Home, Explore, and Profile in the existing indexed shell.
 - The auth repository calls `GoogleSignIn.instance.initialize()` once, uses `authenticate()`, and exchanges the Google ID token for a Firebase credential. Firebase owns session persistence. A separate action provider handles in-flight requests and cancellation. Home shows the Firebase account's available name and avatar with fallbacks.
 - On Profile, `GET /auth/me` uses the same Dio client with protected access and maps `id`, `email`, `name`, and `avatar`. UID changes or logout cancel obsolete profile requests. Backend outages leave the Firebase session active and offer retry. A 401 shows a verification failure with retry or reauthentication. This phase relies on Firebase SDK token renewal and performs zero automatic HTTP replays.
 - Guests can browse, search, filter and view details and can open the existing Google sign-in flow from Profile or a protected favorite action. After confirmed sign-out the app clears verified profile and private favorites state and remains on the guest Profile. Locale and theme preferences remain available.
 
 ### Live account verification
 
-Confirm the Google provider is enabled for the Firebase project and the OAuth consent configuration permits the test account. On the Android emulator or iOS simulator, select **Sign in with Google** and complete Google's prompts in the emulator or simulator. Open **Profile** and confirm the verified name/email and successful `GET /auth/me` in a debugger with authorization headers redacted. Quit and relaunch the app to confirm the account restores and Profile can verify again. Use **Sign out**, confirm the guest state and the loss of private profile access, then confirm Home, Explore and property details still work. Repeat on the other platform.
+Confirm the Google provider is enabled for the Firebase project and the OAuth consent configuration permits the test account. On the Android emulator or iOS simulator, select **Sign in with Google** and complete Google's prompts in the emulator or simulator. Open **Profile** and confirm the verified name/email and successful `GET /auth/me` in a debugger with authorization headers redacted. Quit and relaunch the app to confirm the account restores and Profile can verify again. Use **Logout** and confirm sign-out. Verify the guest state, the loss of private profile access, and continued access to Home, Explore and property details. Repeat on the other platform.
 
 The developer confirmed live Google sign-in, the actual account name and avatar, and a verified backend profile. The developer resolved Vercel’s `ERR_REQUIRE_ESM` with `NODE_OPTIONS=--experimental-require-module`. A November 25, 2026 credential-free request to `GET /auth/me` returned HTTP 401 with `UNAUTHORIZED` and `Cache-Control: private, no-store`. Cold-start restoration, live sign-out, account switching and live sign-in on both platforms still require platform-specific confirmation. [Phase 7.2 verification](AI_USAGE.md#phase-72--firebase-authentication-and-session)
 
@@ -177,7 +177,9 @@ My Favorites is a root destination at `/favorites`, opened from Profile. The thr
 
 The generated favorites controller loads `GET /favorites/ids` once per active session. Every heart derives its state from the same immutable ID set. The list uses its own localized `GET /favorites` request. Add and remove optimistically change the relevant heart and send one PUT or DELETE. Operations on different properties can proceed independently. A definite failure rolls back only its property. For a timeout, connection error or similarly uncertain outcome, the controller performs one bounded membership read and merges the affected ID only. If the read fails, that ID stays unknown and its retry reads the server before allowing another write. Successful changes refresh the open Favorites page. Flutter uses the existing Dio client with an account-bound Firebase ID token and cancels obsolete requests on sign-out or account changes.
 
-A guest heart opens a localized sign-in explanation and offers Google sign-in or cancellation. Sign-in opens over the current browsing destination and returns to it on success or cancellation. Tap the heart again after signing in. Profile uses the verified backend name, email and avatar where available, with Firebase fields as per-field fallbacks. It shows a placeholder when the avatar is unavailable and offers a retry for verification failures. Language saves through the existing locale controller. Appearance offers the three existing palettes. See the design notes for supported actions and intentional visual deviations. [Profile and Favorites design](DESIGN_SYSTEM.md#phase-8--profile-favorites-and-appearance)
+A guest heart opens a localized sign-in explanation and offers Google sign-in or cancellation. Sign-in opens over the current browsing destination and returns to it on success or cancellation. Tap the heart again after signing in. Profile uses the verified backend name, email and avatar where available, with Firebase fields as per-field fallbacks. It shows a placeholder when the avatar is unavailable and offers a retry for verification failures. Language saves through the existing locale controller. Appearance offers the three existing palettes. See the design notes for supported actions and intentional visual deviations. [Profile and Favorites design](DESIGN_SYSTEM.md#orange-palette-and-profile-menu-fidelity)
+
+The restored original Profile rows My Booking, Payments, Profile, Notification, Security, Help Center and Invite Friends show localized unavailable feedback. Language and Logout keep their existing actions. My Favorites and Appearance appear below the original menu.
 
 ### Live favorites verification
 
@@ -213,7 +215,11 @@ Details shows a 200 dp embedded map with live raster tiles, the selected palette
 
 Flutter Map 8.3.2 and latlong2 0.10.1 use the SDK’s existing platform support and the map library’s built-in HTTP-aware cache. The tile layer identifies the app as `com.majdjabbour.realestate` on native platforms. It uses its own HTTPS client, separate from the Firebase-authenticated API transport. Requests cover the visible area without tile prefetch or offline downloads. The default URL is `https://tile.openstreetmap.org/{z}/{x}/{y}.png`. Use `--dart-define=MAP_TILE_URL=...` with an authorized HTTPS raster endpoint and ensure its required attribution is displayed. The public OpenStreetMap service is for limited policy-compliant assessment usage and has no SLA. [OSMF tile policy](https://operations.osmfoundation.org/policies/tiles/) · [Flutter Map configuration](https://docs.fleaflet.dev/tile-servers/using-openstreetmap-direct)
 
-Flutter Splash and Auth retain their current alternative artwork. The iOS launcher catalog and native launch now use the existing static Blue fallback at every supported scale. Android retains its existing Blue adaptive and legacy artwork and explicitly registers it for round launchers. The supplied logo exports and watermarked collage stay outside production assets pending documented redistribution rights. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
+### Local review with supplied artwork
+
+Run the main project with `flutter pub get` and `flutter run`. The three palette logos in `assets/brand/` and `assets/auth/login_image.png` are bundled through the pubspec. Android and iOS use the pre-rendered Blue launcher and launch PNGs in their standard resource directories. Debug, Profile, and Release package the same artwork.
+
+The supplied sources and their backup are local-only. Keep the four Flutter assets, the native PNG changes, screenshots, and any builds containing the artwork out of public distribution pending permission. The native PNGs occupy tracked paths, so their changes must be excluded explicitly when staging. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
 
 ### Phase 9.1.1 verification
 
