@@ -73,7 +73,7 @@ class PropertyListCard extends StatelessWidget {
                         children: [
                           Text(
                             property.title,
-                            maxLines: 3,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 18,
@@ -84,7 +84,7 @@ class PropertyListCard extends StatelessWidget {
                           ),
                           Text(
                             property.address,
-                            maxLines: 3,
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 14,

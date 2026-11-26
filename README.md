@@ -1,6 +1,6 @@
 # Real Estate App
 
-A Flutter recruitment assessment for Android and iOS. The intended app browses fictional rental properties from a REST API and supports English and Arabic.
+A Flutter recruitment assessment for Android and iOS. Real Scout browses fictional rental properties from a REST API in English and Arabic.
 
 Real Scout restores the saved language, appearance and Firebase session at startup. A fresh installation uses English and Original Blue. Home and Explore load fictional rental listings from the deployed API. Profile shows the active account and provides access to My Favorites, Language, Appearance and Logout.
 
@@ -29,8 +29,6 @@ flutter run
 
 ## Design system preview
 
-Run `flutter run -t lib/preview/main.dart` to open the isolated development preview. The preview is separate from the app's routes and does not fetch property data. Use the chips to choose a theme and **العربية** or **English** to switch the app language and direction. Language survives a restart. Theme, filter, and favorite samples reset when the preview closes.
-
 Flutter's Widget Previewer exposes standard, narrow with enlarged text, and landscape views through `flutter widget-preview start`. The preview lives in [lib/preview](lib/preview). The shared theme and components live in [lib/core/design_system](lib/core/design_system). [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) records the measurements, accessible color roles, and pinned, locally bundled Rubik fonts.
 
 Scroll to **Adaptive layout** to see the local viewport size, side padding, capped content width, grid columns, and tile width. The placeholder tiles wrap with the available width and system text size. [Responsive layout policy](lib/core/layout/responsive_layout.dart) · [Design system width strategy](DESIGN_SYSTEM.md#implemented-width-strategy)
@@ -39,8 +37,8 @@ Scroll to **Adaptive layout** to see the local viewport size, side padding, capp
 
 | Packages | Role |
 | --- | --- |
-| `material_ui`, `cupertino_icons` | Material theme and controls used by the preview, with Cupertino icons available for later screens |
-| `hooks_riverpod`, `riverpod_annotation`, `riverpod_generator`, `flutter_hooks` | Generated providers for dependency injection and state, with hooks for local widget state where useful |
+| `material_ui` | Material theme and controls for the app and preview |
+| `hooks_riverpod`, `riverpod_annotation`, `riverpod_generator` | Generated providers for dependency injection and application state |
 | `dio`, `go_router` | REST transport and declarative navigation |
 | `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner` | Immutable models, JSON DTOs, and their generation workflow |
 | `flutter_localizations`, `intl`, `shared_preferences` | English and Arabic ARB strings via Flutter's localization generator, locale-aware formatting, and persisted language and theme selections |
@@ -106,7 +104,7 @@ Home starts three independent public requests. Featured uses `GET /properties?fe
 
 Loading placeholders reserve carousel and grid geometry. Each section can show its own empty or error state and retry independently. Pull to refresh or use the Home accessibility refresh action to rerun all three requests while keeping the current sections visible during a same-query refresh. Cancellation has no error message, and image failures show a localized placeholder without hiding the listing.
 
-Home uses a guest avatar, reusable featured and grid cards, image and rating widgets, and separate favorite controls. Favorites require sign-in and notifications are disabled. Prices use locale-aware USD monthly formatting. The layout takes its gutters and grid columns from the shared responsive policy, uses a horizontal featured carousel and category strip, and lazily builds variable-height grid rows in one vertical scroll view. The tab bar uses native safe areas and mirrors in Arabic. [Design comparison](DESIGN_SYSTEM.md#16-phase-41-icons-and-home-refinement) · [English Home](docs/screenshots/phase-4.1/home-en.png) · [Arabic Home](docs/screenshots/phase-4.1/home-ar.png) · [Compact Home](docs/screenshots/phase-4.1/home-compact.png)
+Home uses a guest avatar, reusable featured and grid cards, image and rating widgets, and separate favorite controls. Favorites require sign-in and notifications are disabled. Prices use locale-aware USD monthly formatting. The layout takes its gutters and grid columns from the shared responsive policy, uses a horizontal featured carousel and category strip, and lazily builds variable-height grid rows in one vertical scroll view. The tab bar uses native safe areas and mirrors in Arabic. [Design comparison](DESIGN_SYSTEM.md#16-phase-41-icons-and-home-refinement)
 
 Home and the tab shell use the original Iconly SVG paths, including distinct active and inactive navigation variants. The shared `AppIcon` chooses the asset, inherits semantic tint, and mirrors the directional back glyphs. The Explore accent and rating gradient retain their separate paints. [Icon provenance and license](assets/ASSET_LICENSES.md) · [Figma icon inventory](assets/FIGMA_ICON_INVENTORY.md)
 
@@ -191,20 +189,15 @@ Authenticated production verification remains with the developer. On each platfo
 2. Change the heart in Details and confirm Home and Explore reflect that change wherever the same property appears. Open Profile → My Favorites and confirm `GET /favorites` returns 200 and shows the expected list. Query the IDs again after a cold relaunch to confirm the change persisted.
 3. Exercise both add and remove. Restore `rental-022` to its original state and confirm it on a fresh read. Confirm sign-out clears Profile and Favorites, guest controls offer sign-in, and another authorized account starts with its own membership. Keep tokens and personal account information out of logs and screenshots.
 
-### Phase 8 screenshots
+### Phase 8 visual verification
 
-Captured on an Android emulator with a synthetic signed-in account and test favorites. Home uses the deployed public listings. Profile uses its missing-avatar state.
-
-- Profile · [English](docs/screenshots/phase-8/profile-en.png) · [Arabic](docs/screenshots/phase-8/profile-ar.png) · [320 dp](docs/screenshots/phase-8/profile-compact.png)
-- My Favorites · [Populated](docs/screenshots/phase-8/favorites.png) · [Empty](docs/screenshots/phase-8/favorites-empty.png)
-- Preferences · [Language](docs/screenshots/phase-8/language.png) · [Appearance](docs/screenshots/phase-8/appearance.png)
-- Home · [Original Blue](docs/screenshots/phase-8/home-blue.png) · [New Purple](docs/screenshots/phase-8/home-purple.png) · [New Orange](docs/screenshots/phase-8/home-orange.png)
+The privately archived Android emulator captures cover English, Arabic, 320 dp Profile, populated and empty My Favorites, language and appearance settings, and all three Home palettes. The run used a synthetic account and favorites with deployed public listings.
 
 ### Phase 9.1 visual verification
 
-The native Android and iOS launcher and launch screen use an original Blue house mark. Flutter Splash uses the same artwork with the persisted palette once Flutter starts. Native launch resources are static and cannot read the Dart preference. [Brand provenance](assets/ASSET_LICENSES.md#phase-91--splash-and-native-brand-mark)
+Phase 9.1 introduced native launcher and launch marks and palette-specific Flutter Splash branding. The current app uses the supplied artwork described under Phase 9.1.1. Native launch resources are static and Flutter Splash reads the persisted palette. [Brand provenance](assets/ASSET_LICENSES.md#phase-91--splash-and-native-brand-mark)
 
-The [Phase 9.1 captures](docs/screenshots/phase-9.1/) use synthetic account and property fixtures for public comparison, with Blue and Purple in English and Orange in Arabic. The iOS Auth image is from the simulator. [Comparison and known gaps](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
+The privately archived Phase 9.1 captures used synthetic accounts and properties, with Blue and Purple in English and Orange in Arabic. They include an iOS simulator Auth capture. [Comparison and known gaps](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
 
 The address action opens a coordinate search only after a tap. The external handoff requires no API key or billing. Out-of-range coordinates leave the address visible, and a failed handoff shows a localized message. [Google Maps URLs](https://developers.google.com/maps/documentation/urls/get-started) · [url_launcher](https://pub.dev/packages/url_launcher)
 
@@ -219,17 +212,16 @@ Flutter Map 8.3.2 and latlong2 0.10.1 use the SDK’s existing platform support 
 
 Run the main project with `flutter pub get` and `flutter run`. The three palette logos in `assets/brand/` and `assets/auth/login_image.png` are bundled through the pubspec. Android and iOS use the pre-rendered Blue launcher and launch PNGs in their standard resource directories. Debug, Profile, and Release package the same artwork.
 
-The supplied sources and their backup are local-only. Keep the four Flutter assets, the native PNG changes, screenshots, and any builds containing the artwork out of public distribution pending permission. The original native PNG derivatives are already tracked in HEAD. Resolve permission or approve licensed replacements before further distribution. A fresh checkout omits the required Auth PNG and three Flutter Splash SVGs. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
+The supplied sources and their backup are local-only. Keep the four Flutter assets, the native PNG changes, screenshots, and any builds containing the artwork out of public distribution pending permission. The four Flutter assets and original native PNG derivatives are tracked. Resolve permission or approve licensed replacements before further distribution. Fresh-checkout build verification remains pending. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
 
 ### Phase 9.1.1 verification
 
 Flutter 3.50.1 and Dart 3.14.0 passed generation, formatting, analyzer and both test runs. **286 tests passed** with **90.53% line coverage** (4,113 of 4,543). Re-running localization and code generation reproduced the same generated diff. The Android debug APK and iOS simulator build both built, installed and launched. Android rendered live Lincoln Square tiles in Purple and iOS rendered Bridgeport tiles in Blue. The Android failure capture uses a temporary unreachable tile endpoint and shows the localized fallback with the address and external action. Open in Maps handed off to the platform on both targets. Google Maps presented its own permission screen on Android. Physical-device and fresh live Google sign-in checks were outside this smoke run.
 
-- Launcher · [Android](docs/screenshots/phase-9.1.1/android-launcher.png) · [iOS](docs/screenshots/phase-9.1.1/ios-launcher.png)
-- Flutter Splash fixture captures from Phase 9.1 · [Blue](docs/screenshots/phase-9.1/blue-en-splash.png) · [Purple](docs/screenshots/phase-9.1/purple-en-splash.png) · [Orange](docs/screenshots/phase-9.1/orange-ar-splash.png)
-- iOS Auth with the shipping fallback collage · [English](docs/screenshots/phase-9.1.1/ios-auth-en.png) · [Arabic](docs/screenshots/phase-9.1.1/ios-auth-ar.png)
+The earlier Android and iOS launcher, three Splash palettes, and English and Arabic iOS Auth captures are in the private historical archive.
+
 - Embedded map · [Blue on iOS](docs/screenshots/phase-9.1.1/ios-map-blue.png) · [Purple and Arabic on Android](docs/screenshots/phase-9.1.1/android-map-purple-ar.png) · [Arabic tile failure on Android](docs/screenshots/phase-9.1.1/android-map-fallback-ar.png)
 
 ## Phase 9.2 engineering audit
 
-The developer approved the current visuals on a physical device. Phase 9.2 retained the design and tightened the protected API route boundary. Formatting and analysis passed, and 294 tests passed with 90.55% line coverage. Routine runtime verification uses the existing Android emulator. iOS build and runtime verification are deferred to Phase 9.3. The public checkout is blocked by missing static assets and unresolved artwork rights. [Engineering audit](docs/ENGINEERING_AUDIT.md)
+The developer approved the current visuals on a physical device. Phase 9.2 retained the design and tightened the protected API route boundary. Formatting and analysis passed, and 294 tests passed with 90.55% line coverage. Routine runtime verification uses the existing Android emulator. iOS build and runtime verification are deferred to Phase 9.3. The required static assets are now tracked. A clean-checkout build remains unverified and public distribution is blocked by unresolved artwork rights. [Engineering audit](docs/ENGINEERING_AUDIT.md)

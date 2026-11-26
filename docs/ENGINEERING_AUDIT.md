@@ -1,6 +1,6 @@
 # Phase 9.2 engineering audit
 
-The approved Real Scout design and feature set were preserved. The audit tightened the Dart HTTP credential boundary and added adapter-level regression coverage. Public delivery is blocked by missing Flutter assets and unresolved artwork redistribution rights.
+The approved Real Scout design and feature set were preserved. The audit tightened the Dart HTTP credential boundary and added adapter-level regression coverage. The audit originally identified missing Flutter assets and unresolved artwork redistribution rights. The required assets are now tracked. Redistribution rights remain unresolved.
 
 ## Environment and verification
 
@@ -27,7 +27,7 @@ No confirmed P0 in the reviewed scope.
 
 ### P1
 
-- **ENG-01 · Public checkout lacks required assets · Open delivery blocker.** [pubspec.yaml](../pubspec.yaml#L94) registers directories that have no files in HEAD. [.gitignore](../.gitignore#L51) excludes the original exports and the four local app assets. HEAD removed the tracked fallback collage and logo. Reviewers cannot reproduce the approved app from a fresh checkout. The four exact missing paths are `assets/auth/login_image.png`, `assets/brand/logo_blue.svg`, `assets/brand/logo_purple.svg`, and `assets/brand/logo_orange.svg`. Confirm redistribution rights and approve tracking the cleared files, or approve licensed replacements at the standard paths. The Git tree inspection is the verification for this finding.
+- **ENG-01 · Required Flutter assets restored in Git · Fresh-checkout build pending.** At the audited revision, the pubspec registered asset directories that had no tracked files and the ignore rules excluded the original exports and four local app assets. The audited revision removed the tracked fallback collage and logo. At that revision, a fresh checkout lacked the files needed to reproduce the approved app. The four exact missing paths are `assets/auth/login_image.png`, `assets/brand/logo_blue.svg`, `assets/brand/logo_purple.svg`, and `assets/brand/logo_orange.svg`. Confirm redistribution rights and approve tracking the cleared files, or approve licensed replacements at the standard paths. Commit `6d1cea1` restored all four assets at their registered paths. They are tracked and present during cleanup. A fresh-checkout build was not performed. Redistribution is tracked separately under ENG-02.
 - **ENG-02 · Original-art publication rights unresolved · Open delivery blocker.** [Asset provenance](../assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports) records unverified grants for the original marks and a Freepik watermark in the Auth collage. HEAD and the local origin/main ref at `17d983f` already contain derivatives in Android `mipmap-*` (launcher, foreground, launch and splash PNGs) and iOS `AppIcon.appiconset` and `LaunchImage.imageset`. Ignore rules do not affect these tracked paths. Approve clearance or replacement for the native derivatives and review affected screenshots and any already published copies. Keep the local working artwork and source backup intact pending that decision. No assets were changed or distributed during this audit.
 
 ### P2

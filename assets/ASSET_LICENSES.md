@@ -46,7 +46,7 @@ Both SVGs are credited to Piqo Studio under the recorded Iconly CC BY 4.0 grant.
 
 - The previous fallback Auth collage was original ImageGen output created for Phase 7.2 from a description of the three-column property composition. It depicts illustrative buildings, with no source photo or Figma render embedded. The supplied Auth collage replaces it for local review.
 - `icons/auth/google.png` is the unretouched center crop of the Google mark in the official 4× light icon-mode pill PNG for Android and Web. The 80 × 80 crop renders at 20 dp without recoloring, stretching or mirroring and appears only in the white Google sign-in control. The Google mark remains subject to Google's brand terms. [Google branding guidelines and asset bundle](https://developers.google.com/identity/branding-guidelines#download_pre-approved_brand_icons)
-- `fonts/google-sans/GoogleSans-Medium.ttf` is an upright static Medium instance of the upstream Google Sans variable font, subset to Latin and the ellipsis to keep the app asset small. Arabic glyphs use the existing Rubik font. The SIL Open Font License 1.1 and copyright are bundled next to the font. [Google Sans upstream](https://github.com/googlefonts/googlesans) · [Google Fonts distribution](https://github.com/google/fonts/tree/main/ofl/googlesans)
+- The earlier Google Sans Medium subset and its SIL Open Font License 1.1 are preserved together in the private archive. The current sign-in control uses Rubik.
 
 ## Phase 8 Profile
 
