@@ -55,7 +55,7 @@ Dio dio(Ref ref) {
             final uri = request.uri;
             if (uri.scheme != base.scheme ||
                 uri.authority != base.authority ||
-                !uri.path.startsWith(base.path)) {
+                !_isProtectedEndpoint(uri, base, request.method)) {
               handler.reject(_requestFailure(request, FailureKind.forbidden));
               return;
             }
@@ -125,6 +125,19 @@ const _accountKey = 'app.accountId';
 const _localeSensitiveKey = 'app.localeSensitive';
 const _localeRevisionKey = 'app.localeRevision';
 final _bearerToken = RegExp(r'^[A-Za-z0-9._~+/=-]+$');
+final _propertyId = RegExp(r'^[A-Za-z0-9._~-]{1,128}$');
+
+bool _isProtectedEndpoint(Uri uri, Uri base, String method) {
+  if (!uri.path.startsWith(base.path)) return false;
+  final path = uri.path.substring(base.path.length);
+  if (method == 'GET') {
+    return path == 'auth/me' || path == 'favorites' || path == 'favorites/ids';
+  }
+  if (method != 'PUT' && method != 'DELETE') return false;
+  if (!path.startsWith('favorites/')) return false;
+  final id = path.substring('favorites/'.length);
+  return id != '.' && id != '..' && _propertyId.hasMatch(id);
+}
 
 DioException _requestFailure(RequestOptions request, FailureKind kind) =>
     DioException(requestOptions: request, error: AppFailure(kind));

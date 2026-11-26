@@ -219,7 +219,7 @@ Flutter Map 8.3.2 and latlong2 0.10.1 use the SDK’s existing platform support 
 
 Run the main project with `flutter pub get` and `flutter run`. The three palette logos in `assets/brand/` and `assets/auth/login_image.png` are bundled through the pubspec. Android and iOS use the pre-rendered Blue launcher and launch PNGs in their standard resource directories. Debug, Profile, and Release package the same artwork.
 
-The supplied sources and their backup are local-only. Keep the four Flutter assets, the native PNG changes, screenshots, and any builds containing the artwork out of public distribution pending permission. The native PNGs occupy tracked paths, so their changes must be excluded explicitly when staging. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
+The supplied sources and their backup are local-only. Keep the four Flutter assets, the native PNG changes, screenshots, and any builds containing the artwork out of public distribution pending permission. The original native PNG derivatives are already tracked in HEAD. Resolve permission or approve licensed replacements before further distribution. A fresh checkout omits the required Auth PNG and three Flutter Splash SVGs. [Asset provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
 
 ### Phase 9.1.1 verification
 
@@ -229,3 +229,7 @@ Flutter 3.50.1 and Dart 3.14.0 passed generation, formatting, analyzer and both 
 - Flutter Splash fixture captures from Phase 9.1 · [Blue](docs/screenshots/phase-9.1/blue-en-splash.png) · [Purple](docs/screenshots/phase-9.1/purple-en-splash.png) · [Orange](docs/screenshots/phase-9.1/orange-ar-splash.png)
 - iOS Auth with the shipping fallback collage · [English](docs/screenshots/phase-9.1.1/ios-auth-en.png) · [Arabic](docs/screenshots/phase-9.1.1/ios-auth-ar.png)
 - Embedded map · [Blue on iOS](docs/screenshots/phase-9.1.1/ios-map-blue.png) · [Purple and Arabic on Android](docs/screenshots/phase-9.1.1/android-map-purple-ar.png) · [Arabic tile failure on Android](docs/screenshots/phase-9.1.1/android-map-fallback-ar.png)
+
+## Phase 9.2 engineering audit
+
+The developer approved the current visuals on a physical device. Phase 9.2 retained the design and tightened the protected API route boundary. Formatting and analysis passed, and 294 tests passed with 90.55% line coverage. Routine runtime verification uses the existing Android emulator. iOS build and runtime verification are deferred to Phase 9.3. The public checkout is blocked by missing static assets and unresolved artwork rights. [Engineering audit](docs/ENGINEERING_AUDIT.md)

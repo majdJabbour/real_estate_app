@@ -83,3 +83,7 @@ The theme uses the three exact Figma primaries for shared brand roles. Profile r
 
 ## Priority and scope guard
 The assessment is primarily Flutter and suggests 12–14 working hours. Complete approved public screens and required bilingual/API behavior before expanding optional auth/profile features if time is constrained. Firebase configuration can be performed earlier as a separate setup task with developer approval, but must not block public UI work. Do not claim completion for untested features or silently change the contract. No artificial commits or arbitrary test-count goals.
+
+## Phase 9.2 — Engineering audit and stabilization
+
+The developer approved the current visuals on a physical device. The audit retained the one-project static asset architecture and tightened the protected API endpoint and method checks. Formatting and analysis passed, with 294 passing tests and 90.55% line coverage. Routine runtime verification remains Android-only. The public checkout is blocked until artwork rights or replacements are approved and the four missing static assets are reproducibly available. Stop for developer review before Phase 9.3. [Engineering audit](docs/ENGINEERING_AUDIT.md)

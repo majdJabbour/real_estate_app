@@ -201,7 +201,7 @@ void main() {
   );
 
   test(
-    'protected traffic cannot request a foreign host or leave the API path',
+    'protected traffic rejects destinations outside the protected API routes',
     () async {
       var tokenReads = 0;
       final container = _container(
@@ -219,6 +219,9 @@ void main() {
         'http://api.example.test/api/v1/auth/me',
         'https://api.example.test:8443/api/v1/auth/me',
         '../auth/me',
+        'properties',
+        'health',
+        'favorites/example',
       ]) {
         await expectLater(
           requestApi(
@@ -234,6 +237,40 @@ void main() {
       expect(tokenReads, 0);
     },
   );
+
+  test('writes attach credentials only to a single favorite ID', () async {
+    final adapter = FakeAdapter((_, _) => _body());
+    final client = _client(
+      _container(token: () async => 'fixture.token'),
+      adapter,
+    );
+    for (final method in ['PUT', 'DELETE']) {
+      await requestApi(
+        client,
+        'favorites/rental-001',
+        method: method,
+        access: ApiAccess.protected,
+        decodeData: (data) => data,
+      );
+      for (final path in ['auth/me', 'favorites/a/b', 'favorites/a%2Fb']) {
+        await expectLater(
+          requestApi(
+            client,
+            path,
+            method: method,
+            access: ApiAccess.protected,
+            decodeData: (data) => data,
+          ),
+          throwsA(_failure(FailureKind.forbidden)),
+        );
+      }
+    }
+    expect(adapter.requests, hasLength(2));
+    for (final request in adapter.requests) {
+      expect(request.headers['Authorization'], 'Bearer fixture.token');
+      expect(request.followRedirects, isFalse);
+    }
+  });
 
   test(
     'a token source failure keeps the type and never exposes its message',
