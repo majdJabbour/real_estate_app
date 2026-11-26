@@ -106,7 +106,7 @@ Loading placeholders reserve carousel and grid geometry. Each section can show i
 
 Home uses a guest avatar, reusable featured and grid cards, image and rating widgets, and separate favorite controls. Favorites require sign-in and notifications are disabled. Prices use locale-aware USD monthly formatting. The layout takes its gutters and grid columns from the shared responsive policy, uses a horizontal featured carousel and category strip, and lazily builds variable-height grid rows in one vertical scroll view. The tab bar uses native safe areas and mirrors in Arabic. [Design comparison](DESIGN_SYSTEM.md#16-phase-41-icons-and-home-refinement)
 
-Home and the tab shell use the original Iconly SVG paths, including distinct active and inactive navigation variants. The shared `AppIcon` chooses the asset, inherits semantic tint, and mirrors the directional back glyphs. The Explore accent and rating gradient retain their separate paints. [Icon provenance and license](assets/ASSET_LICENSES.md) · [Figma icon inventory](assets/FIGMA_ICON_INVENTORY.md)
+Home and the tab shell use the original Iconly SVG paths, including distinct active and inactive navigation variants. The shared `AppIcon` chooses the asset, inherits semantic tint, and mirrors the directional back glyphs. The Explore accent and rating gradient retain their separate paints. [Icon provenance and license](assets/ASSET_LICENSES.md)
 
 ## Explore and Advanced Filters
 
@@ -126,7 +126,7 @@ The hero and thumbnails use the cached property image widget. The hero supports 
 
 Stats and USD monthly rent use localized formatting. Facilities map the 21 keys in the current API fixture to localized labels and Flutter SDK icons. Unknown keys retain a readable label and a neutral icon. Location displays the localized API address and identifies it as a fictional listing location. Reviews display each returned entry's author, rating, comment, and localized date. The current review schema supplies no avatar, so reviewers use the shared person placeholder. [Facility label and icon mapping](lib/features/properties/presentation/details/property_facilities.dart)
 
-The rounded price footer saves or removes the property via the same session-scoped favorite action as the hero heart. Guests can start contextual sign-in and return to the property. The address includes an Open in Maps action for valid API coordinates, using `url_launcher` and Google Maps URLs. The Location section also displays a live map preview for valid Web Mercator coordinates. Agent contact and sharing are omitted, and all returned reviews are displayed inline. [Design comparison](DESIGN_SYSTEM.md#18-phase-6-property-details) · [Icon inventory](assets/FIGMA_ICON_INVENTORY.md)
+The rounded price footer saves or removes the property via the same session-scoped favorite action as the hero heart. Guests can start contextual sign-in and return to the property. The address includes an Open in Maps action for valid API coordinates, using `url_launcher` and Google Maps URLs. The Location section also displays a live map preview for valid Web Mercator coordinates. Agent contact and sharing are omitted, and all returned reviews are displayed inline. [Design comparison](DESIGN_SYSTEM.md#18-phase-6-property-details) · [Icon design and fallbacks](DESIGN_SYSTEM.md#icon-design-and-fallbacks)
 
 Profile, authentication, and favorite persistence remain future work.
 
@@ -195,7 +195,7 @@ The privately archived Android emulator captures cover English, Arabic, 320 dp P
 
 ### Phase 9.1 visual verification
 
-Phase 9.1 introduced native launcher and launch marks and palette-specific Flutter Splash branding. The current app uses the supplied artwork described under Phase 9.1.1. Native launch resources are static and Flutter Splash reads the persisted palette. [Brand provenance](assets/ASSET_LICENSES.md#phase-91--splash-and-native-brand-mark)
+Phase 9.1 introduced native launcher and launch marks and palette-specific Flutter Splash branding. The current app uses the supplied artwork described under Phase 9.1.1. Native launch resources are static and Flutter Splash reads the persisted palette. [Brand provenance](assets/ASSET_LICENSES.md#phase-911--supplied-figma-exports)
 
 The privately archived Phase 9.1 captures used synthetic accounts and properties, with Blue and Purple in English and Orange in Arabic. They include an iOS simulator Auth capture. [Comparison and known gaps](DESIGN_SYSTEM.md#phase-91--figma-fidelity-and-native-branding)
 
